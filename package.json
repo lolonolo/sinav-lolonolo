@@ -1,0 +1,23 @@
+{
+  "name": "sinav.lolonolo.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "quiz-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lolonolo/sinav-lolonolo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lolonolo/sinav-lolonolo/issues"
+  },
+  "homepage": "https://github.com/lolonolo/sinav-lolonolo#readme",
+  "dependencies": {
+    "@vercel/kv": "^3.0.0"
+  }
+}
