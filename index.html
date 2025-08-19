@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sınav Yarışması | Lolonolo</title>
+    
+    <link rel="icon" type="image/png" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
+    <link rel="apple-touch-icon" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
+    
     <style>
         :root {
             --background-color: #f0f2f5;
@@ -13,6 +17,9 @@
             --text-color: #333;
             --border-color: #ddd;
             --accent-color: #007bff;
+            --accent-hover: #0056b3;
+            --correct-color: #28a745;
+            --incorrect-color: #dc3545;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -24,8 +31,92 @@
             margin: 0;
             color: var(--text-color);
         }
-        .competition-container {
+        .screen {
+            width: 100%;
+            height: 100%;
             display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .lobby-container, .waiting-room-container {
+            text-align: center;
+            padding: 40px;
+            background-color: var(--container-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        .lobby-container h1, .waiting-room-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .lobby-container p, .waiting-room-container p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .lobby-buttons button, .waiting-room-container button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .lobby-buttons button:hover, .waiting-room-container button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        #create-room-btn, #start-competition-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        #join-room-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .room-code-display {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            border: 2px dashed var(--border-color);
+            cursor: pointer;
+        }
+        .waiting-teams {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .team-display {
+            width: 45%;
+        }
+        .team-display h3 {
+            border-bottom: 2px solid;
+            padding-bottom: 10px;
+        }
+        .waiting-player-list {
+            list-style: none;
+            padding: 0;
+            min-height: 50px;
+        }
+        .waiting-player-list li {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background-color: #f8f9fa;
+        }
+        .competition-container {
+            display: none;
             width: 90%;
             max-width: 1200px;
             height: 80vh;
@@ -65,10 +156,20 @@
         }
         .quiz-panel {
             width: 50%;
-            padding: 30px;
+            padding: 20px 30px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            overflow-y: auto;
+        }
+        .quiz-title {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #1f2937;
+            margin: -20px -30px 20px -30px;
+            padding: 20px;
+            font-weight: 600;
+            background-color: #eef1f4;
+            border-bottom: 1px solid var(--border-color);
         }
         .scoreboard {
             display: flex;
@@ -77,7 +178,12 @@
             font-size: 1.5rem;
             font-weight: bold;
             padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
+        }
+        .question-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .question-area h3 {
             font-size: 1.8rem;
@@ -96,62 +202,295 @@
             border-radius: 8px;
             background-color: var(--container-bg);
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: background-color 0.2s, transform 0.1s, border-color 0.2s;
             text-align: left;
         }
-        .option-btn:hover {
+        .option-btn:hover:not(:disabled) {
             background-color: #f5f5f5;
             transform: translateY(-2px);
+        }
+        .option-btn.correct {
+            background-color: var(--correct-color);
+            color: white;
+            border-color: var(--correct-color);
+        }
+        .option-btn.incorrect {
+            background-color: var(--incorrect-color);
+            color: white;
+            border-color: var(--incorrect-color);
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .explanation-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: none;
+            max-height: 150px;
+            overflow-y: auto;
+            padding-right: 10px;
+            text-align: left;
+        }
+        .next-question-btn {
+            display: none;
+            margin: 20px auto 0;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .next-question-btn:hover {
+            background-color: var(--accent-hover);
         }
         .quiz-footer {
             text-align: center;
             font-size: 0.9rem;
             color: #888;
+            padding-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="competition-container">
+    <div id="lobby-screen" class="screen">
+        <div class="lobby-container">
+            <h1>Sınav Yarışması'na Hoş Geldiniz!</h1>
+            <p>Arkadaşlarınızla takım kurun veya teke tek yarışın.</p>
+            <div class="lobby-buttons">
+                <button id="create-room-btn">Yeni Yarışma Kur</button>
+                <button id="join-room-btn">Odaya Katıl</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="waiting-room-screen" class="screen" style="display: none;">
+        <div class="waiting-room-container">
+            <h1>Oda Kuruldu!</h1>
+            <p>Arkadaşlarını bu kodla davet et:</p>
+            <div class="room-code-display" id="room-code">...</div>
+            <p style="font-size: 1rem;">Oyuncular bekleniyor...</p>
+            <div class="waiting-teams">
+                <div class="team-display">
+                    <h3>A Takımı</h3>
+                    <ul class="waiting-player-list" id="waiting-team-a">
+                    </ul>
+                </div>
+                <div class="team-display">
+                    <h3>B Takımı</h3>
+                    <ul class="waiting-player-list" id="waiting-team-b">
+                    </ul>
+                </div>
+            </div>
+            <button id="start-competition-btn" style="margin-top: 40px;">Yarışmayı Başlat</button>
+        </div>
+    </div>
+
+    <div class="competition-container" id="competition-screen">
         <div class="team-panel team-a">
             <h2>A Takımı</h2>
-            <ul class="player-list" id="team-a-list">
-                <li>Oyuncu 1</li>
-                <li>Oyuncu 2</li>
-            </ul>
+            <ul class="player-list" id="team-a-list"></ul>
         </div>
-
         <div class="quiz-panel">
+            <h1 class="quiz-title" id="quiz-title">Sınav Adı Yükleniyor...</h1>
             <div class="scoreboard">
                 <div id="team-a-score">A: 0</div>
                 <div id="timer">00:30</div>
                 <div id="team-b-score">B: 0</div>
             </div>
             <div class="question-area">
-                <h3>Türkiye'nin başkenti neresidir?</h3>
-                <div class="options-grid">
-                    <button class="option-btn">A) İstanbul</button>
-                    <button class="option-btn">B) Ankara</button>
-                    <button class="option-btn">C) İzmir</button>
-                    <button class="option-btn">D) Bursa</button>
-                </div>
+                <h3 id="question-text">Soru metni buraya gelecek...</h3>
+                <div class="options-grid" id="options-container"></div>
+                <div class="explanation-area" id="explanation-area"></div>
+                <button class="next-question-btn" id="next-q-btn">Sonraki Soru</button>
             </div>
-            <div class="quiz-footer">
-                Soru 1 / 10
-            </div>
+            <div class="quiz-footer" id="question-counter">Soru 1 / 4</div>
         </div>
-
         <div class="team-panel team-b">
             <h2>B Takımı</h2>
-            <ul class="player-list" id="team-b-list">
-                <li>Oyuncu 3</li>
-                <li>Oyuncu 4</li>
-            </ul>
+            <ul class="player-list" id="team-b-list"></ul>
         </div>
     </div>
 
+    <script src="quiz-data.js"></script>
+
     <script>
-        // JavaScript kodlarımız ileride buraya gelecek
+        // Ekranlar
+        const lobbyScreen = document.getElementById('lobby-screen');
+        const waitingRoomScreen = document.getElementById('waiting-room-screen');
+        const competitionScreen = document.getElementById('competition-screen');
+
+        // Butonlar
+        const createRoomBtn = document.getElementById('create-room-btn');
+        const joinRoomBtn = document.getElementById('join-room-btn');
+        const startCompetitionBtn = document.getElementById('start-competition-btn');
+        
+        // Bekleme Odası Elementleri
+        const roomCodeElement = document.getElementById('room-code');
+        const waitingTeamAElement = document.getElementById('waiting-team-a');
+        const waitingTeamBElement = document.getElementById('waiting-team-b');
+
+        // Yarışma Ekranı Elementleri
+        const quizTitleElement = document.getElementById('quiz-title');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationArea = document.getElementById('explanation-area');
+        const questionCounterElement = document.getElementById('question-counter');
+        const teamAScoreElement = document.getElementById('team-a-score');
+        const teamBScoreElement = document.getElementById('team-b-score');
+        const nextQuestionBtn = document.getElementById('next-q-btn');
+        const competitionTeamAElement = document.getElementById('team-a-list');
+        const competitionTeamBElement = document.getElementById('team-b-list');
+
+        // Oyun Değişkenleri
+        let currentQuestionIndex = 0;
+        let scoreA = 0;
+        let scoreB = 0;
+        let roomState = {}; // Odanın güncel durumunu tutar
+
+        function updatePlayerLists(players, listAElement, listBElement) {
+            listAElement.innerHTML = '';
+            listBElement.innerHTML = '';
+            Object.values(players).forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = player.name;
+                if (player.team === 'A') {
+                    listAElement.appendChild(li);
+                } else {
+                    listBElement.appendChild(li);
+                }
+            });
+        }
+
+        createRoomBtn.addEventListener('click', async () => {
+            createRoomBtn.disabled = true;
+            createRoomBtn.textContent = 'Oluşturuluyor...';
+            try {
+                const response = await fetch('/api/create-room', { method: 'POST' });
+                const data = await response.json();
+                if (response.ok && data.status === 'success') {
+                    roomState = { code: data.roomCode, players: { player1: { name: 'Oyuncu 1 (Kurucu)', team: 'A' } } };
+                    roomCodeElement.textContent = roomState.code;
+                    updatePlayerLists(roomState.players, waitingTeamAElement, waitingTeamBElement);
+                    lobbyScreen.style.display = 'none';
+                    waitingRoomScreen.style.display = 'flex';
+                } else {
+                    alert('Oda oluşturulurken bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
+                }
+            } catch (error) {
+                console.error('Oda oluşturma isteği başarısız:', error);
+                alert('Sunucuya bağlanırken bir hata oluştu.');
+            } finally {
+                createRoomBtn.disabled = false;
+                createRoomBtn.textContent = 'Yeni Yarışma Kur';
+            }
+        });
+
+        joinRoomBtn.addEventListener('click', async () => {
+            const roomCode = prompt("Lütfen katılmak istediğiniz odanın kodunu girin:");
+            if (!roomCode) return;
+            const playerName = prompt("Lütfen oyuncu adınızı girin:", `Oyuncu${Math.floor(Math.random() * 100)}`);
+            if (!playerName) return;
+
+            try {
+                const response = await fetch('/api/join-room', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ roomCode, playerName }),
+                });
+                const data = await response.json();
+                if (response.ok && data.status === 'success') {
+                    roomState = data.roomState;
+                    roomCodeElement.textContent = roomState.code;
+                    updatePlayerLists(roomState.players, waitingTeamAElement, waitingTeamBElement);
+                    lobbyScreen.style.display = 'none';
+                    waitingRoomScreen.style.display = 'flex';
+                } else {
+                    alert('Odaya katılırken bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
+                }
+            } catch (error) {
+                console.error('Odaya katılma isteği başarısız:', error);
+                alert('Sunucuya bağlanırken bir hata oluştu.');
+            }
+        });
+        
+        startCompetitionBtn.addEventListener('click', () => {
+            // Yarışma başladığında, bekleme odasındaki oyuncu listesini yarışma ekranına taşı
+            updatePlayerLists(roomState.players, competitionTeamAElement, competitionTeamBElement);
+            waitingRoomScreen.style.display = 'none';
+            competitionScreen.style.display = 'flex';
+            initializeApp();
+        });
+        
+        function loadQuestion(questionIndex) {
+            const question = sinavVerisi.sorular[questionIndex];
+            questionTextElement.innerHTML = question.soruMetni;
+            optionsContainer.innerHTML = '';
+            explanationArea.style.display = 'none';
+            nextQuestionBtn.style.display = 'none';
+            question.secenekler.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.innerHTML = option;
+                button.addEventListener('click', () => handleAnswer(index, 'A')); // Bu kısım oyuncuya göre dinamikleşecek
+                optionsContainer.appendChild(button);
+            });
+            questionCounterElement.textContent = `Soru ${questionIndex + 1} / ${sinavVerisi.sorular.length}`;
+        }
+
+        function handleAnswer(selectedIndex, team) {
+            const question = sinavVerisi.sorular[currentQuestionIndex];
+            const isCorrect = selectedIndex === question.dogruCevapIndex;
+            const allButtons = optionsContainer.querySelectorAll('.option-btn');
+            allButtons.forEach(btn => btn.disabled = true);
+            if (isCorrect) {
+                allButtons[selectedIndex].classList.add('correct');
+                if (team === 'A') {
+                    scoreA += 10;
+                    teamAScoreElement.textContent = `A: ${scoreA}`;
+                } else {
+                    scoreB += 10;
+                    teamBScoreElement.textContent = `B: ${scoreB}`;
+                }
+            } else {
+                allButtons[selectedIndex].classList.add('incorrect');
+                if (question.dogruCevapIndex < allButtons.length) {
+                    allButtons[question.dogruCevapIndex].classList.add('correct');
+                }
+            }
+            if (question.aciklama) {
+                explanationArea.innerHTML = `${question.aciklama}`;
+                explanationArea.style.display = 'block';
+            }
+            if (currentQuestionIndex < sinavVerisi.sorular.length - 1) {
+                nextQuestionBtn.style.display = 'block';
+            } else {
+                questionTextElement.textContent = 'Yarışma Bitti!';
+                optionsContainer.innerHTML = `<strong>Final Skor:</strong> A Takımı ${scoreA} - B Takımı ${scoreB}`;
+            }
+        }
+        
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < sinavVerisi.sorular.length) {
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        function initializeApp() {
+            quizTitleElement.textContent = sinavVerisi.sinavAdi;
+            loadQuestion(currentQuestionIndex);
+        }
+
+        nextQuestionBtn.addEventListener('click', goToNextQuestion);
     </script>
 </body>
 </html>
