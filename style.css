@@ -115,7 +115,7 @@ body {
     overflow: hidden;
 }
 .team-panel {
-    width: 25%;
+    width: 20%;
     padding: 20px;
     text-align: center;
 }
@@ -129,8 +129,12 @@ body {
 }
 .team-panel h2 {
     margin-top: 0;
-    border-bottom: 2px solid;
-    padding-bottom: 10px;
+    font-size: 1.5rem;
+}
+.team-score {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 10px 0 20px 0;
 }
 .player-list {
     list-style: none;
@@ -143,36 +147,47 @@ body {
     margin-bottom: 8px;
     font-weight: 500;
 }
+.player-list li.current-player {
+    border: 2px solid var(--accent-color);
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+}
 .quiz-panel {
-    width: 50%;
-    padding: 20px 30px;
+    width: 60%;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
-.quiz-title {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #1f2937;
-    margin: -20px -30px 20px -30px;
-    padding: 20px;
-    font-weight: 600;
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
     background-color: #eef1f4;
     border-bottom: 1px solid var(--border-color);
 }
-.scoreboard {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
+.quiz-title {
+    font-size: 1.2rem;
+    color: #1f2937;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+.quiz-timer {
     font-size: 1.5rem;
     font-weight: bold;
-    padding-bottom: 20px;
+    margin-left: 20px;
+    flex-shrink: 0;
 }
 .question-area {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 30px;
+    overflow-y: auto;
 }
 .question-area h3 {
     font-size: 1.8rem;
@@ -245,4 +260,5 @@ body {
     font-size: 0.9rem;
     color: #888;
     padding-top: 20px;
+    flex-shrink: 0;
 }
