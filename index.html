@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sınav Yarışması | Lolonolo</title>
-    
     <link rel="icon" type="image/png" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
     <link rel="apple-touch-icon" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
-    
     <style>
         :root {
             --background-color: #f0f2f5;
@@ -354,7 +352,10 @@
         let currentQuestionIndex = 0;
         let scoreA = 0;
         let scoreB = 0;
-        let roomState = {}; // Odanın güncel durumunu tutar
+        let roomState = {};
+        let pollingInterval = null;
+
+        // --- YARDIMCI VE YÖNETİM FONKSİYONLARI ---
 
         function updatePlayerLists(players, listAElement, listBElement) {
             listAElement.innerHTML = '';
@@ -369,67 +370,32 @@
                 }
             });
         }
-
-        createRoomBtn.addEventListener('click', async () => {
-            createRoomBtn.disabled = true;
-            createRoomBtn.textContent = 'Oluşturuluyor...';
+        
+        async function pollRoomStatus() {
+            if (!roomState.code) return;
             try {
-                const response = await fetch('/api/create-room', { method: 'POST' });
-                const data = await response.json();
-                if (response.ok && data.status === 'success') {
-                    roomState = { code: data.roomCode, players: { player1: { name: 'Oyuncu 1 (Kurucu)', team: 'A' } } };
-                    roomCodeElement.textContent = roomState.code;
-                    updatePlayerLists(roomState.players, waitingTeamAElement, waitingTeamBElement);
-                    lobbyScreen.style.display = 'none';
-                    waitingRoomScreen.style.display = 'flex';
-                } else {
-                    alert('Oda oluşturulurken bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
-                }
-            } catch (error) {
-                console.error('Oda oluşturma isteği başarısız:', error);
-                alert('Sunucuya bağlanırken bir hata oluştu.');
-            } finally {
-                createRoomBtn.disabled = false;
-                createRoomBtn.textContent = 'Yeni Yarışma Kur';
-            }
-        });
-
-        joinRoomBtn.addEventListener('click', async () => {
-            const roomCode = prompt("Lütfen katılmak istediğiniz odanın kodunu girin:");
-            if (!roomCode) return;
-            const playerName = prompt("Lütfen oyuncu adınızı girin:", `Oyuncu${Math.floor(Math.random() * 100)}`);
-            if (!playerName) return;
-
-            try {
-                const response = await fetch('/api/join-room', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ roomCode, playerName }),
-                });
+                const response = await fetch(`/api/get-room?code=${roomState.code}`);
                 const data = await response.json();
                 if (response.ok && data.status === 'success') {
                     roomState = data.roomState;
-                    roomCodeElement.textContent = roomState.code;
                     updatePlayerLists(roomState.players, waitingTeamAElement, waitingTeamBElement);
-                    lobbyScreen.style.display = 'none';
-                    waitingRoomScreen.style.display = 'flex';
-                } else {
-                    alert('Odaya katılırken bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
                 }
             } catch (error) {
-                console.error('Odaya katılma isteği başarısız:', error);
-                alert('Sunucuya bağlanırken bir hata oluştu.');
+                console.error('Oda durumu çekilirken hata:', error);
             }
-        });
-        
-        startCompetitionBtn.addEventListener('click', () => {
-            // Yarışma başladığında, bekleme odasındaki oyuncu listesini yarışma ekranına taşı
-            updatePlayerLists(roomState.players, competitionTeamAElement, competitionTeamBElement);
-            waitingRoomScreen.style.display = 'none';
-            competitionScreen.style.display = 'flex';
-            initializeApp();
-        });
-        
+        }
+
+        function startPolling() {
+            if (pollingInterval) clearInterval(pollingInterval);
+            pollingInterval = setInterval(pollRoomStatus, 3000);
+        }
+
+        function stopPolling() {
+            if (pollingInterval) clearInterval(pollingInterval);
+        }
+
+        // --- YARIŞMA MOTORU FONKSİYONLARI ---
+
         function loadQuestion(questionIndex) {
             const question = sinavVerisi.sorular[questionIndex];
             questionTextElement.innerHTML = question.soruMetni;
@@ -440,7 +406,7 @@
                 const button = document.createElement('button');
                 button.className = 'option-btn';
                 button.innerHTML = option;
-                button.addEventListener('click', () => handleAnswer(index, 'A')); // Bu kısım oyuncuya göre dinamikleşecek
+                button.addEventListener('click', () => handleAnswer(index, 'A'));
                 optionsContainer.appendChild(button);
             });
             questionCounterElement.textContent = `Soru ${questionIndex + 1} / ${sinavVerisi.sorular.length}`;
@@ -489,6 +455,70 @@
             quizTitleElement.textContent = sinavVerisi.sinavAdi;
             loadQuestion(currentQuestionIndex);
         }
+        
+        // --- OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
+
+        createRoomBtn.addEventListener('click', async () => {
+            createRoomBtn.disabled = true;
+            createRoomBtn.textContent = 'Oluşturuluyor...';
+            try {
+                const response = await fetch('/api/create-room', { method: 'POST' });
+                const data = await response.json();
+                if (response.ok && data.status === 'success') {
+                    roomState = { code: data.roomCode, players: { player1: { name: 'Oyuncu 1 (Kurucu)', team: 'A' } } };
+                    roomCodeElement.textContent = roomState.code;
+                    updatePlayerLists(roomState.players, waitingTeamAElement, waitingTeamBElement);
+                    lobbyScreen.style.display = 'none';
+                    waitingRoomScreen.style.display = 'flex';
+                    startPolling();
+                } else {
+                    alert('Oda oluşturulurken bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
+                }
+            } catch (error) {
+                console.error('Oda oluşturma isteği başarısız:', error);
+                alert('Sunucuya bağlanırken bir hata oluştu.');
+            } finally {
+                createRoomBtn.disabled = false;
+                createRoomBtn.textContent = 'Yeni Yarışma Kur';
+            }
+        });
+
+        joinRoomBtn.addEventListener('click', async () => {
+            const roomCode = prompt("Lütfen katılmak istediğiniz odanın kodunu girin:");
+            if (!roomCode) return;
+            const playerName = prompt("Lütfen oyuncu adınızı girin:", `Oyuncu${Math.floor(Math.random() * 100)}`);
+            if (!playerName) return;
+
+            try {
+                const response = await fetch('/api/join-room', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ roomCode, playerName }),
+                });
+                const data = await response.json();
+                if (response.ok && data.status === 'success') {
+                    roomState = data.roomState;
+                    roomCodeElement.textContent = roomState.code;
+                    updatePlayerLists(roomState.players, waitingTeamAElement, waitingTeamBElement);
+                    lobbyScreen.style.display = 'none';
+                    waitingRoomScreen.style.display = 'flex';
+                    startPolling();
+                } else {
+                    alert('Odaya katılırken bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
+                }
+            } catch (error) {
+                console.error('Odaya katılma isteği başarısız:', error);
+                alert('Sunucuya bağlanırken bir hata oluştu.');
+            }
+        });
+        
+        startCompetitionBtn.addEventListener('click', () => {
+            stopPolling();
+            updatePlayerLists(roomState.players, competitionTeamAElement, competitionTeamBElement);
+            waitingRoomScreen.style.display = 'none';
+            competitionScreen.style.display = 'flex';
+            initializeApp();
+        });
 
         nextQuestionBtn.addEventListener('click', goToNextQuestion);
     </script>
