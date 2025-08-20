@@ -7,7 +7,6 @@ export default async function handler(request, response) {
 
   try {
     const { roomCode, playerName } = request.body;
-
     if (!roomCode || !playerName) {
       return response.status(400).json({ error: 'Oda kodu ve oyuncu adı gerekli.' });
     }
@@ -18,34 +17,22 @@ export default async function handler(request, response) {
     if (!roomState) {
       return response.status(404).json({ error: 'Oda bulunamadı.' });
     }
-
-    // Oyuncu zaten odada mı diye kontrol et (opsiyonel ama iyi bir pratik)
-    if (Object.values(roomState.players).some(p => p.name === playerName)) {
-        // Bu senaryoda, oyuncuyu tekrar odaya yönlendirebiliriz.
-        return response.status(200).json({ status: 'success', roomState });
-    }
-
-    // Yeni oyuncu için bir ID oluştur
-    const newPlayerId = `player${Object.keys(roomState.players).length + 1}`;
-
-    // Takımlardaki oyuncu sayılarını hesapla
+    
+    const newPlayerId = `player${Date.now()}`;
     const teamACount = Object.values(roomState.players).filter(p => p.team === 'A').length;
     const teamBCount = Object.values(roomState.players).filter(p => p.team === 'B').length;
-
-    // Oyuncuyu en boş takıma ata
     const newPlayerTeam = teamACount <= teamBCount ? 'A' : 'B';
 
-    // Odanın oyuncu listesini güncelle
     roomState.players[newPlayerId] = {
       name: playerName,
       team: newPlayerTeam,
+      score: 0
     };
 
-    // Güncellenmiş oda durumunu veritabanına geri kaydet
     await kv.set(roomKey, roomState, { ex: 86400 });
 
-    // Başarılı cevabı ve güncel oda durumunu ön yüze gönder
-    return response.status(200).json({ status: 'success', roomState: roomState });
+    // YENİ: Katılan oyuncunun kendi ID'sini de cevap olarak gönderiyoruz
+    return response.status(200).json({ status: 'success', roomState: roomState, newPlayerId: newPlayerId });
 
   } catch (error) {
     console.error('Error joining room:', error);

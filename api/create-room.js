@@ -9,7 +9,6 @@ export default async function handler(request, response) {
   }
 
   try {
-    // YENİ: Oyuncu adını ön yüzden al
     const { playerName } = request.body;
     if (!playerName) {
         return response.status(400).json({ error: 'Oyuncu adı gerekli.' });
@@ -20,11 +19,12 @@ export default async function handler(request, response) {
     const num = Math.floor(Math.random() * 90) + 10;
     const roomCode = `${adj}${noun}${num}`;
     const roomKey = `room:${roomCode}`;
+    const newPlayerId = `player${Date.now()}`; // Benzersiz bir ID oluştur
 
     const roomState = {
       code: roomCode,
       players: {
-        player1: { name: playerName, team: 'A' } // Alınan oyuncu adını kullan
+        [newPlayerId]: { name: playerName, team: 'A', score: 0 }
       },
       status: 'waiting',
       createdAt: Date.now()
@@ -32,8 +32,8 @@ export default async function handler(request, response) {
 
     await kv.set(roomKey, roomState, { ex: 86400 });
 
-    // YENİ: Cevap olarak sadece kodu değil, tüm oda durumunu gönder
-    return response.status(200).json({ status: 'success', roomCode: roomCode, roomState: roomState });
+    // YENİ: Kurucunun kendi ID'sini de cevap olarak gönderiyoruz
+    return response.status(200).json({ status: 'success', roomState: roomState, newPlayerId: newPlayerId });
 
   } catch (error) {
     console.error('Error creating room:', error);
