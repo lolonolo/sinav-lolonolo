@@ -1,6 +1,9 @@
-// --- BÖLÜM 1: ELEMENT TANIMLAMALARI VE GENEL DEĞİŞKENLER ---
-
+// DÜZELTME: Tüm script kodunu, sayfanın tamamen yüklenmesini bekleyen
+// bir olay dinleyicisinin içine alıyoruz. Bu, butonların "null" olmasını engeller.
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- BÖLÜM 1: ELEMENT TANIMLAMALARI VE GENEL DEĞİŞKENLER ---
+    
     // Ekranlar
     const lobbyScreen = document.getElementById('lobby-screen');
     const waitingRoomScreen = document.getElementById('waiting-room-screen');
@@ -33,16 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPlayerId = null;
     let currentQuestionIndex = 0;
 
-// --- BÖLÜM 1 SONU ---
+    // --- BÖLÜM 1 SONU ---
 
 
-// --- BÖLÜM 2: YARDIMCI VE YÖNETİM FONKSİYONLARI ---
+    // --- BÖLÜM 2: YARDIMCI VE YÖNETİM FONKSİYONLARI ---
 
     function showScreen(screenToShow) {
-        lobbyScreen.style.display = 'none';
-        waitingRoomScreen.style.display = 'none';
-        competitionScreen.style.display = 'none';
-        screenToShow.style.display = 'flex';
+        if(lobbyScreen) lobbyScreen.style.display = 'none';
+        if(waitingRoomScreen) waitingRoomScreen.style.display = 'none';
+        if(competitionScreen) competitionScreen.style.display = 'none';
+        if(screenToShow) screenToShow.style.display = 'flex';
     }
 
     function updatePlayerLists(players) {
@@ -54,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         listElements.forEach(({ list }) => { if(list) list.innerHTML = ''; });
+        
+        if(!players) return;
 
         Object.entries(players).forEach(([playerId, player]) => {
             const li = document.createElement('li');
@@ -88,27 +93,45 @@ document.addEventListener('DOMContentLoaded', () => {
         if(teamAScoreElement) teamAScoreElement.textContent = scoreA;
         if(teamBScoreElement) teamBScoreElement.textContent = scoreB;
     }
+async function pollRoomStatus() {
+    if (!roomState.code) return; // Oda kodu yoksa devam etme
 
-    async function pollRoomStatus() {
-        if (!roomState.code) return;
-        try {
-            const response = await fetch(`/api/get-room?code=${roomState.code}`);
-            const data = await response.json();
-            if (response.ok && data.status === 'success') {
-                const oldState = JSON.stringify(roomState.players);
-                const newState = JSON.stringify(data.roomState.players);
+    try {
+        const response = await fetch(`/api/get-room?code=${roomState.code}`);
+        const data = await response.json();
 
-                if(oldState !== newState){
-                    roomState = data.roomState;
-                    updatePlayerLists(roomState.players);
-                    updateScores();
-                }
+        if (response.ok && data.status === 'success') {
+            // Yarışma başlama anını yakala
+            if (roomState.status === 'waiting' && data.roomState.status === 'in_progress') {
+                stopPolling(); // Kontrolü durdur
+                roomState = data.roomState; // Son durumu al
+                updatePlayerLists(roomState.players);
+                showScreen(competitionScreen);
+                initializeApp();
+                return; // Fonksiyonu burada bitir, aşağısı çalışmasın
             }
-        } catch (error) {
-            console.error('Oda durumu çekilirken hata:', error);
-        }
-    }
+            
+            // Diğer tüm durumlarda, sunucudan gelen veriyi KABUL ET ve EKRANI YENİLE
+            roomState = data.roomState;
+            updatePlayerLists(roomState.players);
+            updateScores(); // Skorları her seferinde koşulsuz güncelle
 
+            // "Yarışmayı Başlat" butonunun durumunu ayarla
+            const teamBCount = Object.values(roomState.players).filter(p => p.team === 'B').length;
+            const isCreator = roomState.players[currentPlayerId]?.name.includes('(Kurucu)');
+            
+            if (isCreator && teamBCount > 0) {
+                startCompetitionBtn.disabled = false;
+                startCompetitionBtn.textContent = 'Yarışmayı Başlat';
+            } else if (isCreator) {
+                startCompetitionBtn.disabled = true;
+                startCompetitionBtn.textContent = 'Rakip Bekleniyor...';
+            }
+        }
+    } catch (error) {
+        console.error('Oda durumu çekilirken hata:', error);
+    }
+}
     function startPolling() {
         if (pollingInterval) clearInterval(pollingInterval);
         pollingInterval = setInterval(pollRoomStatus, 3000);
@@ -118,12 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pollingInterval) clearInterval(pollingInterval);
     }
 
-// --- BÖLÜM 2 SONU ---
+    // --- BÖLÜM 2 SONU ---
 
 
-// --- BÖLÜM 3: YARIŞMA MOTORU FONKSİYONLARI ---
+    // --- BÖLÜM 3: YARIŞMA MOTORU FONKSİYONLARI ---
 
     function loadQuestion(questionIndex) {
+        if(typeof sinavVerisi === 'undefined' || !sinavVerisi.sorular[questionIndex]) return;
+
         const question = sinavVerisi.sorular[questionIndex];
         currentQuestionIndex = questionIndex;
         
@@ -216,18 +241,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initializeApp() {
         currentQuestionIndex = 0;
-        roomState.players = roomState.players || {}; // Güvenlik kontrolü
-        Object.values(roomState.players).forEach(player => player.score = 0); // Skorları sıfırla
+        if(roomState && roomState.players){
+            Object.values(roomState.players).forEach(player => player.score = 0);
+        }
         
         quizTitleElement.textContent = sinavVerisi.sinavAdi;
         updateScores();
         loadQuestion(0);
     }
 
-// --- BÖLÜM 3 SONU ---
+    // --- BÖLÜM 3 SONU ---
 
 
-// --- BÖLÜM 4: OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
+    // --- BÖLÜM 4: OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
     
     createRoomBtn.addEventListener('click', async () => {
         const playerName = prompt("Lütfen oyuncu adınızı girin:", "Kurucu");
@@ -264,44 +290,69 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     joinRoomBtn.addEventListener('click', async () => {
-        const roomCode = prompt("Lütfen katılmak istediğiniz odanın kodunu girin:");
+        let roomCode = prompt("Lütfen katılmak istediğiniz odanın kodunu girin:");
         if (!roomCode) return;
-        const playerName = prompt("Lütfen oyuncu adınızı girin:", `Oyuncu${Math.floor(Math.random() * 100)}`);
-        if (!playerName) return;
+        roomCode = roomCode.toUpperCase(); // Kodu büyük harfe çevir
 
-        try {
-            const response = await fetch('/api/join-room', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ roomCode, playerName }),
-            });
-            const data = await response.json();
-            if (response.ok && data.status === 'success') {
-                roomState = data.roomState;
-                currentPlayerId = data.newPlayerId;
-                sessionStorage.setItem(`player-${roomState.code}`, currentPlayerId);
-                
-                roomCodeElement.textContent = roomState.code;
-                updatePlayerLists(roomState.players);
-                showScreen(waitingRoomScreen);
-                startPolling();
-            } else {
-                alert('Hata: ' + (data.error || 'Bilinmeyen hata'));
+        let playerName = "";
+        let isNameValid = false;
+        
+        while(!isNameValid) {
+            playerName = prompt("Lütfen oyuncu adınızı girin:", `Oyuncu${Math.floor(Math.random() * 100)}`);
+            if (!playerName) return;
+
+            try {
+                const response = await fetch('/api/join-room', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ roomCode, playerName }),
+                });
+                const data = await response.json();
+                if (response.ok && data.status === 'success') {
+                    roomState = data.roomState;
+                    currentPlayerId = data.newPlayerId;
+                    sessionStorage.setItem(`player-${roomState.code}`, currentPlayerId);
+                    
+                    roomCodeElement.textContent = roomState.code;
+                    updatePlayerLists(roomState.players);
+                    showScreen(waitingRoomScreen);
+                    startPolling();
+                    isNameValid = true;
+                } else {
+                    if(response.status === 409) {
+                        alert(data.error);
+                    } else {
+                        alert('Odaya katılırken bir hata oluştu: ' + (data.error || 'Bilinmeyen hata'));
+                        isNameValid = true;
+                    }
+                }
+            } catch (error) {
+                alert('Sunucuya bağlanırken bir hata oluştu.');
+                isNameValid = true;
             }
-        } catch (error) {
-            alert('Sunucuya bağlanırken bir hata oluştu.');
         }
     });
     
-    startCompetitionBtn.addEventListener('click', () => {
-        stopPolling();
-        updatePlayerLists(roomState.players);
-        showScreen(competitionScreen);
-        initializeApp();
+    startCompetitionBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/api/start-game', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ roomCode: roomState.code })
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Yarışma başlatılamadı.');
+            }
+            startCompetitionBtn.disabled = true;
+            startCompetitionBtn.textContent = 'Başlatılıyor...';
+            
+        } catch (error) {
+            alert(`Bir hata oluştu: ${error.message}`);
+        }
     });
 
     nextQuestionBtn.addEventListener('click', goToNextQuestion);
 
-// --- BÖLÜM 4 SONU ---
-
+    // --- BÖLÜM 4 SONU ---
 });

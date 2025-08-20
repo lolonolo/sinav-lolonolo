@@ -17,6 +17,12 @@ export default async function handler(request, response) {
     if (!roomState) {
       return response.status(404).json({ error: 'Oda bulunamadı.' });
     }
+
+    // YENİ: Oyuncu adının benzersiz olup olmadığını kontrol et
+    const isNameTaken = Object.values(roomState.players).some(p => p.name.toLowerCase() === playerName.toLowerCase());
+    if (isNameTaken) {
+      return response.status(409).json({ error: 'Bu oyuncu adı zaten alınmış. Lütfen farklı bir isim seçin.' });
+    }
     
     const newPlayerId = `player${Date.now()}`;
     const teamACount = Object.values(roomState.players).filter(p => p.team === 'A').length;
@@ -31,7 +37,6 @@ export default async function handler(request, response) {
 
     await kv.set(roomKey, roomState, { ex: 86400 });
 
-    // YENİ: Katılan oyuncunun kendi ID'sini de cevap olarak gönderiyoruz
     return response.status(200).json({ status: 'success', roomState: roomState, newPlayerId: newPlayerId });
 
   } catch (error) {
