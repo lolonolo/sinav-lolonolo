@@ -1,0 +1,248 @@
+:root {
+    --background-color: #f0f2f5;
+    --container-bg: #ffffff;
+    --team-a-color: #e6f3ff;
+    --team-b-color: #ffebe6;
+    --text-color: #333;
+    --border-color: #ddd;
+    --accent-color: #007bff;
+    --accent-hover: #0056b3;
+    --correct-color: #28a745;
+    --incorrect-color: #dc3545;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: var(--text-color);
+}
+.screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lobby-container, .waiting-room-container {
+    text-align: center;
+    padding: 40px;
+    background-color: var(--container-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 90%;
+}
+.lobby-container h1, .waiting-room-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+.lobby-container p, .waiting-room-container p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 40px;
+}
+.lobby-buttons button, .waiting-room-container button {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.lobby-buttons button:hover, .waiting-room-container button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+#create-room-btn, #start-competition-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+#join-room-btn {
+    background-color: #6c757d;
+    color: white;
+}
+.room-code-display {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+    border: 2px dashed var(--border-color);
+    cursor: pointer;
+}
+.waiting-teams {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 30px;
+    text-align: left;
+}
+.team-display {
+    width: 45%;
+}
+.team-display h3 {
+    border-bottom: 2px solid;
+    padding-bottom: 10px;
+}
+.waiting-player-list {
+    list-style: none;
+    padding: 0;
+    min-height: 50px;
+}
+.waiting-player-list li {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    background-color: #f8f9fa;
+}
+.competition-container {
+    display: none;
+    width: 90%;
+    max-width: 1200px;
+    height: 80vh;
+    background-color: var(--container-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+.team-panel {
+    width: 25%;
+    padding: 20px;
+    text-align: center;
+}
+.team-a {
+    background-color: var(--team-a-color);
+    border-right: 1px solid var(--border-color);
+}
+.team-b {
+    background-color: var(--team-b-color);
+    border-left: 1px solid var(--border-color);
+}
+.team-panel h2 {
+    margin-top: 0;
+    border-bottom: 2px solid;
+    padding-bottom: 10px;
+}
+.player-list {
+    list-style: none;
+    padding: 0;
+}
+.player-list li {
+    background-color: var(--container-bg);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+.quiz-panel {
+    width: 50%;
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.quiz-title {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #1f2937;
+    margin: -20px -30px 20px -30px;
+    padding: 20px;
+    font-weight: 600;
+    background-color: #eef1f4;
+    border-bottom: 1px solid var(--border-color);
+}
+.scoreboard {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+.question-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.question-area h3 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.option-btn {
+    padding: 15px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--container-bg);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s, border-color 0.2s;
+    text-align: left;
+}
+.option-btn:hover:not(:disabled) {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+}
+.option-btn.correct {
+    background-color: var(--correct-color);
+    color: white;
+    border-color: var(--correct-color);
+}
+.option-btn.incorrect {
+    background-color: var(--incorrect-color);
+    color: white;
+    border-color: var(--incorrect-color);
+}
+.option-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.explanation-area {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    display: none;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 10px;
+    text-align: left;
+}
+.next-question-btn {
+    display: none;
+    margin: 20px auto 0;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.next-question-btn:hover {
+    background-color: var(--accent-hover);
+}
+.quiz-footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #888;
+    padding-top: 20px;
+}
