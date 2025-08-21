@@ -88,21 +88,25 @@ function updatePlayerLists(players) {
         });
     }
 
-  function updateScores() {
-        let scoreA = 0;
-        let scoreB = 0;
+ // script.js dosyasındaki updateScores fonksiyonu
+    function updateScores() {
+        let scoreA = 0, scoreB = 0;
         if (roomState && roomState.players) {
             Object.values(roomState.players).forEach(player => {
-                const playerScore = player.score || 0; // Puanı olmayan oyuncu için 0 kabul et
-                if (player.team === 'A') {
-                    scoreA += playerScore;
-                } else if (player.team === 'B') {
-                    scoreB += playerScore;
-                }
+                const playerScore = player.score || 0;
+                if (player.team === 'A') scoreA += playerScore;
+                else if (player.team === 'B') scoreB += playerScore;
             });
         }
+        // Masaüstü skorlarını güncelle
         if (teamAScoreElement) teamAScoreElement.textContent = scoreA;
         if (teamBScoreElement) teamBScoreElement.textContent = scoreB;
+
+        // YENİ: Mobil skorlarını da güncelle
+        const mobileTeamAScore = document.getElementById('mobile-team-a-score');
+        const mobileTeamBScore = document.getElementById('mobile-team-b-score');
+        if(mobileTeamAScore) mobileTeamAScore.textContent = scoreA;
+        if(mobileTeamBScore) mobileTeamBScore.textContent = scoreB;
     }
 
     async function pollRoomStatus() {
