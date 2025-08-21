@@ -181,65 +181,6 @@ const sinavVerisi = {
             dogruCevapIndex: 1, // b şıkkı
             aciklama: "Cevap : b) 5 iş günü"
         }
-		{
-            soruMetni: "Sigorta acentelerinin şube açmaları durumunda, her bir şube için asgari sermaye tutarı ne kadar olmalıdır?",
-            secenekler: ["A) 250.000 TL", "B) 300.000 TL", "C) 325.000 TL", "D) 350.000 TL"],
-            dogruCevapIndex: 2, // C şıkkı
-            aciklama: "Cevap : C) 325.000 TL"
-        },
-        {
-            soruMetni: "Sigortalıya karşı üstlendiği sigortanın bir kısmını veya tamamını reasürans yoluyla devreden şirkete ne ad verilir?",
-            secenekler: ["A) Reasüans", "B) Sedan", "C) Broker", "D) Sigortacı"],
-            dogruCevapIndex: 1, // B şıkkı
-            aciklama: "Cevap : B) Sedan"
-        },
-        {
-            soruMetni: "Aşağıdakilerden hangileri, sigorta bilgilendirme formunda asgari olarak bulunması gereken bilgilerdendir?<br>I. Sigortacının ticaret unvanı ve iletişim bilgileri<br>II. Sigorta priminin ödenme zamanı ve şekli<br>III. Rizikonun gerçekleşmesi durumunda yapılması gerekenler<br>IV. Sigortalının medeni hali ve aile bilgileri",
-            secenekler: ["A) Yalnız I ve II", "B) I, II ve III", "C) II, III ve IV", "D) I, III ve IV"],
-            dogruCevapIndex: 1, // B şıkkı
-            aciklama: "Cevap : B) I, II ve III"
-        },
-        {
-            soruMetni: "Sigorta şirketinin, hasarı sigortalıya ödeyince, sigortalının yerine geçerek, hasara sebep olan kusurlu taraftan sigortalının hakkı kadar ve en çok ödediği hasar kadar alacaklı olması hangi prensipten kaynaklanır?",
-            secenekler: ["A) Tazminat", "B) Halefiyet", "C) Azami iyi niyet", "D) Yakın sebep"],
-            dogruCevapIndex: 1, // B şıkkı
-            aciklama: "Cevap : B) Halefiyet"
-        },
-        {
-            soruMetni: "Aşağıdakilerden hangisi, sigorta uygulamaları da dahil olmak üzere, risk değerlendirmesine esas bilgileri toplamak ve bu bilgileri sigorta, reasürans ve sigortacılık faaliyetinde bulunan emeklilik şirketleri ile Türkiye Cumhuriyeti Hazine ve Maliye Bakanlığı’nın belirlediği kişilerle paylaşılmasını sağlamak amacıyla Türkiye Sigorta ve Reasürans Şirketleri Birliği bünyesinde tüzel kişiliği haiz bir kurum olarak kurulmuştur?",
-            secenekler: ["A) SBM (Sigorta Bilgi ve Gözetim Merkezi)", "B) SDDK (Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurumu)", "C) SPK (Sermaye Piyasası Kurulu)", "D) TOBB (Türkiye Odalar ve Borsalar Birliği)"],
-            dogruCevapIndex: 0, // A şıkkı
-            aciklama: "Cevap : A) SBM (Sigorta Bilgi ve Gözetim Merkezi)"
-        },
-        {
-            soruMetni: "3 yıldır çalışan 4 yıllık İktisat bölümü mezunu bir kişinin sigorta sektöründe genel müdür olabilmesi için toplamda kaç yıl daha çalışmış olması gerekmektedir?",
-            secenekler: ["A) 3 yıl", "B) 5 yıl", "C) 6 yıl", "D) 7 yıl"],
-            dogruCevapIndex: 0, // A şıkkı
-            aciklama: "Cevap : A) 3 yıl"
-        },
-        {
-            soruMetni: "Fıkıh kitaplarındaki finansal ve ticari işlemler ile alakalı kurallar hangi başlık altında toplanmıştır?",
-            secenekler: ["A) Muamelat", "B) Münakehat", "C) İbadet", "D) İtikad"],
-            dogruCevapIndex: 0, // A şıkkı
-            aciklama: "Cevap : A) Muamelat"
-        },
-        {
-            soruMetni: "Yardımcı teknik personelin teknik personel ünvanını kazanmak için doldurması gereken çalışma süresi ne kadardır?",
-            secenekler: ["A) 3 ay", "B) 6 ay", "C) 1 yıl", "D) 2 yıl"],
-            dogruCevapIndex: 3, // D şıkkı
-            aciklama: "Cevap : D) 2 yıl"
-        },
-        {
-            soruMetni: "Muamelat fıkhı çerçevesinde bir sözleşme kuruluşunda ilk teklifi ifade ve irade beyanına ne denir?",
-            secenekler: ["A) Kabul", "B) İcap", "C) İcma", "D) Makbul"],
-            dogruCevapIndex: 1, // B şıkkı
-            aciklama: "Cevap : B) İcap"
-        },
-        {
-            soruMetni: "Yangın sigorta poliçesinde aşağıdakilerden hangisi teminat dışındadır?",
-            secenekler: ["A) Yangın esnasında çıkan duman nedeniyle oluşan hasarlar", "B) Yangın esnasında çıkan buhar nedeniyle oluşan hasarlar", "C) Yangın söndürme esnasında sıkılan su nedeniyle oluşan hasarlar", "D) Savaş, istila, isyan sonucu oluşan hasarlar"],
-            dogruCevapIndex: 3, // D şıkkı
-            aciklama: "Cevap : D) Savaş, istila, isyan sonucu oluşan hasarlar"
-        }
+   
     ]
 };
