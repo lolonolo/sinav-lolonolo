@@ -6,8 +6,29 @@
     <title>Sınav Yarışması | Lolonolo</title>
     <link rel="icon" type="image/png" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
     <link rel="apple-touch-icon" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
+        <link rel="stylesheet" href="style.css">
     
-    <link rel="stylesheet" href="style.css">
+    
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E3VBQV8L46"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-E3VBQV8L46');
+</script>
+	
+	
+	
+    <script>
+        // ezstandalone objesini başlat
+        window.ezstandalone = window.ezstandalone || {};
+        ezstandalone.cmd = ezstandalone.cmd || [];
+    </script>
+    <script src="https://the.gatekeeperconsent.com/cmp.min.js" async></script>
+    <script src="https://the.gatekeeperconsent.com/ccpa/v2/standalone.js" async></script>
+    <script src="//www.ezojs.com/ezoic/sa.min.js" async></script>
 </head>
 <body>
 
@@ -70,6 +91,37 @@
 
     <script src="quiz-data.js"></script>
     <script src="script.js"></script>
+      <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof ezstandalone !== 'undefined') {
+            ezstandalone.cmd.push(function() {
+                ezstandalone.enable();
+                ezstandalone.display();
+            });
+        }
+
+        setTimeout(function() {
+            var fcScript = document.createElement('script');
+            fcScript.src = "https://fundingchoicesmessages.google.com/i/pub-6517205438926212?ers=1";
+            fcScript.async = true;
+            document.head.appendChild(fcScript);
+
+            function signalGooglefcPresent() {
+                if (!window.frames['googlefcPresent']) {
+                    if (document.body) {
+                        const iframe = document.createElement('iframe');
+                        iframe.name = 'googlefcPresent';
+                        iframe.style.display = 'none';
+                        document.body.appendChild(iframe);
+                    } else {
+                        setTimeout(signalGooglefcPresent, 0);
+                    }
+                }
+            }
+            signalGooglefcPresent();
+        }, 5000);
+    });
+    </script>
 
 </body>
 </html>
