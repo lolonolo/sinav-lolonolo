@@ -19,12 +19,17 @@ export default async function handler(request, response) {
     const num = Math.floor(Math.random() * 90) + 10;
     const roomCode = `${adj}${noun}${num}`;
     const roomKey = `room:${roomCode}`;
-    const newPlayerId = `player${Date.now()}`; // Benzersiz bir ID oluştur
+    const newPlayerId = `player${Date.now()}`;
 
     const roomState = {
       code: roomCode,
       players: {
-        [newPlayerId]: { name: playerName, team: 'A', score: 0 }
+        [newPlayerId]: { 
+          name: playerName, 
+          team: 'A', 
+          score: 0,
+          isCreator: true // DÜZELTME: Kurucuya özel işaret eklendi
+        }
       },
       status: 'waiting',
       createdAt: Date.now()
@@ -32,7 +37,6 @@ export default async function handler(request, response) {
 
     await kv.set(roomKey, roomState, { ex: 86400 });
 
-    // YENİ: Kurucunun kendi ID'sini de cevap olarak gönderiyoruz
     return response.status(200).json({ status: 'success', roomState: roomState, newPlayerId: newPlayerId });
 
   } catch (error) {

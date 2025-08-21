@@ -6,29 +6,12 @@
     <title>Sınav Yarışması | Lolonolo</title>
     <link rel="icon" type="image/png" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
     <link rel="apple-touch-icon" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
-        <link rel="stylesheet" href="style.css">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E3VBQV8L46"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-E3VBQV8L46');
-</script>
-	
-	
-	
-    <script>
-        // ezstandalone objesini başlat
-        window.ezstandalone = window.ezstandalone || {};
-        ezstandalone.cmd = ezstandalone.cmd || [];
-    </script>
-    <script src="https://the.gatekeeperconsent.com/cmp.min.js" async></script>
-    <script src="https://the.gatekeeperconsent.com/ccpa/v2/standalone.js" async></script>
-    <script src="//www.ezojs.com/ezoic/sa.min.js" async></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -39,6 +22,7 @@
             <div class="lobby-buttons">
                 <button id="create-room-btn">Yeni Yarışma Kur</button>
                 <button id="join-room-btn">Odaya Katıl</button>
+                <button id="solo-test-btn">Tek Başına Test Ol</button>
             </div>
         </div>
     </div>
@@ -63,7 +47,7 @@
         </div>
     </div>
 
-    <div class="competition-container" id="competition-screen">
+    <div class="competition-container" id="competition-screen" style="display: none;">
         <div class="team-panel team-a">
             <h2>A Takımı</h2>
             <div class="team-score" id="team-a-score">0</div>
@@ -72,6 +56,9 @@
         <div class="quiz-panel">
             <div class="quiz-header">
                 <h1 class="quiz-title" id="quiz-title">Sınav Adı Yükleniyor...</h1>
+                <div class="solo-score-display" id="solo-score-container" style="display: none;">
+                    Puan: <span id="solo-score">0</span>
+                </div>
                 <div class="quiz-timer" id="timer">52:00</div>
             </div>
             <div class="question-area">
@@ -91,37 +78,6 @@
 
     <script src="quiz-data.js"></script>
     <script src="script.js"></script>
-      <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof ezstandalone !== 'undefined') {
-            ezstandalone.cmd.push(function() {
-                ezstandalone.enable();
-                ezstandalone.display();
-            });
-        }
-
-        setTimeout(function() {
-            var fcScript = document.createElement('script');
-            fcScript.src = "https://fundingchoicesmessages.google.com/i/pub-6517205438926212?ers=1";
-            fcScript.async = true;
-            document.head.appendChild(fcScript);
-
-            function signalGooglefcPresent() {
-                if (!window.frames['googlefcPresent']) {
-                    if (document.body) {
-                        const iframe = document.createElement('iframe');
-                        iframe.name = 'googlefcPresent';
-                        iframe.style.display = 'none';
-                        document.body.appendChild(iframe);
-                    } else {
-                        setTimeout(signalGooglefcPresent, 0);
-                    }
-                }
-            }
-            signalGooglefcPresent();
-        }, 5000);
-    });
-    </script>
 
 </body>
 </html>

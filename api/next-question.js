@@ -18,16 +18,22 @@ export default async function handler(request, response) {
       return response.status(404).json({ error: 'Oda bulunamadı.' });
     }
 
-    roomState.status = 'in_progress';
-    roomState.currentQuestionIndex = 0; // Yarışmayı ilk sorudan başlat
-    roomState.answers = {}; // Önceki cevapları temizle
+    // Odanın mevcut soru indeksini bir artır
+    if (roomState.currentQuestionIndex === undefined) {
+      roomState.currentQuestionIndex = 0;
+    } else {
+      roomState.currentQuestionIndex += 1;
+    }
     
+    // Herkesin cevaplarını sıfırla ki yeni soruda cevap verebilsinler
+    roomState.answers = {};
+
     await kv.set(roomKey, roomState, { ex: 86400 });
 
-    return response.status(200).json({ status: 'success', message: 'Yarışma başlatıldı.' });
+    return response.status(200).json({ status: 'success', message: 'Sonraki soruya geçildi.' });
 
   } catch (error) {
-    console.error('Error starting game:', error);
-    return response.status(500).json({ error: 'Yarışma başlatılırken bir hata oluştu.' });
+    console.error('Error advancing to next question:', error);
+    return response.status(500).json({ error: 'Sonraki soruya geçilirken bir hata oluştu.' });
   }
 }

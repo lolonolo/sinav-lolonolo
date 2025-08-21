@@ -62,7 +62,7 @@ const sinavVerisi = {
             aciklama: "Cevap : C) 9<br>Açıklama : TOBB Sigorta Acenteleri İcra Komitesi, toplamda 9 üyeden oluşmaktadır."
         },
         // 11-20 Devamındaki sorular burada aynı yapıda devam eder...
-		  {
+          {
             soruMetni: "Poliçedeki sigorta bedelinin, sigorta konusunun gerçek ve makul değerinin üzerinde olması hali hangisidir?",
             secenekler: ["A) Eksik sigorta", "B) Aşkın sigorta", "C) Birlikte sigorta", "D) Zorunlu sigorta"],
             dogruCevapIndex: 1, // B şıkkı
@@ -122,8 +122,8 @@ const sinavVerisi = {
             dogruCevapIndex: 0, // A şıkkı
             aciklama: "Cevap : A) Anadolu Sigorta<br>Açıklama : Anadolu Sigorta, Mustafa Kemal Atatürk’ün teşvikiyle 1 Nisan 1925 tarihinde Türkiye İş Bankası öncülüğünde kurulmuştur."
         },
-		// 21-30 Devamındaki sorular burada aynı yapıda devam eder...
-		{
+        // 21-30 Devamındaki sorular burada aynı yapıda devam eder...
+        {
             soruMetni: "Poliçedeki sigorta bedelinin, sigorta konusunun gerçek ve makul değerinin üzerinde olması hali hangisidir?",
             secenekler: ["A) Eksik sigorta", "B) Aşkın sigorta", "C) Birlikte sigorta", "D) Zorunlu sigorta"],
             dogruCevapIndex: 1, // B şıkkı
@@ -183,8 +183,8 @@ const sinavVerisi = {
             dogruCevapIndex: 0, // A şıkkı
             aciklama: "Cevap : A) Anadolu Sigorta<br>Açıklama : Anadolu Sigorta, Mustafa Kemal Atatürk’ün teşvikiyle 1 Nisan 1925 tarihinde Türkiye İş Bankası öncülüğünde kurulmuştur."
         },
-		// 31-40 Devamındaki sorular burada aynı yapıda devam eder...
-		 {
+        // 31-40 Devamındaki sorular burada aynı yapıda devam eder...
+         {
             soruMetni: "Türkiye’de trafik sigortası poliçesinin yenileme süresi geçtikten sonra her ay için uygulanan gecikme zammı yüzdesi nedir?",
             secenekler: ["A) yüzde 3", "B) yüzde 5", "C) yüzde 10", "D) yüzde 15"],
             dogruCevapIndex: 1, // B şıkkı
@@ -244,8 +244,8 @@ const sinavVerisi = {
             dogruCevapIndex: 1, // b şıkkı
             aciklama: "Cevap : b) 5 iş günü<br>Açıklama : Acentelerin kendi talepleriyle faaliyetlerine son vermek istemeleri durumunda faaliyetin sonlandırılmasına ilişkin kararın alındığı tarihten itibaren en geç beş iş günü içinde Levha bilgilerine işlenmek üzere TOBB’a bildirilir."
         },
-		// 31-40 Devamındaki sorular burada aynı yapıda devam eder...
-		{
+        // 31-40 Devamındaki sorular burada aynı yapıda devam eder...
+        {
             soruMetni: "Sigorta acentelerinin şube açmaları durumunda, her bir şube için asgari sermaye tutarı ne kadar olmalıdır?",
             secenekler: ["A) 250.000 TL", "B) 300.000 TL", "C) 325.000 TL", "D) 350.000 TL"],
             dogruCevapIndex: 2, // C şıkkı

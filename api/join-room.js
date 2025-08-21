@@ -18,7 +18,6 @@ export default async function handler(request, response) {
       return response.status(404).json({ error: 'Oda bulunamadı.' });
     }
 
-    // YENİ: Oyuncu adının benzersiz olup olmadığını kontrol et
     const isNameTaken = Object.values(roomState.players).some(p => p.name.toLowerCase() === playerName.toLowerCase());
     if (isNameTaken) {
       return response.status(409).json({ error: 'Bu oyuncu adı zaten alınmış. Lütfen farklı bir isim seçin.' });
@@ -32,7 +31,8 @@ export default async function handler(request, response) {
     roomState.players[newPlayerId] = {
       name: playerName,
       team: newPlayerTeam,
-      score: 0
+      score: 0,
+      isCreator: false // DÜZELTME: Katılan oyuncu kurucu değil
     };
 
     await kv.set(roomKey, roomState, { ex: 86400 });
