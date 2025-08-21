@@ -240,18 +240,6 @@ const sinavVerisi = {
             secenekler: ["A) Yangın esnasında çıkan duman nedeniyle oluşan hasarlar", "B) Yangın esnasında çıkan buhar nedeniyle oluşan hasarlar", "C) Yangın söndürme esnasında sıkılan su nedeniyle oluşan hasarlar", "D) Savaş, istila, isyan sonucu oluşan hasarlar"],
             dogruCevapIndex: 3, // D şıkkı
             aciklama: "Cevap : D) Savaş, istila, isyan sonucu oluşan hasarlar"
-        },
-        {
-            soruMetni: "Aşağıdakilerden hangisi “karz” teriminin doğru tanımıdır?",
-            secenekler: ["A) Sigorta poliçelerinde ek hüküm veya özel şarttır.", "B) Faizsiz borç verme işlemidir.", "C) Reasürans sözleşmesinde kullanılan bir terimdir.", "D) Sigortalı ile sigorta şirketi arasındaki sözleşmedir."],
-            dogruCevapIndex: 1, // B şıkkı
-            aciklama: "Cevap : B) Faizsiz borç verme işlemidir."
-        },
-        {
-            soruMetni: "Risk yönetimi ile ilgili olarak aşağıdakilerden hangisi doğrudur?",
-            secenekler: ["A) Ürün kalitesini artırmaya yönelik çalışmalar risk yönetimi kapsamında değildir.", "B) Risk yönetimi yalnızca finansal riskleri kapsar.", "C) Ürün kalitesini artırmak, risk yönetiminin bir parçasıdır.", "D) Risk yönetimi sadece doğal afetleri kapsar."],
-            dogruCevapIndex: 2, // C şıkkı
-            aciklama: "Cevap : C) Ürün kalitesini artırmak, risk yönetiminin bir parçasıdır."
         }
     ]
 };
