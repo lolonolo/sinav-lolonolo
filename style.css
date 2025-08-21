@@ -298,3 +298,88 @@ body {
     font-weight: bold;
     color: var(--accent-color);
 }
+/* --- YENİ EKLENEN ELEMENTLER İÇİN STILLER --- */
+
+/* Mobil skor tablosu başlangıçta gizli */
+.mobile-scores {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Mobil reklam alanı başlangıçta gizli */
+#mobile-ad-container {
+    display: none; /* Varsayılan olarak gizli */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Reklam yüksekliğine göre ayarlayın */
+    background-color: #e9ecef;
+    border-top: 1px solid var(--border-color);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+
+/* --- MOBİL UYUMLULUK (TABLET VE TELEFONLAR) --- */
+@media (max-width: 768px) {
+
+    /* Ana yarışma konteynerini dikey hale getir */
+    .competition-container {
+        flex-direction: column;
+        height: 100vh; /* Ekranı kapla */
+        width: 100%;
+    }
+
+    /* Masaüstü takım panellerini mobilde gizle */
+    .team-panel {
+        display: none;
+    }
+
+    /* Mobilde, gizlenen takım panelleri yerine kompakt skor tablosunu göster */
+    .mobile-scores {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .mobile-team-score {
+        font-size: 1.1rem;
+    }
+    .mobile-team-score strong {
+        margin-left: 8px;
+    }
+
+    /* Sınav panelini tam genişlik yap */
+    .quiz-panel {
+        width: 100%;
+        height: 100%; /* Kalan tüm alanı kapla */
+    }
+
+    /* Soru seçeneklerini 2 sütun yerine tek sütun yap */
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Soru alanı için iç boşluğu ayarla ki reklam alanı içeriği ezmesin */
+    .question-area {
+        padding-bottom: 70px; /* Reklam alanı için altta boşluk bırak */
+    }
+
+    /* Mobil reklam alanını göster */
+    #mobile-ad-container {
+        display: flex;
+    }
+
+    /* Lobi ve bekleme odası için mobilde daha az padding */
+    .lobby-container, .waiting-room-container {
+        padding: 20px;
+        height: 100vh;
+        border-radius: 0;
+    }
+}
