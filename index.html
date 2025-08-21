@@ -26,23 +26,45 @@
     <script src="//www.ezojs.com/ezoic/sa.min.js" async></script>
 </head>
 <body>
-
     <div id="lobby-screen" class="screen">
+        <div class="lobby-container">
+            <h1>Sınav Yarışması'na Hoş Geldiniz!</h1>
+            <p>Arkadaşlarınızla takım kurun veya teke tek yarışın.</p>
+            <div class="lobby-buttons">
+                <button id="create-room-btn">Yeni Yarışma Kur</button>
+                <button id="join-room-btn">Odaya Katıl</button>
+                <button id="solo-test-btn">Tek Başına Test Ol</button>
+            </div>
         </div>
-    <div id="waiting-room-screen" class="screen" style="display: none;">
-        </div>
+    </div>
 
+    <div id="waiting-room-screen" class="screen" style="display: none;">
+        <div class="waiting-room-container">
+            <h1>Oda Kuruldu!</h1>
+            <p>Arkadaşlarını bu kodla davet et:</p>
+            <div class="room-code-display" id="room-code">...</div>
+            <p style="font-size: 1rem;">Oyuncular bekleniyor...</p>
+            <div class="waiting-teams">
+                <div class="team-display">
+                    <h3>A Takımı</h3>
+                    <ul class="waiting-player-list" id="waiting-team-a"></ul>
+                </div>
+                <div class="team-display">
+                    <h3>B Takımı</h3>
+                    <ul class="waiting-player-list" id="waiting-team-b"></ul>
+                </div>
+            </div>
+            <button id="start-competition-btn" style="margin-top: 40px;">Yarışmayı Başlat</button>
+        </div>
+    </div>
 
     <div class="competition-container" id="competition-screen" style="display: none;">
-        
         <div class="team-panel team-a">
             <h2>A Takımı</h2>
             <div class="team-score" id="team-a-score">0</div>
             <ul class="player-list" id="team-a-list"></ul>
         </div>
-
         <div class="quiz-panel">
-            
             <div class="mobile-scores">
                 <div class="mobile-team-score mobile-team-a">
                     <span>A Takımı:</span>
@@ -68,7 +90,6 @@
             </div>
             <div class="quiz-footer" id="question-counter">Soru 1 / 52</div>
         </div>
-        
         <div class="team-panel team-b">
             <h2>B Takımı</h2>
             <div class="team-score" id="team-b-score">0</div>
@@ -79,9 +100,10 @@
     <div id="mobile-ad-container">
         <p>Reklam Alanı</p>
     </div>
+
     <script src="quiz-data.js"></script>
     <script src="script.js"></script>
-     <script>
+    <script>
     document.addEventListener("DOMContentLoaded", function() {
         if (typeof ezstandalone !== 'undefined') {
             ezstandalone.cmd.push(function() {
@@ -89,13 +111,11 @@
                 ezstandalone.display();
             });
         }
-
         setTimeout(function() {
             var fcScript = document.createElement('script');
             fcScript.src = "https://fundingchoicesmessages.google.com/i/pub-6517205438926212?ers=1";
             fcScript.async = true;
             document.head.appendChild(fcScript);
-
             function signalGooglefcPresent() {
                 if (!window.frames['googlefcPresent']) {
                     if (document.body) {
