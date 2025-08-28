@@ -11,7 +11,7 @@ export default async function handler(request) {
     return new Response(JSON.stringify({ error: 'Sınav ID gerekli.' }), { status: 400 });
   }
 
-  const API_ENDPOINT = `https://fromizmir.com/wp-json/lolonolo-quiz/v16/quiz/${quizId}`;
+  const API_ENDPOINT = `https://staging-6eb4-lolonolocom.wpcomstaging.com.com/wp-json/lolonolo-quiz/v16/quiz/${quizId}`;
   const API_KEY = process.env.LOLONOLO_API_KEY;
 
   try {
