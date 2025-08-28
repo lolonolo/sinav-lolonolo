@@ -3,134 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sınav Yarışması | Lolonolo</title>
-    <link rel="icon" type="image/png" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
-    <link rel="apple-touch-icon" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
+    <title>Quizzes | From İzmir</title>
+    
+    <link rel="icon" type="image/png" href="https://quiz.fromizmir.com/fromizmir.com.png">
+    <link rel="apple-touch-icon" href="https://quiz.fromizmir.com/fromizmir.com.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3VBQV8L46"></script>
+     <script src="https://the.gatekeeperconsent.com/cmp.min.js" async></script>
+    <script src="https://the.gatekeeperconsent.com/ccpa/v2/standalone.js" async></script>
+    <script src="//www.ezojs.com/ezoic/sa.min.js" async></script>
+    <script async src="https://fundingchoicesmessages.google.com/i/pub-6517205438926212?ers=1"></script>
+    <span id="ezoic-pub-video-placeholder-7"></span>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QKYBK4YQ1T"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-E3VBQV8L46');
+      gtag('config', 'G-QKYBK4YQ1T');
     </script>
     <script>
         window.ezstandalone = window.ezstandalone || {};
         ezstandalone.cmd = ezstandalone.cmd || [];
     </script>
-    <script src="https://the.gatekeeperconsent.com/cmp.min.js" async></script>
-    <script src="https://the.gatekeeperconsent.com/ccpa/v2/standalone.js" async></script>
-    <script src="//www.ezojs.com/ezoic/sa.min.js" async></script>
+   
+    <script>
+        function signalGooglefcPresent() {
+            if (!window.frames['googlefcPresent']) {
+                if (document.body) {
+                    const iframe = document.createElement('iframe');
+                    iframe.name = 'googlefcPresent';
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                } else {
+                    setTimeout(signalGooglefcPresent, 0);
+                }
+            }
+        }
+        signalGooglefcPresent();
+    </script>
+
 </head>
 <body>
-    <div id="lobby-screen" class="screen">
-        <div class="lobby-container">
-            <h1>Sınav Yarışması'na Hoş Geldiniz!</h1>
-            <p>Arkadaşlarınızla takım kurun veya teke tek yarışın.</p>
-            <div class="lobby-buttons">
-                <button id="create-room-btn">Yeni Yarışma Kur</button>
-                <button id="join-room-btn">Odaya Katıl</button>
-                <button id="solo-test-btn">Tek Başına Test Ol</button>
+    <div class="main-layout">
+        <div class="side-column left-column">
+            <!-- Ezoic - quiz.fromizmir.com_left - sidebar_middle -->
+            <div id="ezoic-pub-ad-placeholder-648"></div>
+            <!-- End Ezoic -->
+        </div>
+        <div class="app-container">
+            <div id="lobby-screen" class="screen">
+                <div class="lobby-container">
+                    <h1>Choose Your Quiz and Start!</h1>
+                    <p>Select a quiz from the list below or use the search.</p>
+                    <div class="quiz-selection-area">
+                        <input type="text" id="quiz-search-input" placeholder="Search exam...">
+                        <div id="quiz-list-container">
+                            <p>Loading Exam...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="competition-container" id="competition-screen" style="display: none;">
+                <div class="quiz-panel">
+                    <div class="quiz-header">
+                        <h1 class="quiz-title" id="quiz-title">Loading Exams Name...</h1>
+                        <div class="solo-score-display" id="solo-score-container">
+                            Score: <span id="solo-score">0</span>
+                        </div>
+                    </div>
+                    <div class="question-area">
+                        <h3 id="question-text">Soru metni buraya gelecek...</h3>
+                        <div class="options-grid" id="options-container"></div>
+                        <div class="explanation-area" id="explanation-area"></div>
+                        <button class="next-question-btn" id="next-q-btn">Next Question</button>
+                    </div>
+                    <div class="quiz-footer" id="question-counter">Question ... / ...</div>
+                </div>
+            </div>
+            <div id="mobile-ad-container"></div>
+               <!-- Video tanıtım alanınızı buraya ekleyin -->
+    <div class="video-info-section">
+        <p style="text-align:center; font-size:1.1rem; margin:32px 0 16px 0;">
+            You can watch the video versions of our quizzes below!
+        </p>
+
+        <div style="text-align:center; margin-top:16px;">
+            <a href="https://fromizmir.com/openvideo/" target="_blank" style="color: var(--accent-color); font-weight: 600;">
+                Go to our quiz video page
+            </a>
         </div>
     </div>
+            <div style="background: #f8f9fa; border-radius: 16px; box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08); padding: 40px; margin-top: 40px; font-family: 'Segoe UI', Arial, sans-serif;">
+  <h3 style="color: #2c3e50; margin-bottom: 20px;">
+    📚 About Our English Language Test Quizzes
+  </h3>
+  <p style="font-size: 1.08em;">
+    Welcome to our comprehensive English language test quizzes section! Here, you will find a wide variety of interactive quizzes designed to help you master every aspect of the English language. Whether you are a beginner, intermediate, or advanced learner, our quizzes are tailored to support your journey and boost your confidence. Our content is meticulously crafted to align with international standards and exam requirements, especially for those preparing for TOEFL and other major English proficiency tests.
+  </p>
 
-    <div id="waiting-room-screen" class="screen" style="display: none;">
-        <div class="waiting-room-container">
-            <h1>Oda Kuruldu!</h1>
-            <p>Arkadaşlarını bu kodla davet et:</p>
-            <div class="room-code-display" id="room-code">...</div>
-            <p style="font-size: 1rem;">Oyuncular bekleniyor...</p>
-            <div class="waiting-teams">
-                <div class="team-display">
-                    <h3>A Takımı</h3>
-                    <ul class="waiting-player-list" id="waiting-team-a"></ul>
-                </div>
-                <div class="team-display">
-                    <h3>B Takımı</h3>
-                    <ul class="waiting-player-list" id="waiting-team-b"></ul>
-                </div>
-            </div>
-            <button id="start-competition-btn" style="margin-top: 40px;">Yarışmayı Başlat</button>
+  <h4 style="color: #2980b9; margin-top: 28px;">
+    📝 Comprehensive Coverage of English Topics
+  </h4>
+  <p>
+    Our quizzes cover all essential areas of English learning, ensuring a balanced improvement in your language skills:
+    <ul style="margin-left: 22px; line-height: 1.7;">
+      <li><strong>Grammar:</strong> Master tenses, clauses, sentence structure, articles, prepositions, and more.</li>
+      <li><strong>Vocabulary:</strong> Expand your word bank with synonyms, antonyms, idioms, phrasal verbs, and collocations.</li>
+      <li><strong>Reading Comprehension:</strong> Analyze passages, infer meanings, and answer detailed comprehension questions.</li>
+      <li><strong>Listening Skills:</strong> Practice with audio clips, understand accents, and answer real-life scenario questions.</li>
+      <li><strong>Writing:</strong> Improve essay writing, paragraph organization, and error correction.</li>
+      <li><strong>Speaking:</strong> Focus on pronunciation, fluency, and conversational English through scenario-based questions.</li>
+    </ul>
+  </p>
+
+  <h4 style="color: #2980b9; margin-top: 28px;">
+    🎯 Perfect for TOEFL Preparation
+  </h4>
+  <p>
+    Our quizzes are especially helpful for students preparing for the TOEFL exam. We cover each section of the TOEFL in detail:
+    <ul style="margin-left: 22px; line-height: 1.7;">
+      <li>
+        <strong>Reading:</strong> <br>
+        <span style="color: #555;">Practice with academic passages, vocabulary-in-context, reference questions, and summarizing information.</span>
+      </li>
+      <li>
+        <strong>Listening:</strong> <br>
+        <span style="color: #555;">Engage with campus conversations, academic lectures, and note-taking exercises to improve comprehension.</span>
+      </li>
+      <li>
+        <strong>Speaking:</strong> <br>
+        <span style="color: #555;">Prepare with independent and integrated speaking tasks, practice expressing opinions, and summarizing information.</span>
+      </li>
+      <li>
+        <strong>Writing:</strong> <br>
+        <span style="color: #555;">Work on integrated writing (reading + listening), independent essay writing, and learn how to structure your responses effectively.</span>
+      </li>
+    </ul>
+  </p>
+
+  <h4 style="color: #2980b9; margin-top: 28px;">
+    🏆 Key Features of Our Quizzes
+  </h4>
+  <ul style="margin-left: 22px; line-height: 1.7;">
+    <li><strong>Instant Feedback:</strong> Receive immediate results and explanations for each question to boost your learning.</li>
+    <li><strong>Progress Tracking:</strong> Monitor your performance and identify areas for improvement with detailed analytics.</li>
+    <li><strong>User-Friendly Interface:</strong> Enjoy a clean, distraction-free environment optimized for all devices.</li>
+    <li><strong>Real Exam Formats:</strong> Experience question types and difficulty levels similar to international exams.</li>
+    <li><strong>Customizable Practice:</strong> Focus on specific skills or take full-length practice tests as you wish.</li>
+  </ul>
+
+  <h4 style="color: #2980b9; margin-top: 28px;">
+    🌟 Why Choose Our English Quizzes?
+  </h4>
+  <p>
+    Our quizzes are designed by experienced educators and language experts to ensure you receive the most relevant and up-to-date practice. Whether you are aiming for academic success, career advancement, or personal growth, our quizzes are your reliable companion on the path to English mastery.
+  </p>
+  <ul style="margin-left: 22px; line-height: 1.7;">
+    <li><strong>Adaptable for All Levels:</strong> From basic grammar to advanced academic English, there is something for everyone.</li>
+    <li><strong>Motivating and Engaging:</strong> Fun, interactive questions keep you motivated and eager to learn more.</li>
+    <li><strong>Practical Application:</strong> Apply your knowledge to real-world scenarios and communication challenges.</li>
+  </ul>
+
+  <h4 style="color: #2980b9; margin-top: 28px;">
+    🚀 Start Your English Learning Journey Today!
+  </h4>
+  <p>
+    Dive into our extensive library of English language quizzes and take your skills to the next level. No matter your starting point, consistent practice with our quizzes will help you achieve fluency, accuracy, and confidence in English. Begin now and see the difference!
+  </p>
+</div>
+        </div>
+        <div class="side-column right-column">
+            <!-- Ezoic - quiz.fromizmir.com_right - sidebar_middle -->
+            <div id="ezoic-pub-ad-placeholder-647"></div>
+            <!-- End Ezoic -->
         </div>
     </div>
-
-    <div class="competition-container" id="competition-screen" style="display: none;">
-        <div class="team-panel team-a">
-            <h2>A Takımı</h2>
-            <div class="team-score" id="team-a-score">0</div>
-            <ul class="player-list" id="team-a-list"></ul>
-        </div>
-        <div class="quiz-panel">
-            <div class="mobile-scores">
-                <div class="mobile-team-score mobile-team-a">
-                    <span>A Takımı:</span>
-                    <strong id="mobile-team-a-score">0</strong>
-                </div>
-                <div class="mobile-team-score mobile-team-b">
-                    <span>B Takımı:</span>
-                    <strong id="mobile-team-b-score">0</strong>
-                </div>
-            </div>
-            <div class="quiz-header">
-                <h1 class="quiz-title" id="quiz-title">Sınav Adı Yükleniyor...</h1>
-                <div class="solo-score-display" id="solo-score-container" style="display: none;">
-                    Puan: <span id="solo-score">0</span>
-                </div>
-                <div class="quiz-timer" id="timer">52:00</div>
-            </div>
-            <div class="question-area">
-                <h3 id="question-text">Soru metni buraya gelecek...</h3>
-                <div class="options-grid" id="options-container"></div>
-                <div class="explanation-area" id="explanation-area"></div>
-                <button class="next-question-btn" id="next-q-btn">Sonraki Soru</button>
-            </div>
-            <div class="quiz-footer" id="question-counter">Soru 1 / 52</div>
-        </div>
-        <div class="team-panel team-b">
-            <h2>B Takımı</h2>
-            <div class="team-score" id="team-b-score">0</div>
-            <ul class="player-list" id="team-b-list"></ul>
-        </div>
-    </div>
-
-    <div id="mobile-ad-container">
-        <p>Reklam Alanı</p>
-    </div>
-
-    <script src="quiz-data.js"></script>
     <script src="script.js"></script>
-    <script>
+    <!-- Reklam script kodları div'lerin dışında, sayfanın sonunda -->
+   <script>
     document.addEventListener("DOMContentLoaded", function() {
         if (typeof ezstandalone !== 'undefined') {
+            ezstandalone.cmd.push(function() {
+                ezstandalone.showAds(648);
+                ezstandalone.showAds(647);
+            });
             ezstandalone.cmd.push(function() {
                 ezstandalone.enable();
                 ezstandalone.display();
             });
         }
-        setTimeout(function() {
-            var fcScript = document.createElement('script');
-            fcScript.src = "https://fundingchoicesmessages.google.com/i/pub-6517205438926212?ers=1";
-            fcScript.async = true;
-            document.head.appendChild(fcScript);
-            function signalGooglefcPresent() {
-                if (!window.frames['googlefcPresent']) {
-                    if (document.body) {
-                        const iframe = document.createElement('iframe');
-                        iframe.name = 'googlefcPresent';
-                        iframe.style.display = 'none';
-                        document.body.appendChild(iframe);
-                    } else {
-                        setTimeout(signalGooglefcPresent, 0);
-                    }
-                }
-            }
-            signalGooglefcPresent();
-        }, 5000);
     });
-    </script>
+</script>
 </body>
 </html>
