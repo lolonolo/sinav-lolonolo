@@ -115,23 +115,72 @@ document.addEventListener('DOMContentLoaded', () => {
             lobbyScreen.innerHTML = `<h1 style="color: red;">Hata: ${error.message}</h1>`;
         }
     }
-    function loadQuestion(questionIndex) {
-        const question = currentQuizData.sorular[questionIndex];
-        currentQuestionIndex = questionIndex;
-        quizTitleElement.textContent = currentQuizData.sinavAdi;
-        questionTextElement.innerHTML = question.soruMetni;
-        optionsContainer.innerHTML = '';
-        explanationArea.style.display = 'none';
-        nextQuestionBtn.style.display = 'none';
-        question.secenekler.forEach((option, index) => {
-            const button = document.createElement('button');
-            button.className = 'option-btn';
-            button.innerHTML = option;
-            button.addEventListener('click', () => handleAnswer(index));
-            optionsContainer.appendChild(button);
-        });
-        questionCounterElement.textContent = `Question ${questionIndex + 1} / ${currentQuizData.sorular.length}`;
+ function loadQuestion(questionIndex) {
+    // --- YENİ EKLENDİ: Önceki sorudan kalan reklam div'ini temizle ---
+    const existingAdContainer = document.querySelector('.ad-container-in-question');
+    if (existingAdContainer) {
+        existingAdContainer.remove();
     }
+    // --- YENİ EKLENEN KISIM SONU ---
+
+    const question = currentQuizData.sorular[questionIndex];
+    currentQuestionIndex = questionIndex;
+    quizTitleElement.textContent = currentQuizData.sinavAdi;
+    questionTextElement.innerHTML = question.soruMetni;
+    optionsContainer.innerHTML = '';
+    explanationArea.style.display = 'none';
+    nextQuestionBtn.style.display = 'none';
+
+    question.secenekler.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-btn';
+        button.innerHTML = option;
+        button.addEventListener('click', () => handleAnswer(index));
+        optionsContainer.appendChild(button);
+    });
+
+    questionCounterElement.textContent = `Soru ${questionIndex + 1} / ${currentQuizData.sorular.length}`;
+
+    // --- YENİ EKLENDİ: Her 5 soruda bir reklam div'i oluşturma ---
+    // (questionIndex + 1) kontrolü sayesinde 5., 10., 15. sorulardan sonra çalışır.
+    // (questionIndex > 0) kontrolü ilk soruda reklam çıkmasını engeller.
+    if ((questionIndex + 1) % 5 === 0 && questionIndex > 0) {
+        // Reklam için bir container div oluştur
+        const adContainer = document.createElement('div');
+        adContainer.className = 'ad-container-in-question'; // CSS ile stil vermek için class
+        adContainer.style.margin = '20px 0'; // Yukarıdan ve aşağıdan boşluk bırak
+        
+        // Reklam kodunuzun ihtiyaç duyacağı placeholder div'i oluştur
+        const adPlaceholder = document.createElement('div');
+        // Reklam ağınızın (Ezoic, AdSense vb.) istediği spesifik bir ID varsa buraya yazın.
+        // Her seferinde farklı bir ID vermek, reklamların yenilenmesine yardımcı olabilir.
+        const placeholderId = `ezoic-ad-in-question-${questionIndex}`;
+        adPlaceholder.id = placeholderId;
+
+        // Placeholder'ı container'a ekle
+        adContainer.appendChild(adPlaceholder);
+
+        // Reklam container'ını seçeneklerin altına, açıklama alanının üstüne ekle
+        // Not: explanationArea elementini referans alarak onun öncesine ekliyoruz.
+        explanationArea.parentNode.insertBefore(adContainer, explanationArea);
+
+        // --- ÖNEMLİ: REKLAM KODUNU TETİKLEME ---
+        // Bu kısım reklam sağlayıcınıza göre değişir.
+        // Örneğin, Ezoic kullanıyorsanız aşağıdaki gibi bir kod gerekebilir:
+        if (typeof ezstandalone !== 'undefined') {
+             ezstandalone.cmd.push(function() {
+                // Yeni oluşturulan placeholder'da reklam gösterilmesi için
+                ezstandalone.define(placeholderId);
+                ezstandalone.enable();
+                ezstandalone.display();
+             });
+        }
+        
+        // Eğer Google AdSense kullanıyorsanız, buraya AdSense'in ilgili reklam bloğunu
+        // yüklemesi için gereken script'i eklemeniz gerekebilir.
+    }
+    // --- YENİ EKLENEN KISIM SONU ---
+}
     function handleAnswer(selectedIndex) {
         const allButtons = optionsContainer.querySelectorAll('.option-btn');
         allButtons.forEach(btn => btn.disabled = true);
