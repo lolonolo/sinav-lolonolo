@@ -115,13 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
             lobbyScreen.innerHTML = `<h1 style="color: red;">Hata: ${error.message}</h1>`;
         }
     }
- function loadQuestion(questionIndex) {
-    // --- YENİ EKLENDİ: Önceki sorudan kalan reklam div'ini temizle ---
+function loadQuestion(questionIndex) {
+    // --- Önceki sorudan kalan promosyon/reklam div'ini temizle ---
     const existingAdContainer = document.querySelector('.ad-container-in-question');
     if (existingAdContainer) {
         existingAdContainer.remove();
     }
-    // --- YENİ EKLENEN KISIM SONU ---
+    // --- Temizlik kodu sonu ---
 
     const question = currentQuizData.sorular[questionIndex];
     currentQuestionIndex = questionIndex;
@@ -141,45 +141,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     questionCounterElement.textContent = `Soru ${questionIndex + 1} / ${currentQuizData.sorular.length}`;
 
-    // --- YENİ EKLENDİ: Her 5 soruda bir reklam div'i oluşturma ---
+    // --- YENİ GÜNCELLENMİŞ KISIM: Her 5 soruda bir promosyon mesajı gösterme ---
     // (questionIndex + 1) kontrolü sayesinde 5., 10., 15. sorulardan sonra çalışır.
-    // (questionIndex > 0) kontrolü ilk soruda reklam çıkmasını engeller.
+    // (questionIndex > 0) kontrolü ilk soruda mesaj çıkmasını engeller.
     if ((questionIndex + 1) % 5 === 0 && questionIndex > 0) {
-        // Reklam için bir container div oluştur
-        const adContainer = document.createElement('div');
-        adContainer.className = 'ad-container-in-question'; // CSS ile stil vermek için class
-        adContainer.style.margin = '20px 0'; // Yukarıdan ve aşağıdan boşluk bırak
         
-        // Reklam kodunuzun ihtiyaç duyacağı placeholder div'i oluştur
-        const adPlaceholder = document.createElement('div');
-        // Reklam ağınızın (Ezoic, AdSense vb.) istediği spesifik bir ID varsa buraya yazın.
-        // Her seferinde farklı bir ID vermek, reklamların yenilenmesine yardımcı olabilir.
-        const placeholderId = `ezoic-ad-in-question-${questionIndex}`;
-        adPlaceholder.id = placeholderId;
-
-        // Placeholder'ı container'a ekle
-        adContainer.appendChild(adPlaceholder);
-
-        // Reklam container'ını seçeneklerin altına, açıklama alanının üstüne ekle
-        // Not: explanationArea elementini referans alarak onun öncesine ekliyoruz.
-        explanationArea.parentNode.insertBefore(adContainer, explanationArea);
-
-        // --- ÖNEMLİ: REKLAM KODUNU TETİKLEME ---
-        // Bu kısım reklam sağlayıcınıza göre değişir.
-        // Örneğin, Ezoic kullanıyorsanız aşağıdaki gibi bir kod gerekebilir:
-        if (typeof ezstandalone !== 'undefined') {
-             ezstandalone.cmd.push(function() {
-                // Yeni oluşturulan placeholder'da reklam gösterilmesi için
-                ezstandalone.define(placeholderId);
-                ezstandalone.enable();
-                ezstandalone.display();
-             });
-        }
+        // Promosyon mesajı için bir container div oluştur
+        const promoContainer = document.createElement('div');
+        promoContainer.className = 'ad-container-in-question'; // Aynı class ismini kullanabiliriz
         
-        // Eğer Google AdSense kullanıyorsanız, buraya AdSense'in ilgili reklam bloğunu
-        // yüklemesi için gereken script'i eklemeniz gerekebilir.
+        // Stil kodları ile görünümü güzelleştirelim
+        promoContainer.style.margin = '25px 0';
+        promoContainer.style.padding = '20px';
+        promoContainer.style.backgroundColor = '#eaf5ff';
+        promoContainer.style.border = '2px dashed #007bff';
+        promoContainer.style.borderRadius = '10px';
+        promoContainer.style.textAlign = 'center';
+        promoContainer.style.fontFamily = "'Poppins', sans-serif";
+        promoContainer.style.lineHeight = '1.6';
+
+        // Mesaj içeriğini oluştur
+        const messageText = document.createElement('p');
+        messageText.textContent = 'Lolonolo\'yu desteklemek ve reklamsız bir deneyim için Premium Üyelik alın!';
+        messageText.style.margin = '0 0 15px 0';
+        messageText.style.fontSize = '1.1em';
+        messageText.style.color = '#1a5c90';
+        
+        // Tıklanabilir linki (butonu) oluştur
+        const shopierLink = document.createElement('a');
+        shopierLink.href = 'https://www.shopier.com/lolonolo';
+        shopierLink.target = '_blank'; // Linkin yeni sekmede açılması için
+        shopierLink.textContent = 'Shopier\'den Üyelik Al';
+        
+        // Linkin stilini belirleyelim
+        shopierLink.style.display = 'inline-block';
+        shopierLink.style.backgroundColor = '#007bff';
+        shopierLink.style.color = 'white';
+        shopierLink.style.padding = '10px 20px';
+        shopierLink.style.borderRadius = '8px';
+        shopierLink.style.textDecoration = 'none';
+        shopierLink.style.fontWeight = 'bold';
+
+        // Oluşturulan metni ve linki ana container'a ekle
+        promoContainer.appendChild(messageText);
+        promoContainer.appendChild(shopierLink);
+
+        // Hazırlanan promosyon kutusunu sayfaya, seçeneklerin altına ekle
+        explanationArea.parentNode.insertBefore(promoContainer, explanationArea);
     }
-    // --- YENİ EKLENEN KISIM SONU ---
+    // --- GÜNCELLENMİŞ KISIM SONU ---
 }
     function handleAnswer(selectedIndex) {
         const allButtons = optionsContainer.querySelectorAll('.option-btn');
