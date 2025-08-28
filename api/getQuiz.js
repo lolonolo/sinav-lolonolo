@@ -3,7 +3,6 @@ export const config = {
 };
 
 export default async function handler(request) {
-  // URL'den sınav ID'sini al
   const { searchParams } = new URL(request.url);
   const quizId = searchParams.get('id');
 
@@ -11,7 +10,8 @@ export default async function handler(request) {
     return new Response(JSON.stringify({ error: 'Sınav ID gerekli.' }), { status: 400 });
   }
 
-  const API_ENDPOINT = `https://staging-6eb4-lolonolocom.wpcomstaging.com.com/wp-json/lolonolo-quiz/v16/quiz/${quizId}`;
+  // DEĞİŞİKLİK: API adresini staging siteniz olarak güncelleyin.
+  const API_ENDPOINT = `https://staging-6eb4-lolonolocom.wpcomstaging.com/wp-json/lolonolo-quiz/v16/quiz/${quizId}`;
   const API_KEY = process.env.LOLONOLO_API_KEY;
 
   try {
@@ -22,22 +22,21 @@ export default async function handler(request) {
     });
 
     if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("WordPress API Hatası:", response.status, response.statusText, errorBody);
       throw new Error(`WordPress API hatası: ${response.statusText}`);
     }
 
     let data = await response.json();
 
-    // --- YENİ EKLENEN KISIM: SORULARI KARIŞTIRMA ---
+    // Soruları karıştırma
     if (data && data.sorular && Array.isArray(data.sorular)) {
-      // Fisher-Yates (aka Knuth) Shuffle algoritması
       for (let i = data.sorular.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [data.sorular[i], data.sorular[j]] = [data.sorular[j], data.sorular[i]];
       }
     }
-    // --- YENİ KISIM SONU ---
 
-    // Artık karıştırılmış veriyi tarayıcıya geri gönder
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {
