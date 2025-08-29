@@ -4,7 +4,7 @@ export const config = {
 
 export default async function handler(request) {
   // DEĞİŞİKLİK: API adresini staging siteniz olarak güncelleyin.
-  const API_ENDPOINT = 'https://staging-6eb4-lolonolocom.wpcomstaging.com/wp-json/lolonolo-quiz/v21/quizzes';
+  const API_ENDPOINT = 'https://staging-6eb4-lolonolocom.wpcomstaging.com/wp-json/lolonolo-quiz/v22/quizzes';
   
   const API_KEY = process.env.LOLONOLO_API_KEY;
 
