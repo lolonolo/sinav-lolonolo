@@ -1,228 +1,191 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ELEMENT TANIMLAMALARI
-    const lobbyScreen = document.getElementById('lobby-screen');
-    const competitionScreen = document.getElementById('competition-screen');
-    // ...diğer elementler...
-    const quizListContainer = document.getElementById('quiz-list-container');
-    const searchInput = document.getElementById('quiz-search-input');
+    const lobiEkrani = document.getElementById('lobby-screen');
+    const yarismaEkrani = document.getElementById('competition-screen');
+    const sinavListesiKonteyneri = document.getElementById('quiz-list-container');
+    const aramaGirdisi = document.getElementById('quiz-search-input');
+    const sinavBasligiElementi = document.getElementById('quiz-title');
+    const soruMetniElementi = document.getElementById('question-text');
+    const seceneklerKonteyneri = document.getElementById('options-container');
+    const aciklamaAlani = document.getElementById('explanation-area');
+    const sonrakiSoruButonu = document.getElementById('next-q-btn');
+    const soruSayaciElementi = document.getElementById('question-counter');
+    const tekliPuanElementi = document.getElementById('solo-score');
     
     // GENEL DEĞİŞKENLER
-    let allQuizzes = [];
-    let currentQuizData = {};
-    // ...diğer değişkenler...
+    let tumSinavlar = [];
+    let mevcutSinavVerisi = {};
+    let mevcutSoruIndexi = 0;
+    let tekliPuan = 0;
 
     // ANA FONKSİYONLAR
-    async function fetchAndDisplayQuizzes() {
+    async function sinavlariGetirVeGoster() {
         try {
-            // İSTEK ARTIK GÜVENLİ VERcel API'MIZA GİDİYOR (ANAHTAR YOK)
-            const response = await fetch(`/api/getQuizzes`); 
-            if (!response.ok) throw new Error('Sınav listesi Vercel API üzerinden alınamadı.');
-            
-            allQuizzes = await response.json();
-            renderQuizList(allQuizzes);
-        } catch (error) {
-            if (quizListContainer) quizListContainer.innerHTML = `<p style="color: red;">Hata: ${error.message}</p>`;
-        }
-    }
-
-    async function startQuiz(quizId) {
-        lobbyScreen.innerHTML = `<h1>Loading Exam...</h1>`;
-        try {
-            // İSTEK ARTIK GÜVENLİ VERcel API'MIZA GİDİYOR (ANAHTAR YOK)
-            const response = await fetch(`/api/getQuiz?id=${quizId}`);
-            if (!response.ok) throw new Error('Sınav verileri Vercel API üzerinden alınamadı.');
-
-            currentQuizData = await response.json();
-            // ...fonksiyonun geri kalanı aynı...
-            if(!currentQuizData.sorular || currentQuizData.sorular.length === 0){ throw new Error('Bu sınavda soru bulunamadı.'); }
-            // ...
-        } catch (error) {
-            lobbyScreen.innerHTML = `<h1 style="color: red;">Hata: ${error.message}</h1>`;
-        }
-    }
-
-    // ... Geri kalan tüm fonksiyonlar (renderQuizList, loadQuestion, handleAnswer vb.) aynı kalacak ...
-    // Tam script.js dosyasını aşağıya ekliyorum.
-});
-
-// --- TAM script.js DOSYASI ---
-document.addEventListener('DOMContentLoaded', () => {
-    const lobbyScreen = document.getElementById('lobby-screen');
-    const competitionScreen = document.getElementById('competition-screen');
-    const quizListContainer = document.getElementById('quiz-list-container');
-    const searchInput = document.getElementById('quiz-search-input');
-    const quizTitleElement = document.getElementById('quiz-title');
-    const questionTextElement = document.getElementById('question-text');
-    const optionsContainer = document.getElementById('options-container');
-    const explanationArea = document.getElementById('explanation-area');
-    const nextQuestionBtn = document.getElementById('next-q-btn');
-    const questionCounterElement = document.getElementById('question-counter');
-    const soloScoreElement = document.getElementById('solo-score');
-    let allQuizzes = [];
-    let currentQuizData = {};
-    let currentQuestionIndex = 0;
-    let soloScore = 0;
-    async function fetchAndDisplayQuizzes() {
-        try {
-            const response = await fetch(`/api/getQuizzes`);
-            if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.error || 'Sınav listesi alınamadı.');
+            const yanit = await fetch(`/api/getQuizzes`);
+            if (!yanit.ok) {
+                const hataVerisi = await yanit.json();
+                throw new Error(hataVerisi.error || 'Sınav listesi alınamadı.');
             }
-            allQuizzes = await response.json();
-            renderQuizList(allQuizzes);
-        } catch (error) {
-            if (quizListContainer) quizListContainer.innerHTML = `<p style="color: red;">Hata: ${error.message}</p>`;
+            tumSinavlar = await yanit.json();
+            sinavListesiniOlustur(tumSinavlar);
+        } catch (hata) {
+            if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = `<p style="color: red;">Hata: ${hata.message}</p>`;
         }
     }
-    function renderQuizList(quizzes) {
-        if (!quizListContainer || !Array.isArray(quizzes)) {
-            quizListContainer.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
+
+    function sinavListesiniOlustur(sinavlar) {
+        if (!sinavListesiKonteyneri || !Array.isArray(sinavlar)) {
+            sinavListesiKonteyneri.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
             return;
         }
-        quizListContainer.innerHTML = '';
-        quizzes.forEach(quiz => {
-            const quizItem = document.createElement('div');
-            quizItem.className = 'quiz-list-item';
-            quizItem.textContent = quiz.title;
-            quizItem.dataset.quizId = quiz.id;
-            quizItem.addEventListener('click', () => startQuiz(quiz.id));
-            quizListContainer.appendChild(quizItem);
+        sinavListesiKonteyneri.innerHTML = '';
+        sinavlar.forEach(sinav => {
+            const sinavOgesi = document.createElement('div');
+            sinavOgesi.className = 'quiz-list-item';
+            sinavOgesi.textContent = sinav.title;
+            sinavOgesi.dataset.quizId = sinav.id;
+            sinavOgesi.addEventListener('click', () => sinaviBaslat(sinav.id));
+            sinavListesiKonteyneri.appendChild(sinavOgesi);
         });
     }
-    function filterQuizzes() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filteredQuizzes = allQuizzes.filter(quiz => quiz.title.toLowerCase().includes(searchTerm));
-        renderQuizList(filteredQuizzes);
+
+    function sinavlariFiltrele() {
+        const aramaTerimi = aramaGirdisi.value.toLowerCase();
+        const filtrelenmisSinavlar = tumSinavlar.filter(sinav => sinav.title.toLowerCase().includes(aramaTerimi));
+        sinavListesiniOlustur(filtrelenmisSinavlar);
     }
-    async function startQuiz(quizId) {
-        lobbyScreen.innerHTML = `<h1>Exam is Loading...</h1>`;
+
+    async function sinaviBaslat(sinavId) {
+        lobiEkrani.innerHTML = `<h1>Sınav Yükleniyor...</h1>`;
         try {
-            const response = await fetch(`/api/getQuiz?id=${quizId}`);
-            if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.error || 'Sınav verileri alınamadı.');
+            const yanit = await fetch(`/api/getQuiz?id=${sinavId}`);
+            if (!yanit.ok) {
+                const hataVerisi = await yanit.json();
+                throw new Error(hataVerisi.error || 'Sınav verileri alınamadı.');
             }
-            currentQuizData = await response.json();
-            if (!currentQuizData.sorular || currentQuizData.sorular.length === 0) { throw new Error('Bu sınavda soru bulunamadı.'); }
-            currentQuestionIndex = 0;
-            soloScore = 0;
-            if (soloScoreElement) soloScoreElement.textContent = '0';
-            document.body.className = 'solo-mode';
-            showScreen(competitionScreen);
-            loadQuestion(0);
-        } catch (error) {
-            lobbyScreen.innerHTML = `<h1 style="color: red;">Hata: ${error.message}</h1>`;
+            mevcutSinavVerisi = await yanit.json();
+            if (!mevcutSinavVerisi.sorular || mevcutSinavVerisi.sorular.length === 0) { throw new Error('Bu sınavda soru bulunamadı.'); }
+            mevcutSoruIndexi = 0;
+            tekliPuan = 0;
+            if (tekliPuanElementi) tekliPuanElementi.textContent = '0';
+            document.body.className = 'solo-mode'; // Bu class ismi İngilizce kalabilir, genellikle stil dosyalarıyla ilişkilidir.
+            ekranGoster(yarismaEkrani);
+            soruYukle(0);
+        } catch (hata) {
+            lobiEkrani.innerHTML = `<h1 style="color: red;">Hata: ${hata.message}</h1>`;
         }
     }
-function loadQuestion(questionIndex) {
-    // --- Önceki sorudan kalan promosyon/reklam div'ini temizle ---
-    const existingAdContainer = document.querySelector('.ad-container-in-question');
-    if (existingAdContainer) {
-        existingAdContainer.remove();
+
+    function soruYukle(soruIndexi) {
+        // Önceki sorudan kalan promosyon/reklam div'ini temizle
+        const mevcutReklamKonteyneri = document.querySelector('.ad-container-in-question');
+        if (mevcutReklamKonteyneri) {
+            mevcutReklamKonteyneri.remove();
+        }
+
+        const soru = mevcutSinavVerisi.sorular[soruIndexi];
+        mevcutSoruIndexi = soruIndexi;
+        sinavBasligiElementi.textContent = mevcutSinavVerisi.sinavAdi;
+        soruMetniElementi.innerHTML = soru.soruMetni;
+        seceneklerKonteyneri.innerHTML = '';
+        aciklamaAlani.style.display = 'none';
+        sonrakiSoruButonu.style.display = 'none';
+
+        soru.secenekler.forEach((secenek, index) => {
+            const buton = document.createElement('button');
+            buton.className = 'option-btn';
+            buton.innerHTML = secenek;
+            buton.addEventListener('click', () => cevabiIsle(index));
+            seceneklerKonteyneri.appendChild(buton);
+        });
+
+        soruSayaciElementi.textContent = `Soru ${soruIndexi + 1} / ${mevcutSinavVerisi.sorular.length}`;
+        
+        // Her 5 soruda bir promosyon mesajı gösterme
+        if ((soruIndexi + 1) % 5 === 0 && soruIndexi > 0) {
+            const promoKonteyneri = document.createElement('div');
+            promoKonteyneri.className = 'ad-container-in-question';
+            promoKonteyneri.style.margin = '25px 0';
+            promoKonteyneri.style.padding = '20px';
+            promoKonteyneri.style.backgroundColor = '#eaf5ff';
+            promoKonteyneri.style.border = '2px dashed #007bff';
+            promoKonteyneri.style.borderRadius = '10px';
+            promoKonteyneri.style.textAlign = 'center';
+            promoKonteyneri.style.fontFamily = "'Poppins', sans-serif";
+            promoKonteyneri.style.lineHeight = '1.6';
+
+            const mesajMetni = document.createElement('p');
+            mesajMetni.textContent = 'Lolonolo\'yu desteklemek ve reklamsız bir deneyim için Premium Üyelik alın!';
+            mesajMetni.style.margin = '0 0 15px 0';
+            mesajMetni.style.fontSize = '1.1em';
+            mesajMetni.style.color = '#1a5c90';
+            
+            const shopierLinki = document.createElement('a');
+            shopierLinki.href = 'https://www.shopier.com/lolonolo';
+            shopierLinki.target = '_blank';
+            shopierLinki.textContent = 'Shopier\'den Üyelik Al';
+            shopierLinki.style.display = 'inline-block';
+            shopierLinki.style.backgroundColor = '#007bff';
+            shopierLinki.style.color = 'white';
+            shopierLinki.style.padding = '10px 20px';
+            shopierLinki.style.borderRadius = '8px';
+            shopierLinki.style.textDecoration = 'none';
+            shopierLinki.style.fontWeight = 'bold';
+
+            promoKonteyneri.appendChild(mesajMetni);
+            promoKonteyneri.appendChild(shopierLinki);
+
+            aciklamaAlani.parentNode.insertBefore(promoKonteyneri, aciklamaAlani);
+        }
     }
-    // --- Temizlik kodu sonu ---
 
-    const question = currentQuizData.sorular[questionIndex];
-    currentQuestionIndex = questionIndex;
-    quizTitleElement.textContent = currentQuizData.sinavAdi;
-    questionTextElement.innerHTML = question.soruMetni;
-    optionsContainer.innerHTML = '';
-    explanationArea.style.display = 'none';
-    nextQuestionBtn.style.display = 'none';
-
-    question.secenekler.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.className = 'option-btn';
-        button.innerHTML = option;
-        button.addEventListener('click', () => handleAnswer(index));
-        optionsContainer.appendChild(button);
-    });
-
-    questionCounterElement.textContent = `Soru ${questionIndex + 1} / ${currentQuizData.sorular.length}`;
-
-    // --- YENİ GÜNCELLENMİŞ KISIM: Her 5 soruda bir promosyon mesajı gösterme ---
-    // (questionIndex + 1) kontrolü sayesinde 5., 10., 15. sorulardan sonra çalışır.
-    // (questionIndex > 0) kontrolü ilk soruda mesaj çıkmasını engeller.
-    if ((questionIndex + 1) % 5 === 0 && questionIndex > 0) {
-        
-        // Promosyon mesajı için bir container div oluştur
-        const promoContainer = document.createElement('div');
-        promoContainer.className = 'ad-container-in-question'; // Aynı class ismini kullanabiliriz
-        
-        // Stil kodları ile görünümü güzelleştirelim
-        promoContainer.style.margin = '25px 0';
-        promoContainer.style.padding = '20px';
-        promoContainer.style.backgroundColor = '#eaf5ff';
-        promoContainer.style.border = '2px dashed #007bff';
-        promoContainer.style.borderRadius = '10px';
-        promoContainer.style.textAlign = 'center';
-        promoContainer.style.fontFamily = "'Poppins', sans-serif";
-        promoContainer.style.lineHeight = '1.6';
-
-        // Mesaj içeriğini oluştur
-        const messageText = document.createElement('p');
-        messageText.textContent = 'Lolonolo\'yu desteklemek ve reklamsız bir deneyim için Premium Üyelik alın!';
-        messageText.style.margin = '0 0 15px 0';
-        messageText.style.fontSize = '1.1em';
-        messageText.style.color = '#1a5c90';
-        
-        // Tıklanabilir linki (butonu) oluştur
-        const shopierLink = document.createElement('a');
-        shopierLink.href = 'https://www.shopier.com/lolonolo';
-        shopierLink.target = '_blank'; // Linkin yeni sekmede açılması için
-        shopierLink.textContent = 'Shopier\'den Üyelik Al';
-        
-        // Linkin stilini belirleyelim
-        shopierLink.style.display = 'inline-block';
-        shopierLink.style.backgroundColor = '#007bff';
-        shopierLink.style.color = 'white';
-        shopierLink.style.padding = '10px 20px';
-        shopierLink.style.borderRadius = '8px';
-        shopierLink.style.textDecoration = 'none';
-        shopierLink.style.fontWeight = 'bold';
-
-        // Oluşturulan metni ve linki ana container'a ekle
-        promoContainer.appendChild(messageText);
-        promoContainer.appendChild(shopierLink);
-
-        // Hazırlanan promosyon kutusunu sayfaya, seçeneklerin altına ekle
-        explanationArea.parentNode.insertBefore(promoContainer, explanationArea);
-    }
-    // --- GÜNCELLENMİŞ KISIM SONU ---
-}
-    function handleAnswer(selectedIndex) {
-        const allButtons = optionsContainer.querySelectorAll('.option-btn');
-        allButtons.forEach(btn => btn.disabled = true);
-        const question = currentQuizData.sorular[currentQuestionIndex];
-        const isCorrect = selectedIndex === question.dogruCevapIndex;
-        if (isCorrect) {
-            soloScore += 10;
-            if (soloScoreElement) soloScoreElement.textContent = soloScore;
+    function cevabiIsle(secilenIndex) {
+        const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
+        tumButonlar.forEach(btn => btn.disabled = true);
+        const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
+        const dogruMu = secilenIndex === soru.dogruCervapIndex;
+        if (dogruMu) {
+            tekliPuan += 10;
+            if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
         }
-        allButtons[selectedIndex].classList.add(isCorrect ? 'correct' : 'incorrect');
-        if (!isCorrect && question.dogruCevapIndex >= 0 && question.dogruCevapIndex < allButtons.length) {
-            allButtons[question.dogruCevapIndex].classList.add('correct');
+        tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
+        if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
+            tumButonlar[soru.dogruCevapIndex].classList.add('correct');
         }
-        if (question.aciklama) {
-            explanationArea.innerHTML = question.aciklama;
-            explanationArea.style.display = 'block';
+        if (soru.aciklama) {
+            aciklamaAlani.innerHTML = soru.aciklama;
+            aciklamaAlani.style.display = 'block';
         }
-        if (currentQuestionIndex < currentQuizData.sorular.length - 1) {
-            nextQuestionBtn.style.display = 'block';
+        if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
+            sonrakiSoruButonu.style.display = 'block';
         } else {
-            setTimeout(showFinalScore, 3000);
+            setTimeout(finalPuaniniGoster, 3000);
         }
     }
-    function showFinalScore() {
-        questionTextElement.textContent = 'Exam finished!';
-        optionsContainer.innerHTML = `<strong>Your Final Score : ${soloScore}</strong><br><br><button class="next-question-btn" style="display: block;" onclick="location.reload()">Choose New Exam</button>`;
-        explanationArea.style.display = 'none';
-        nextQuestionBtn.style.display = 'none';
+
+    function finalPuaniniGoster() {
+        soruMetniElementi.textContent = 'Sınav bitti!';
+        seceneklerKonteyneri.innerHTML = `<strong>Final Puanınız : ${tekliPuan}</strong><br><br><button class="next-question-btn" style="display: block;" onclick="location.reload()">Yeni Sınav Seç</button>`;
+        aciklamaAlani.style.display = 'none';
+        sonrakiSoruButonu.style.display = 'none';
     }
-    function goToNextQuestion() { loadQuestion(currentQuestionIndex + 1); }
-    function showScreen(screenToShow) { if (lobbyScreen) lobbyScreen.style.display = 'none'; if (competitionScreen) competitionScreen.style.display = 'none'; if (screenToShow) screenToShow.style.display = 'flex'; }
-    if (searchInput) searchInput.addEventListener('keyup', filterQuizzes);
-    document.body.addEventListener('click', function (event) { if (event.target && event.target.id === 'next-q-btn') { goToNextQuestion(); } });
-    fetchAndDisplayQuizzes();
+
+    function sonrakiSoruyaGec() {
+        soruYukle(mevcutSoruIndexi + 1);
+    }
+
+    function ekranGoster(gosterilecekEkran) {
+        if (lobiEkrani) lobiEkrani.style.display = 'none';
+        if (yarismaEkrani) yarismaEkrani.style.display = 'none';
+        if (gosterilecekEkran) gosterilecekEkran.style.display = 'flex';
+    }
+
+    if (aramaGirdisi) aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
+    document.body.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'next-q-btn') {
+            sonrakiSoruyaGec();
+        }
+    });
+    
+    sinavlariGetirVeGoster();
 });
