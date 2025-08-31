@@ -114,7 +114,6 @@ body {
     .main-layout { flex-direction: column; }
     .app-container { max-width: 100%; }
 
-    /* Lobi ve yarışma konteynerleri için mobil ayarlar */
     .lobby-container, .competition-container {
         width: 100%;
         max-width: 100%;
@@ -123,35 +122,41 @@ body {
         box-shadow: none;
     }
 
-    /* Lobiye özel padding kalsın */
     .lobby-container {
         padding: 20px;
     }
-    /* Yarışma konteynerinden padding'i kaldırarak içeriğin tam ekran kullanmasını sağla */
     .competition-container {
         padding: 0;
     }
 
     .quiz-panel, .screen { height: 100%; }
 
-    /* Üst başlık alanını küçültme ve sabitleme */
     .quiz-header {
-        padding: 10px 15px; /* Üst ve alt boşluk azaltıldı */
-        flex-shrink: 0; /* İçerik büyüse bile bu alanın küçülmesini engelle */
+        padding: 10px 15px;
+        flex-shrink: 0;
     }
 
     .quiz-title {
-        font-size: 1rem; /* Başlık fontu küçültüldü */
+        font-size: 1rem;
     }
     .solo-score-display {
-        font-size: 1.1rem; /* Puan alanı fontu küçültüldü */
+        font-size: 1.1rem;
     }
 
-    /* Soru alanının doğru şekilde kaydırılmasını sağlama */
     .question-area {
-        padding: 20px 15px 80px 15px; /* Padding korunuyor, alttaki reklam için boşluk bırakıyor */
-        justify-content: flex-start;  /* İçeriği yukarıya hizala (en önemli düzeltme) */
+        padding: 20px 15px 80px 15px;
+        justify-content: flex-start;
     }
+    
+    /* YENİ EKLENEN DÜZELTME: Butonun konumunu garantilemek için */
+    .question-area .next-question-btn {
+        /* Soru içeriği kısaysa, bu kural butonu alanın en altına iter */
+        margin-top: auto; 
+        /* Diğer margin ayarlarıyla çakışmaması için sıfırlayıp yeniden ayarlıyoruz */
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 15px; /* Altta biraz boşluk bırakır */
+    }
 
     #mobile-ad-container {
         display: flex;
