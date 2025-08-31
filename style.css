@@ -97,7 +97,18 @@ body {
 .option-btn:hover:not(:disabled) { background-color: #f5f5f5; }
 .option-btn.correct { background-color: var(--correct-color); color: white; border-color: var(--correct-color); }
 .option-btn.incorrect { background-color: var(--incorrect-color); color: white; border-color: var(--incorrect-color); }
-.option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+
+.option-btn:disabled { 
+    cursor: not-allowed; 
+    opacity: 0.7; /* Pasif butonları soluklaştırır */
+}
+
+/* YENİ EKLENEN "BULANIKLIK" DÜZELTMESİ */
+.option-btn.correct:disabled,
+.option-btn.incorrect:disabled {
+    opacity: 1; /* Ancak doğru veya yanlış olarak işaretlenen butonların soluklaşmasını engeller */
+}
+
 .explanation-area { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid var(--border-color); display: none; }
 .next-question-btn { display: none; margin: 20px auto 0; padding: 12px 30px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--accent-color); border: none; border-radius: 8px; cursor: pointer; }
 .quiz-footer { text-align: center; font-size: 0.9rem; color: #888; padding: 20px; flex-shrink: 0; }
@@ -148,14 +159,11 @@ body {
         justify-content: flex-start;
     }
     
-    /* YENİ EKLENEN DÜZELTME: Butonun konumunu garantilemek için */
     .question-area .next-question-btn {
-        /* Soru içeriği kısaysa, bu kural butonu alanın en altına iter */
         margin-top: auto; 
-        /* Diğer margin ayarlarıyla çakışmaması için sıfırlayıp yeniden ayarlıyoruz */
         margin-left: auto;
         margin-right: auto;
-        margin-bottom: 15px; /* Altta biraz boşluk bırakır */
+        margin-bottom: 15px;
     }
 
     #mobile-ad-container {
