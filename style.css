@@ -1,84 +1,84 @@
 :root {
-    --background-color: #f0f2f5;
-    --container-bg: #ffffff;
-    --text-color: #333;
-    --border-color: #ddd;
-    --accent-color: #007bff;
-    --correct-color: #28a745;
-    --incorrect-color: #dc3545;
+    --background-color: #f0f2f5;
+    --container-bg: #ffffff;
+    --text-color: #333;
+    --border-color: #ddd;
+    --accent-color: #007bff;
+    --correct-color: #28a745;
+    --incorrect-color: #dc3545;
 }
 
 body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 20px;
-    color: var(--text-color);
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 20px;
+    color: var(--text-color);
 }
 
 /* --- ANA YENİ LAYOUT --- */
 .main-layout {
-    display: flex;
-    justify-content: stretch;
-    align-items: flex-start;
-    width: 100vw;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    display: flex;
+    justify-content: stretch;
+    align-items: flex-start;
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .side-column {
-    background-color: #ececec;
-    width: 305px;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #888;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-sizing: border-box;
+    background-color: #ececec;
+    width: 305px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #888;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-sizing: border-box;
 }
 
 .left-column {
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
 
 .right-column {
-    border-left: 1px solid #ddd;
+    border-left: 1px solid #ddd;
 }
 
 .app-container {
-    flex-grow: 1;
-    width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    flex-grow: 1;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* --- ESKİ LAYOUT KALDIRILDI (ad-sidebar vs.) --- */
 
 /* --- UYGULAMA İÇERİĞİ --- */
 .screen {
-    width: 100%;
-    min-height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .lobby-container {
-    text-align: center;
-    padding: 50px;
-    background-color: var(--container-bg);
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    box-sizing: border-box;
+    text-align: center;
+    padding: 50px;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    box-sizing: border-box;
 }
 .lobby-container h1 { font-size: 2rem; margin-bottom: 15px; }
 .lobby-container p { margin-bottom: 25px; }
@@ -107,32 +107,74 @@ body {
 
 /* --- MOBİL UYUMLULUK --- */
 @media (max-width: 1200px) {
-    .ad-sidebar-right { display: none; }
+    .ad-sidebar-right { display: none; }
 }
 @media (max-width: 992px) {
-    body { padding: 0; }
-    .side-column { display: none; }
-    .main-layout { flex-direction: column; }
-    .app-container { max-width: 100%; }
-    .lobby-container, .competition-container {
-        width: 100%; max-width: 100%; height: 100vh; border-radius: 0; box-shadow: none; padding: 20px;
-    }
-    
+    /* Genel mobil ayarlar */
+    body {
+        padding: 0;
+    }
+    .side-column {
+        display: none;
+    }
+    .main-layout {
+        flex-direction: column;
+    }
+    .app-container {
+        flex-grow: 1;
+        width: 100%;
+        min-height: 100vh;
+        padding-top: 60px; /* Başlık için boşluk */
+        padding-bottom: 60px; /* Reklam alanı için boşluk */
+        overflow-y: auto; /* İçeriğin kaydırılabilir olmasını sağlar */
+        box-sizing: border-box;
+    }
+
+    /* Başlık ve Reklam Alanı Sabitleme */
     .quiz-header {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 100; /* Diğer elementlerin üzerine gelmesi için yüksek bir değer */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Opsiyonel, başlığa hafif bir gölge ekler */
-        background-color: #f8f9fa; /* Başlığın arkasının görünmesini engellemek için */
+        z-index: 100;
+        background-color: var(--container-bg);
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 0;
     }
-     .quiz-panel {
-        /* Aşağıdaki satırı ekleyin */
-        padding-top: 50px; /* Bu değeri başlığın yüksekliğine göre ayarlayabilirsiniz */
+    #mobile-ad-container {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #e9ecef;
+        border-top: 1px solid var(--border-color);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
     }
-    .screen { height: 100%; }
-   
-    
-    #mobile-ad-container { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background-color: #e9ecef; border-top: 1px solid var(--border-color); z-index: 1000; justify-content: center; align-items: center; }
+
+    /* İçerik Alanı Ayarları */
+    .lobby-container, .competition-container {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 20px;
+    }
+    .quiz-panel {
+        width: 100%;
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .screen {
+        min-height: auto;
+    }
+    .question-area {
+        padding: 20px 15px 80px 15px;
+        /* Artık ek padding-top'a gerek yok, app-container yönetiyor. */
+    }
 }
