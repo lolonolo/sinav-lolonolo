@@ -1,82 +1,84 @@
 :root {
-    --background-color: #f0f2f5;
-    --container-bg: #ffffff;
-    --text-color: #333;
-    --border-color: #ddd;
-    --accent-color: #007bff;
-    --correct-color: #28a745;
-    --incorrect-color: #dc3545;
+    --background-color: #f0f2f5;
+    --container-bg: #ffffff;
+    --text-color: #333;
+    --border-color: #ddd;
+    --accent-color: #007bff;
+    --correct-color: #28a745;
+    --incorrect-color: #dc3545;
 }
 
 body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 20px;
-    color: var(--text-color);
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 20px;
+    color: var(--text-color);
 }
 
 /* --- ANA YENİ LAYOUT --- */
 .main-layout {
-    display: flex;
-    justify-content: stretch;
-    align-items: flex-start;
-    width: 100vw;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    display: flex;
+    justify-content: stretch;
+    align-items: flex-start;
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .side-column {
-    background-color: #ececec;
-    width: 305px;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #888;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-sizing: border-box;
+    background-color: #ececec;
+    width: 305px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #888;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-sizing: border-box;
 }
 
 .left-column {
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
 
 .right-column {
-    border-left: 1px solid #ddd;
+    border-left: 1px solid #ddd;
 }
 
 .app-container {
-    flex-grow: 1;
-    width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    flex-grow: 1;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+/* --- ESKİ LAYOUT KALDIRILDI (ad-sidebar vs.) --- */
 
 /* --- UYGULAMA İÇERİĞİ --- */
 .screen {
-    width: 100%;
-    min-height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .lobby-container {
-    text-align: center;
-    padding: 50px;
-    background-color: var(--container-bg);
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    box-sizing: border-box;
+    text-align: center;
+    padding: 50px;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    box-sizing: border-box;
 }
 .lobby-container h1 { font-size: 2rem; margin-bottom: 15px; }
 .lobby-container p { margin-bottom: 25px; }
@@ -97,18 +99,7 @@ body {
 .option-btn:hover:not(:disabled) { background-color: #f5f5f5; }
 .option-btn.correct { background-color: var(--correct-color); color: white; border-color: var(--correct-color); }
 .option-btn.incorrect { background-color: var(--incorrect-color); color: white; border-color: var(--incorrect-color); }
-
-.option-btn:disabled { 
-    cursor: not-allowed; 
-    opacity: 0.7; /* Pasif butonları soluklaştırır */
-}
-
-/* YENİ EKLENEN "BULANIKLIK" DÜZELTMESİ */
-.option-btn.correct:disabled,
-.option-btn.incorrect:disabled {
-    opacity: 1; /* Ancak doğru veya yanlış olarak işaretlenen butonların soluklaşmasını engeller */
-}
-
+.option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
 .explanation-area { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid var(--border-color); display: none; }
 .next-question-btn { display: none; margin: 20px auto 0; padding: 12px 30px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--accent-color); border: none; border-radius: 8px; cursor: pointer; }
 .quiz-footer { text-align: center; font-size: 0.9rem; color: #888; padding: 20px; flex-shrink: 0; }
@@ -116,67 +107,17 @@ body {
 
 /* --- MOBİL UYUMLULUK --- */
 @media (max-width: 1200px) {
-    .ad-sidebar-right { display: none; }
+    .ad-sidebar-right { display: none; }
 }
-
 @media (max-width: 992px) {
-    body { padding: 0; }
-    .side-column { display: none; }
-    .main-layout { flex-direction: column; }
-    .app-container { max-width: 100%; }
-
-    .lobby-container, .competition-container {
-        width: 100%;
-        max-width: 100%;
-        height: 100vh;
-        border-radius: 0;
-        box-shadow: none;
-    }
-
-    .lobby-container {
-        padding: 20px;
-    }
-    .competition-container {
-        padding: 0;
-    }
-
-    .quiz-panel, .screen { height: 100%; }
-
-    .quiz-header {
-        padding: 10px 15px;
-        flex-shrink: 0;
-    }
-
-    .quiz-title {
-        font-size: 1rem;
-    }
-    .solo-score-display {
-        font-size: 1.1rem;
-    }
-
-    .question-area {
-        padding: 20px 15px 80px 15px;
-        justify-content: flex-start;
-    }
-    
-    .question-area .next-question-btn {
-        margin-top: auto; 
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 15px;
+    body { padding: 0; }
+    .side-column { display: none; }
+    .main-layout { flex-direction: column; }
+    .app-container { max-width: 100%; }
+    .lobby-container, .competition-container {
+        width: 100%; max-width: 100%; height: 100vh; border-radius: 0; box-shadow: none; padding: 20px;
     }
-
-    #mobile-ad-container {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        background-color: #e9ecef;
-        border-top: 1px solid var(--border-color);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-    }
+    .quiz-panel, .screen { height: 100%; }
+    .question-area { padding: 20px 15px 80px 15px; }
+    #mobile-ad-container { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background-color: #e9ecef; border-top: 1px solid var(--border-color); z-index: 1000; justify-content: center; align-items: center; }
 }
