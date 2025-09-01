@@ -143,19 +143,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
         tumButonlar.forEach(btn => btn.disabled = true);
         const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
-        const dogruMu = secilenIndex === soru.dogruCervapIndex;
+        
+        // -----------> DÜZELTME BURADA <-----------
+        // Eskiden '===' kullanılıyordu, bu tip ve değer kontrolü yapar.
+        // '==' sadece değer kontrolü yapar, bu da "2" ve 2'nin eşit sayılmasını sağlar.
+        const dogruMu = secilenIndex == soru.dogruCervapIndex;
+        // -----------------------------------------
+
         if (dogruMu) {
             tekliPuan += 10;
             if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
         }
+
         tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
+
         if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
             tumButonlar[soru.dogruCevapIndex].classList.add('correct');
         }
+
         if (soru.aciklama) {
             aciklamaAlani.innerHTML = soru.aciklama;
             aciklamaAlani.style.display = 'block';
         }
+
         if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
             sonrakiSoruButonu.style.display = 'block';
         } else {
