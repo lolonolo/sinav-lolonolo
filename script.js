@@ -1,4 +1,54 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // ... (dosyanın geri kalanı aynı)
+
+    // ANA FONKSİYONLAR
+    // ... (diğer fonksiyonlar aynı)
+
+    function cevabiIsle(secilenIndex) {
+        const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
+        tumButonlar.forEach(btn => btn.disabled = true);
+        const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
+        
+        // -----------> HATA AYIKLAMA KODLARI <-----------
+        console.log('Seçilen Index:', secilenIndex, 'Tipi:', typeof secilenIndex);
+        console.log('Doğru Cevap Index (API):', soru.dogruCervapIndex, 'Tipi:', typeof soru.dogruCervapIndex);
+        const dogruMu = secilenIndex == soru.dogruCervapIndex;
+        console.log('Karşılaştırma Sonucu (dogruMu):', dogruMu);
+        // ----------------------------------------------
+
+        if (dogruMu) {
+            tekliPuan += 10;
+            if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
+        }
+
+        tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
+
+        if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
+            tumButonlar[soru.dogruCervapIndex].classList.add('correct');
+        }
+
+        if (soru.aciklama) {
+            aciklamaAlani.innerHTML = soru.aciklama;
+            aciklamaAlani.style.display = 'block';
+        }
+
+        if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
+            sonrakiSoruButonu.style.display = 'block';
+        } else {
+            setTimeout(finalPuaniniGoster, 3000);
+        }
+    }
+
+    // ... (dosyanın geri kalanı aynı, finalPuaniniGoster, sonrakiSoruyaGec vs.)
+
+    // Not: Kodun tamamını değiştirmenize gerek yok, sadece cevabiIsle fonksiyonunu 
+    // yukarıdaki gibi güncelleyebilirsiniz. Ama emin olmak için tüm dosyayı aşağıya tekrar ekliyorum.
+
+});
+
+
+// --- GÜNCEL DOSYANIN TAMAMI (Kopyalayıp Değiştirmeniz İçin) ---
+document.addEventListener('DOMContentLoaded', () => {
     // ELEMENT TANIMLAMALARI
     const lobiEkrani = document.getElementById('lobby-screen');
     const yarismaEkrani = document.getElementById('competition-screen');
@@ -68,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mevcutSoruIndexi = 0;
             tekliPuan = 0;
             if (tekliPuanElementi) tekliPuanElementi.textContent = '0';
-            document.body.className = 'solo-mode'; // Bu class ismi İngilizce kalabilir, genellikle stil dosyalarıyla ilişkilidir.
+            document.body.className = 'solo-mode'; 
             ekranGoster(yarismaEkrani);
             soruYukle(0);
         } catch (hata) {
@@ -77,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function soruYukle(soruIndexi) {
-        // Önceki sorudan kalan promosyon/reklam div'ini temizle
         const mevcutReklamKonteyneri = document.querySelector('.ad-container-in-question');
         if (mevcutReklamKonteyneri) {
             mevcutReklamKonteyneri.remove();
@@ -101,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         soruSayaciElementi.textContent = `Soru ${soruIndexi + 1} / ${mevcutSinavVerisi.sorular.length}`;
         
-        // Her 5 soruda bir promosyon mesajı gösterme
         if ((soruIndexi + 1) % 5 === 0 && soruIndexi > 0) {
             const promoKonteyneri = document.createElement('div');
             promoKonteyneri.className = 'ad-container-in-question';
@@ -144,11 +192,12 @@ document.addEventListener('DOMContentLoaded', () => {
         tumButonlar.forEach(btn => btn.disabled = true);
         const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
         
-        // -----------> DÜZELTME BURADA <-----------
-        // Eskiden '===' kullanılıyordu, bu tip ve değer kontrolü yapar.
-        // '==' sadece değer kontrolü yapar, bu da "2" ve 2'nin eşit sayılmasını sağlar.
+        // -----------> HATA AYIKLAMA KODLARI <-----------
+        console.log('Seçilen Index:', secilenIndex, 'Tipi:', typeof secilenIndex);
+        console.log('Doğru Cevap Index (API):', soru.dogruCervapIndex, 'Tipi:', typeof soru.dogruCervapIndex);
         const dogruMu = secilenIndex == soru.dogruCervapIndex;
-        // -----------------------------------------
+        console.log('Karşılaştırma Sonucu (dogruMu):', dogruMu);
+        // ----------------------------------------------
 
         if (dogruMu) {
             tekliPuan += 10;
