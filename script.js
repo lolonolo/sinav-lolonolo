@@ -1,53 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // ... (dosyanın geri kalanı aynı)
+// DOSYANIN TAMAMI - KOPYALAYIP DEĞİŞTİRİN
 
-    // ANA FONKSİYONLAR
-    // ... (diğer fonksiyonlar aynı)
-
-    function cevabiIsle(secilenIndex) {
-        const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
-        tumButonlar.forEach(btn => btn.disabled = true);
-        const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
-        
-        // -----------> HATA AYIKLAMA KODLARI <-----------
-        console.log('Seçilen Index:', secilenIndex, 'Tipi:', typeof secilenIndex);
-        console.log('Doğru Cevap Index (API):', soru.dogruCervapIndex, 'Tipi:', typeof soru.dogruCervapIndex);
-        const dogruMu = secilenIndex == soru.dogruCervapIndex;
-        console.log('Karşılaştırma Sonucu (dogruMu):', dogruMu);
-        // ----------------------------------------------
-
-        if (dogruMu) {
-            tekliPuan += 10;
-            if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
-        }
-
-        tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
-
-        if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
-            tumButonlar[soru.dogruCervapIndex].classList.add('correct');
-        }
-
-        if (soru.aciklama) {
-            aciklamaAlani.innerHTML = soru.aciklama;
-            aciklamaAlani.style.display = 'block';
-        }
-
-        if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
-            sonrakiSoruButonu.style.display = 'block';
-        } else {
-            setTimeout(finalPuaniniGoster, 3000);
-        }
-    }
-
-    // ... (dosyanın geri kalanı aynı, finalPuaniniGoster, sonrakiSoruyaGec vs.)
-
-    // Not: Kodun tamamını değiştirmenize gerek yok, sadece cevabiIsle fonksiyonunu 
-    // yukarıdaki gibi güncelleyebilirsiniz. Ama emin olmak için tüm dosyayı aşağıya tekrar ekliyorum.
-
-});
-
-
-// --- GÜNCEL DOSYANIN TAMAMI (Kopyalayıp Değiştirmeniz İçin) ---
 document.addEventListener('DOMContentLoaded', () => {
     // ELEMENT TANIMLAMALARI
     const lobiEkrani = document.getElementById('lobby-screen');
@@ -192,29 +144,26 @@ document.addEventListener('DOMContentLoaded', () => {
         tumButonlar.forEach(btn => btn.disabled = true);
         const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
         
-        // -----------> HATA AYIKLAMA KODLARI <-----------
-        console.log('Seçilen Index:', secilenIndex, 'Tipi:', typeof secilenIndex);
-        console.log('Doğru Cevap Index (API):', soru.dogruCervapIndex, 'Tipi:', typeof soru.dogruCervapIndex);
-        const dogruMu = secilenIndex == soru.dogruCervapIndex;
-        console.log('Karşılaştırma Sonucu (dogruMu):', dogruMu);
-        // ----------------------------------------------
-
+        // HATA BURADAYDI: "dogruCervapIndex" -> "dogruCevapIndex" OLARAK DÜZELTİLDİ
+        const dogruMu = secilenIndex == soru.dogruCevapIndex;
+        
         if (dogruMu) {
             tekliPuan += 10;
             if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
         }
-
+        
         tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
-
+        
+        // HATA BURADAYDI: "dogruCervapIndex" -> "dogruCevapIndex" OLARAK DÜZELTİLDİ
         if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
             tumButonlar[soru.dogruCevapIndex].classList.add('correct');
         }
-
+        
         if (soru.aciklama) {
             aciklamaAlani.innerHTML = soru.aciklama;
             aciklamaAlani.style.display = 'block';
         }
-
+        
         if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
             sonrakiSoruButonu.style.display = 'block';
         } else {
