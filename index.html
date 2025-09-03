@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINAV SORULARI | LOLONOLO</title>
+    <title>GANO (AGNO) & Ders Geçme Hesaplama - Lolonolo</title>
+    
     <link rel="icon" type="image/png" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
     <link rel="apple-touch-icon" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
     <script src="https://the.gatekeeperconsent.com/cmp.min.js" async></script>
     <script src="https://the.gatekeeperconsent.com/ccpa/v2/standalone.js" async></script>
     <script src="//www.ezojs.com/ezoic/sa.min.js" async></script>
@@ -23,10 +24,9 @@
       gtag('config', 'G-E3VBQV8L46');
     </script>
     <script>
-        window.ezstandalone = window.ezstandalone || {};
-        ezstandalone.cmd = ezstandalone.cmd || [];
+      window.ezstandalone = window.ezstandalone || {};
+      ezstandalone.cmd = ezstandalone.cmd || [];
     </script>
-   
     <script>
         function signalGooglefcPresent() {
             if (!window.frames['googlefcPresent']) {
@@ -42,120 +42,92 @@
         }
         signalGooglefcPresent();
     </script>
-
 </head>
 <body>
+
+    <header class="page-header">
+        <button class="hamburger-btn" id="hamburger-btn">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
     <div class="main-layout">
-        <div class="side-column left-column">
-            <div id="ezoic-pub-ad-placeholder-848"></div>
-            </div>
-        <div class="app-container">
-            <div id="lobby-screen" class="screen">
-                <div class="lobby-container">
-                    <h2>SINAVINI SEÇ VE BAŞLA!</h2>
-                    <p>Aşağıdaki listeden bir sınav seçin veya aramayı kullanın.</p>
-                    <div class="quiz-selection-area">
-                        <input type="text" id="quiz-search-input" placeholder="Sınav ara...">
-                        <div id="quiz-list-container">
-                            <p>Sınavlar Yükleniyor...</p>
-                        </div>
+        <aside class="sidebar-nav" id="side-menu">
+            <h3>Lolonolo Kaynakları</h3>
+            <ul>
+                <li><a href="https://lolonolo.com" target="_blank">Tüm Çıkmış Sınav Soruları</a></li>
+                <li><a href="https://www.shopier.com/lolonolo" target="_blank">Premium Üyelik</a></li>
+                <li><a href="https://openvideo.lolonolo.com/" target="_blank">Youtube Soru Videoları</a></li>
+                <li><a href="https://www.instagram.com/lolonolo_com" target="_blank">Destek (Instagram)</a></li>
+                <li><a href="mailto:lolonolo@lolonolo.com">İletişim (E-posta)</a></li>
+            </ul>
+        </aside>
+
+        <main class="calculator-wrapper">
+            <div class="calculator-card">
+                <nav class="tabs">
+                    <button class="tab-btn active" data-tab="gano-content">GANO (AGNO) HESAPLAYICI</button>
+                    <button class="tab-btn" data-tab="pass-content">DERS GEÇME HESAPLAYICI</button>
+                </nav>
+
+                <div id="gano-content" class="calculator-content active-content">
+                    <div class="input-section">
+                        <label for="system-select">Okul / Sistem Seçin</label>
+                        <select id="system-select">
+                            <option value="auzef_acik">AUZEF - Açıköğretim (%30 Vize - %70 Final)</option>
+                            <option value="auzef_uzaktan">AUZEF - Uzaktan Öğretim (%40 Vize - %60 Final)</option>
+                            <option value="anadolu_aof">Anadolu AÖF (%30 Vize - %70 Final)</option>
+                            <option value="ata_aof">ATA AÖF (%30 Vize - %70 Final)</option>
+                        </select>
                     </div>
+                    <div class="table-wrapper">
+                        <table class="courses-table">
+                            <thead>
+                                <tr>
+                                    <th>Kredi (AKTS)</th>
+                                    <th>Vize Notu</th>
+                                    <th>Final/Büt Notu</th>
+                                    <th>Başarı Notu</th>
+                                    <th>Harf Notu</th>
+                                    <th>Durum</th>
+                                    <th>Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courses-tbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="add-course-btn" class="secondary-btn">+ Yeni Ders Ekle</button>
+                        <button id="calculate-gpa-btn" class="primary-btn">ORTALAMAYI HESAPLA</button>
+                    </div>
+                    <div id="gpa-result-area" class="result-area"></div>
+                </div>
+
+                <div id="pass-content" class="calculator-content" style="display: none;">
+                    <p class="content-description">Vize notunuzu ve dersten almayı hedeflediğiniz harf notunu seçerek Final/Bütünleme'den en az kaç almanız gerektiğini hesaplayın.</p>
+                    <div class="input-section">
+                        <label for="pass-vize-input">Vize Notu</label>
+                        <input type="number" id="pass-vize-input" placeholder="Vize notunuzu girin">
+                    </div>
+                    <div class="input-section">
+                        <label for="target-grade-select">Hedeflenen Harf Notu</label>
+                        <select id="target-grade-select">
+                            <option value="35">Sadece Geçmek (DD - En Düşük)</option>
+                            <option value="53">DC - Şartlı Geçmek</option>
+                            <option value="60">CC - Orta</option>
+                            <option value="67">CB</option>
+                            <option value="74">BB - İyi</option>
+                            <option value="81">BA</option>
+                            <option value="88">AA - Mükemmel</option>
+                        </select>
+                    </div>
+                    <button id="calculate-pass-btn" class="primary-btn">GEREKEN NOTU HESAPLA</button>
+                    <div id="pass-result-area" class="result-area"></div>
                 </div>
             </div>
-            <div class="competition-container" id="competition-screen" style="display: none;">
-                <div class="quiz-panel">
-                    <div class="quiz-header">
-                        <h2 class="quiz-title" id="quiz-title">Sınav Adı Yükleniyor...</h2>
-                        <div class="solo-score-display" id="solo-score-container">
-                            Puan: <span id="solo-score">0</span>
-                        </div>
-                    </div>
-                    <div class="question-area">
-                        <h3 id="question-text">Soru metni buraya gelecek...</h3>
-                        <div class="options-grid" id="options-container"></div>
-                        <div class="explanation-area" id="explanation-area"></div>
-                        <button class="next-question-btn" id="next-q-btn">Sonraki Soru</button>
-                    </div>
-                    <div class="quiz-footer" id="question-counter">Soru ... / ...</div>
-                </div>
-            </div>
-            <div id="mobile-ad-container"></div>
-               <div class="video-info-section">
-        <p style="text-align:center; font-size:1.1rem; margin:32px 0 16px 0;">
-            Çıkmış Sınav Sorularını Aşağıda İzleyebilirsiniz!
-        </p>
-
-        <div style="text-align:center; margin-top:16px;">
-            <a href="https://openvideo.lolonolo.com/" target="_blank" style="color: var(--accent-color); font-weight: 600;">
-                Çıkmış Sınav Soruların Videolarını İzle
-            </a>
-        </div>
+        </main>
     </div>
-  
- <div style="background: #f8f9fa; border-radius: 16px; box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08); padding: 40px; margin-top: 40px; font-family: 'Segoe UI', Arial, sans-serif; color: #333; line-height: 1.7;">
-
-    <h3 style="text-align: center; font-size: 2.2em; color: #2c3e50; margin-bottom: 25px;">
-        🎓 Lolonolo ile Sınav Başarısının Kapılarını Aralayın! 🎓
-    </h3>
-
-    <p style="font-size: 1.1em; text-align: center; max-width: 800px; margin: 0 auto 30px auto;">
-        Sınav stresi, dağınık notlar ve yetersiz kaynaklar artık geride kaldı! <strong>Öğrenci Dostu Öğrenme Yönetim Sistemi Lolonolo</strong>, başarıya giden yolda ihtiyacınız olan her şeyi tek bir çatı altında ve tamamen <strong>ücretsiz</strong> olarak sunuyor.
-    </p>
-
-    <h4 style="font-size: 1.8em; color: #2980b9; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-top: 40px; margin-bottom: 20px;">
-        🌟 Bilgi Evreniniz: Lolonolo Tam Olarak Nedir?
-    </h4>
-
-    <p>
-        Lolonolo, sadece bir soru bankası değil, kapsamlı bir öğrenme platformudur. Amacımız, <strong>AUZEF, SEGEM, AÖF</strong> gibi kritik sınavlara hazırlanan her öğrencinin, sınavı geçmesi için gereken tüm materyallere kolayca ulaşmasını sağlamaktır. Ana platformumuz olan <strong>lolonolo.com</strong>'da sizi bekleyen zengin içerik okyanusunda neler mi var?
-    </p>
-    <ul style="margin-left: 20px; font-size: 1.05em;">
-        <li>✅ Titizlikle hazırlanmış <strong>ders özetleri</strong> ve hap bilgiler.</li>
-        <li>✅ Konuları pekiştirmeniz için <strong>detaylı ders videoları</strong>.</li>
-        <li>✅ Sınav stratejileri ve önemli konuları içeren <strong>uzman makaleleri</strong>.</li>
-        <li>✅ Ve elbette, başarının anahtarı olan <strong>on binlerce çıkmış sınav sorusu!</strong></li>
-    </ul>
-
-    <h4 style="font-size: 1.8em; color: #2980b9; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-top: 40px; margin-bottom: 20px;">
-        🎯 Yüz Binlerce Soru ile Sınavlara Nokta Atışı Yapın!
-    </h4>
-
-    <p>
-        Evet, yanlış duymadınız! Lolonolo'nun devasa arşivinde, sınavda karşınıza çıkabilecek her türlü soru tipine aşina olmanız için <strong>yüz binlerce soru</strong> bulunmaktadır. Bu eşsiz kaynak sayesinde rakiplerinizin bir adım önüne geçin:
-    </p>
-    <ul style="margin-left: 20px; font-size: 1.05em;">
-        <li>🔑 <strong>AUZEF:</strong> Hangi bölümde olursanız olun, tüm derslerinize ait geçmiş yılların soruları ve deneme sınavları elinizin altında.</li>
-        <li>🔑 <strong>SEGEM:</strong> Sigortacılık kariyerinize sağlam bir başlangıç yapmanız için gereken tüm sigortacılık sınavı soruları ve detaylı açıklamaları.</li>
-        <li>🔑 <strong>Bireysel Emeklilik Sınavı (BES):</strong> Sektörün en önemli sınavlarından birine yönelik en güncel ve kapsamlı soru arşivi.</li>
-    </ul>
-    <p>
-        Bu sayfada ise bu devasa arşivin en değerli parçalarından olan çıkmış soruları, <strong>etkileşimli bir online deneme sınavı</strong> formatında çözerek kendinizi gerçek sınav atmosferinde test etme imkanı bulursunuz.
-    </p>
-
-
-    <div style="background: #eaf5ff; border: 1px solid #b8dfff; border-radius: 12px; padding: 30px; margin-top: 40px; text-align: center;">
-        <h4 style="font-size: 1.8em; color: #1a5c90; margin-top: 0; margin-bottom: 15px;">
-            ✨ Kesintisiz Odaklanma: Reklamsız Premium Deneyime Geçin!
-        </h4>
-        <p style="font-size: 1.1em;">
-            Ders çalışırken dikkatinizin dağılmasından sıkıldınız mı? Platformumuzun sürdürülebilirliğine destek olurken, <strong>tamamen reklamsız</strong> ve kesintisiz bir öğrenme deneyimi yaşamak için premium üyeliğimize göz atın!
-        </p>
-        <a href="https://www.shopier.com/lolonolo" target="_blank" style="display: inline-block; background-color: #007bff; color: white; padding: 15px 35px; font-size: 1.2em; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px;">
-            Shopier'den Reklamsız Üyelik Alın
-        </a>
-        <div style="background: #ffffff; border: 1px dashed #007bff; padding: 20px; margin-top: 25px; border-radius: 8px; text-align: left;">
-            <p style="margin-top: 0; font-weight: bold; color: #1a5c90;">Önemli Bilgilendirme:</p>
-            <p style="margin-bottom: 0;">
-                Reklamsız premium üyeliğimiz, şu an için tüm ders notları, video ve özetleri barındıran ana platformumuz olan <strong>lolonolo.com için geçerlidir.</strong> Etkileşimli sınavların yer aldığı bu sayfa (sinav.lolonolo.com), farklı bir altyapıda geliştirildiği için şimdilik premium üyelik kapsamında değildir. Ancak, platformumuzu destekleyerek, gelecekte bu interaktif bölümü de reklamsız dünyaya katma çalışmalarımıza hız vermemizi sağlarsınız. <strong>Şimdiden yatırım yapın, gelecekteki tüm geliştirmelerden reklamsız yararlanın!</strong>
-            </p>
-        </div>
-    </div>
-</div>
-        </div>
-        <div class="side-column right-column">
-            <div id="ezoic-pub-ad-placeholder-850"></div>
-            </div>
-    </div>
+    
     <script src="script.js"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -165,31 +137,10 @@
                 ezstandalone.display();
             });
         }
-
-        setTimeout(function() {
-            var fcScript = document.createElement('script');
-            fcScript.src = "https://fundingchoicesmessages.google.com/i/pub-6517205438926212?ers=1";
-            fcScript.async = true;
-            document.head.appendChild(fcScript);
-
-            function signalGooglefcPresent() {
-                if (!window.frames['googlefcPresent']) {
-                    if (document.body) {
-                        const iframe = document.createElement('iframe');
-                        iframe.name = 'googlefcPresent';
-                        iframe.style.display = 'none';
-                        document.body.appendChild(iframe);
-                    } else {
-                        setTimeout(signalGooglefcPresent, 0);
-                    }
-                }
-            }
-            signalGooglefcPresent();
-        }, 5000);
     });
     </script>
-                  <div><!--Humix Vİdeoları-->
-    <script data-ezscrex="false" data-cfasync="false">(window.humixPlayers = window.humixPlayers || []).push({target: document.currentScript});</script><script async data-ezscrex="false" data-cfasync="false" src="https://www.humix.com/video.js"></script>
-</div>
+    <div><script data-ezscrex="false" data-cfasync="false">(window.humixPlayers = window.humixPlayers || []).push({target: document.currentScript});</script>
+        <script async data-ezscrex="false" data-cfasync="false" src="https://www.humix.com/video.js"></script>
+    </div>
 </body>
 </html>
