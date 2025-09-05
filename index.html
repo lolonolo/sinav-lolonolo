@@ -27,21 +27,6 @@
         ezstandalone.cmd = ezstandalone.cmd || [];
     </script>
    
-    <script>
-        function signalGooglefcPresent() {
-            if (!window.frames['googlefcPresent']) {
-                if (document.body) {
-                    const iframe = document.createElement('iframe');
-                    iframe.name = 'googlefcPresent';
-                    iframe.style.display = 'none';
-                    document.body.appendChild(iframe);
-                } else {
-                    setTimeout(signalGooglefcPresent, 0);
-                }
-            }
-        }
-        signalGooglefcPresent();
-    </script>
 
 </head>
 <body>
