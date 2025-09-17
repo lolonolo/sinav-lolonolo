@@ -42,6 +42,38 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/^-+/, '') 
       .replace(/-+$/, '') 
 }
+    // YENİ FONKSİYON: Popüler sınavları sağ sütunda gösterir
+function populerSinavlariGoster() {
+    const listContainer = document.getElementById('popular-quizzes-list');
+    if (!listContainer || tumSinavlar.length === 0) {
+        return;
+    }
+
+    // Mevcut sınavlar listesini karıştırıp ilk 5 tanesini alalım
+    const rastgeleSinavlar = [...tumSinavlar].sort(() => 0.5 - Math.random()).slice(0, 5);
+
+    listContainer.innerHTML = ''; // Listeyi temizle
+
+    rastgeleSinavlar.forEach(sinav => {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        
+        link.textContent = sinav.title;
+        link.href = `/${slugify(sinav.title)}`; // URL'i ayarla
+        link.title = sinav.title; // Tam başlığı hover'da göster
+
+        // ÖNEMLİ: Linkin sayfayı yenilemeden çalışması için
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const slug = slugify(sinav.title);
+            history.pushState({ quizId: sinav.id }, sinav.title, `/${slug}`);
+            sinaviBaslat(sinav.id);
+        });
+
+        listItem.appendChild(link);
+        listContainer.appendChild(listItem);
+    });
+}
 
     async function sinavlariGetirVeGoster() {
         try {
@@ -52,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             tumSinavlar = await yanit.json();
             sinavListesiniOlustur(tumSinavlar);
+            populerSinavlariGoster(); // YENİ EKLENEN SATIR
             yoluIsle(); // DEĞİŞİKLİK: Sınavlar yüklenince URL'i işle
         } catch (hata) {
             if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = `<p style="color: red;">Hata: ${hata.message}</p>`;
