@@ -1,0 +1,15 @@
+{
+  "name": "sinav-sitemap-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "generate-sitemap": "node sitemap_generator.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "2"
+  }
+}
