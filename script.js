@@ -235,18 +235,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function yoluIsle() {
     const path = window.location.pathname;
 
-    // DEĞİŞİKLİK 1: Koşul güncellendi.
-    // Artık path sadece ana sayfa ("/") değilse, bunu bir sınav linki olarak kabul ediyoruz.
-    if (path.length > 1) {
+    // Eğer path sadece "/" değilse, bunu bir sınav linki olarak kabul et.
+    if (path.length > 1) { 
         if (tumSinavlar.length === 0) {
             return; // Sınavlar henüz yüklenmedi, bekle.
         }
-
-        // DEĞİŞİKLİK 2: Linkin okunma şekli değişti.
-        // Artık linkten 7 karakter ("/sinav/") değil, sadece baştaki 1 karakteri ("/") atıyoruz.
-        const slug = path.substring(1);
-
+        
+        const slug = path.substring(1); 
         const bulunanSinav = tumSinavlar.find(s => slugify(s.title) === slug);
+        
         if (bulunanSinav) {
             sinaviBaslat(bulunanSinav.id);
         } else {
@@ -254,8 +251,9 @@ function yoluIsle() {
             anaSayfayaDon();
         }
     } else {
-        // Path sadece "/" ise ana sayfayı (lobiyi) göster.
-        ekranGoster(lobiEkrani);
+        // Path sadece "/" ise ana sayfayı (lobiyi) yeniden oluştur ve göster.
+        // DEĞİŞİKLİK BURADA: ekranGoster(lobiEkrani) yerine anaSayfayaDon() çağırıyoruz.
+        anaSayfayaDon();
     }
 }
 
