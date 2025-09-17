@@ -1,5 +1,5 @@
 :root {
-    --background-color: #EFF6FF;
+    --background-color: #EFF6FF; /* Açık mavi arka plan rengi korundu */
     --container-bg: #ffffff;
     --text-color: #333;
     --border-color: #ddd;
@@ -31,7 +31,7 @@ body {
 
 /* --- MOBİL MENÜ TEMEL STİLLERİ (Masaüstünde Gizleme) --- */
 .hamburger-menu, .mobile-nav {
-    display: none; /* Varsayılan olarak masaüstünde gizli */
+    display: none;
 }
 
 /* --- ANA YERLEŞİM (LAYOUT) --- */
@@ -57,7 +57,7 @@ body {
     position: sticky;
     top: 20px;
     gap: 25px;
-    padding-bottom: 150px; /* GÜNCELLEME: Altta reklam için boşluk bırakır */
+    padding-bottom: 150px;
 }
 
 .app-container {
@@ -95,7 +95,7 @@ body {
 }
 
 .desktop-menu li, .mobile-nav li {
-    margin-bottom: 2px; /* GÜNCELLEME: Boşluk azaltıldı */
+    margin-bottom: 2px;
 }
 
 .desktop-menu a, .mobile-nav a {
@@ -128,22 +128,11 @@ body {
     color: var(--accent-color);
 }
 
-/* Ara başlık stili artık kullanılmadığı için kaldırılabilir veya kalabilir, zararı yok */
-.menu-group-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #A0AEC0;
-    text-transform: uppercase;
-    padding: 20px 20px 8px 20px;
-    letter-spacing: 0.5px;
-}
-
 .nav-cta-wrapper {
-    padding-top: 15px; /* Başlıklar kalktığı için üst boşluk ayarlandı */
+    padding-top: 15px;
     border-top: 1px solid #E2E8F0;
     margin-top: 15px;
 }
-/* Masaüstü menüsünde CTA'nın padding'i ayarlandı */
 .desktop-menu .nav-cta-wrapper {
     padding: 15px;
 }
@@ -219,33 +208,6 @@ body {
 .quiz-footer { text-align: center; font-size: 0.9rem; color: #888; padding: 20px; flex-shrink: 0; }
 #mobile-ad-container { display: none; }
 
-/* --- SON PROFESYONEL DOKUNUŞLAR: ANİMASYONLAR --- */
-
-/* Ana içerik kartlarının (Sınavını Seç, Test Ekranı) yumuşak bir şekilde ekrana gelmesi için */
-.lobby-container, .competition-container {
-    animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* Sınav listesindeki her bir elemanın zarifçe belirmesi için animasyon tanımı */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Animasyonun sınav listesi elemanlarına uygulanması */
-.quiz-list-item {
-  /* Zaten var olan animasyonu daha belirgin hale getirelim */
-  animation: fadeIn 0.5s ease-out forwards;
-  /* Başlangıçta görünmez yapalım ki animasyon çalışsın */
-  opacity: 0; 
-  /* Her bir elemanın farklı zamanda gelmesi için JavaScript'e küçük bir ekleme yapacağız */
-}
 /* --- MOBİL UYUMLULUK --- */
 @media (max-width: 1200px) {
     .right-column { display: none; }
