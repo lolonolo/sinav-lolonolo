@@ -79,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
     history.pushState({ quizId: sinav.id }, sinav.title, yeniUrl);
     sinaviBaslat(sinav.id);
 });
-            sinavListesiKonteyneri.appendChild(sinavOgesi);
+           sinavListesiKonteyneri.appendChild(sinavOgesi);
+sinavOgesi.style.animationDelay = `${index * 0.03}s`; // Her elemana çok küçük bir gecikme ekler
         });
     }
 
