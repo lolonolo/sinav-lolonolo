@@ -208,6 +208,53 @@ body {
 .quiz-footer { text-align: center; font-size: 0.9rem; color: #888; padding: 20px; flex-shrink: 0; }
 #mobile-ad-container { display: none; }
 
+/* --- SAĞ SÜTUN POPÜLER SINAVLAR WIDGET'I --- */
+.sidebar-widget {
+    width: 100%;
+    background-color: var(--container-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.sidebar-widget h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.sidebar-widget ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-widget ul li a {
+    display: block;
+    padding: 12px 5px; /* Yatay padding azaltıldı */
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid #f5f5f5;
+    transition: color 0.2s;
+    
+    /* UZUN BAŞLIKLAR İÇİN DÜZELTME */
+    white-space: nowrap;      /* Metnin alt satıra inmesini engeller */
+    overflow: hidden;         /* Taşan kısmı gizler */
+    text-overflow: ellipsis;  /* Gizlenen kısmın sonuna "..." ekler */
+}
+
+.sidebar-widget ul li a:hover {
+    color: var(--accent-color);
+}
+
+.sidebar-widget ul li:last-child a {
+    border-bottom: none;
+}
 /* --- MOBİL UYUMLULUK --- */
 @media (max-width: 1200px) {
     .right-column { display: none; }
