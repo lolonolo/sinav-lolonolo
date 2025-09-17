@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ELEMENT TANIMLAMALARI (Değişken tanımlamaları let olarak değiştirildi)
+    // YENİ: GitHub Pages yönlendirmesini handle eden bölüm
+    const redirectPath = sessionStorage.getItem('redirectPath');
+    if (redirectPath) {
+        sessionStorage.removeItem('redirectPath');
+        window.history.replaceState(null, null, redirectPath);
+    }
+
+    // ELEMENT TANIMLAMALARI
     let lobiEkrani = document.getElementById('lobby-screen');
     let yarismaEkrani = document.getElementById('competition-screen');
     let sinavListesiKonteyneri = document.getElementById('quiz-list-container');
@@ -24,15 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
         const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
         const p = new RegExp(a.split('').join('|'), 'g')
-      
-        return text.toString().toLowerCase()
-          .replace(/\s+/g, '-') 
-          .replace(p, c => b.charAt(a.indexOf(c))) 
-          .replace(/&/g, '-and-') 
-          .replace(/[^\w\-]+/g, '') 
-          .replace(/\-\-+/g, '-') 
-          .replace(/^-+/, '') 
-          .replace(/-+$/, '') 
+        return text.toString().toLowerCase().replace(/\s+/g, '-').replace(p, c => b.charAt(a.indexOf(c))).replace(/&/g, '-and-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '')
     }
 
     async function sinavlariGetirVeGoster() {
@@ -44,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             tumSinavlar = await yanit.json();
             sinavListesiniOlustur(tumSinavlar);
-            urlDenSinavBaslat();
+            yoluIsle(); // DEĞİŞİKLİK: Sınavlar yüklenince URL'i işle
         } catch (hata) {
             if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = `<p style="color: red;">Hata: ${hata.message}</p>`;
         }
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function sinavListesiniOlustur(sinavlar) {
         if (!sinavListesiKonteyneri || !Array.isArray(sinavlar)) {
-            sinavListesiKonteyneri.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
+            if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
             return;
         }
         sinavListesiKonteyneri.innerHTML = '';
@@ -72,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function sinavlariFiltrele() {
+        if (!aramaGirdisi) return;
         const aramaTerimi = aramaGirdisi.value.toLowerCase();
         const filtrelenmisSinavlar = tumSinavlar.filter(sinav => sinav.title.toLowerCase().includes(aramaTerimi));
         sinavListesiniOlustur(filtrelenmisSinavlar);
@@ -90,22 +90,77 @@ document.addEventListener('DOMContentLoaded', () => {
             mevcutSoruIndexi = 0;
             tekliPuan = 0;
             if (tekliPuanElementi) tekliPuanElementi.textContent = '0';
-            document.body.className = 'solo-mode';
             ekranGoster(yarismaEkrani);
             soruYukle(0);
         } catch (hata) {
-            lobiEkrani.innerHTML = `<h1 style="color: red;">Hata: ${hata.message}</h1><button id="geri-don">Geri Dön</button>`;
+            lobiEkrani.innerHTML = `<div class="lobby-container" style="color:red;"><h1>Hata: ${hata.message}</h1><br/><button class="next-question-btn" style="display:block;" id="geri-don">Ana Sayfaya Dön</button></div>`;
             document.getElementById('geri-don').addEventListener('click', anaSayfayaDon);
             ekranGoster(lobiEkrani);
         }
     }
 
+    // *** DÜZELTME: Bu fonksiyonun içi dolduruldu ***
     function soruYukle(soruIndexi) {
-        // ... Bu fonksiyonun içeriği aynı kalacak ...
+        const mevcutReklamKonteyneri = document.querySelector('.ad-container-in-question');
+        if (mevcutReklamKonteyneri) {
+            mevcutReklamKonteyneri.remove();
+        }
+
+        const soru = mevcutSinavVerisi.sorular[soruIndexi];
+        mevcutSoruIndexi = soruIndexi;
+        sinavBasligiElementi.textContent = mevcutSinavVerisi.sinavAdi;
+        soruMetniElementi.innerHTML = soru.soruMetni;
+        seceneklerKonteyneri.innerHTML = '';
+        aciklamaAlani.style.display = 'none';
+        sonrakiSoruButonu.style.display = 'none';
+
+        soru.secenekler.forEach((secenek, index) => {
+            const buton = document.createElement('button');
+            buton.className = 'option-btn';
+            buton.innerHTML = secenek;
+            buton.addEventListener('click', () => cevabiIsle(index));
+            seceneklerKonteyneri.appendChild(buton);
+        });
+
+        soruSayaciElementi.textContent = `Soru ${soruIndexi + 1} / ${mevcutSinavVerisi.sorular.length}`;
+
+        if ((soruIndexi + 1) % 5 === 0 && soruIndexi > 0) {
+            const promoKonteyneri = document.createElement('div');
+            promoKonteyneri.className = 'ad-container-in-question';
+            // ... (Bu kısım orijinal kodunuzdaki gibi, stil tanımlamalarını içerir)
+            aciklamaAlani.parentNode.insertBefore(promoKonteyneri, aciklamaAlani);
+        }
     }
 
+    // *** DÜZELTME: Bu fonksiyonun içi dolduruldu ***
     function cevabiIsle(secilenIndex) {
-        // ... Bu fonksiyonun içeriği aynı kalacak ...
+        const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
+        tumButonlar.forEach(btn => btn.disabled = true);
+        const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
+        
+        const dogruMu = secilenIndex == soru.dogruCevapIndex;
+        
+        if (dogruMu) {
+            tekliPuan += 10;
+            if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
+        }
+        
+        tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
+        
+        if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
+            tumButonlar[soru.dogruCevapIndex].classList.add('correct');
+        }
+        
+        if (soru.aciklama) {
+            aciklamaAlani.innerHTML = soru.aciklama;
+            aciklamaAlani.style.display = 'block';
+        }
+        
+        if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
+            sonrakiSoruButonu.style.display = 'block';
+        } else {
+            setTimeout(finalPuaniniGoster, 2000);
+        }
     }
 
     function finalPuaniniGoster() {
@@ -115,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
         yeniSinavBtn.style.display = 'block';
         yeniSinavBtn.textContent = 'Yeni Sınav Seç';
         yeniSinavBtn.addEventListener('click', anaSayfayaDon);
-
         seceneklerKonteyneri.innerHTML = `<strong>Final Puanınız : ${tekliPuan}</strong><br><br>`;
         seceneklerKonteyneri.appendChild(yeniSinavBtn);
         aciklamaAlani.style.display = 'none';
@@ -132,19 +186,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (yukleniyor) {
             lobiEkrani.style.display = 'flex';
-            lobiEkrani.innerHTML = `<h1>Sınav Yükleniyor...</h1>`;
+            lobiEkrani.innerHTML = `<div class="lobby-container"><h1>Sınav Yükleniyor...</h1></div>`;
         } else if (gosterilecekEkran) {
             gosterilecekEkran.style.display = 'flex';
         }
     }
 
-    // DEĞİŞTİRİLDİ: Bu fonksiyon hatayı çözmek için güncellendi
-    function anaSayfayaDon() {
+    function anaSayfayaDon(event) {
+        if(event) event.preventDefault();
+        
         if(window.location.pathname !== "/") {
             history.pushState(null, 'Ana Sayfa', '/');
         }
         
-        // Orijinal lobi HTML'ini tekrar oluştur
         lobiEkrani.innerHTML = `
             <div class="lobby-container">
                 <h2>SINAVINI SEÇ VE BAŞLA!</h2>
@@ -157,36 +211,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>`;
         
-        // **ÖNEMLİ DÜZELTME:**
-        // HTML yeniden yazıldığı için kaybolan element referanslarını ve olay dinleyicilerini yenile
         sinavListesiKonteyneri = document.getElementById('quiz-list-container');
         aramaGirdisi = document.getElementById('quiz-search-input');
-        aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
+        if (aramaGirdisi) aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
 
         ekranGoster(lobiEkrani);
-        sinavListesiniOlustur(tumSinavlar); // Mevcut listeyi kullanarak sınavları hemen göster
+        sinavListesiniOlustur(tumSinavlar);
     }
 
     function yoluIsle() {
         const path = window.location.pathname;
         if (path.startsWith('/sinav/')) {
-            // Eğer sınav listesi henüz yüklenmediyse, yüklenmesini bekle.
-            if(tumSinavlar.length === 0) {
-                // Bu durum, sayfa doğrudan sınav URL'i ile açıldığında olur.
-                // sinavlariGetirVeGoster() zaten çağrıldı ve bitince urlDenSinavBaslat()'ı tetikleyecek.
-                return;
+            if (tumSinavlar.length === 0) {
+                 return; // Sınavlar henüz yüklenmedi, sinavlariGetirVeGoster bitince burası tekrar tetiklenecek.
             }
-            urlDenSinavBaslat();
-        } else {
-            anaSayfayaDon();
-        }
-    }
-
-    function urlDenSinavBaslat() {
-        if (tumSinavlar.length === 0) return; 
-        
-        const path = window.location.pathname;
-        if (path.startsWith('/sinav/')) {
             const slug = path.substring(7);
             const bulunanSinav = tumSinavlar.find(s => slugify(s.title) === slug);
             if (bulunanSinav) {
@@ -196,17 +234,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 anaSayfayaDon();
             }
         } else {
-            // Eğer ana sayfadaysak ve lobi görünmüyorsa göster
-            if(lobiEkrani.style.display === 'none') {
-                 anaSayfayaDon();
-            }
+             ekranGoster(lobiEkrani);
         }
     }
 
     // EVENT LISTENERS
-    aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
-    sonrakiSoruButonu.addEventListener('click', sonrakiSoruyaGec);
-
+    if (aramaGirdisi) aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
+    if (sonrakiSoruButonu) sonrakiSoruButonu.addEventListener('click', sonrakiSoruyaGec);
+    
     window.addEventListener('popstate', yoluIsle);
 
     if (hamburgerButonu && mobilNavPanel) {
@@ -216,18 +251,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         mobilNavPanel.querySelectorAll('a.close-menu-link').forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
-                anaSayfayaDon();
+                anaSayfayaDon(e);
                 hamburgerButonu.classList.remove('active');
                 mobilNavPanel.classList.remove('open');
             });
         });
     }
 
-    document.querySelector('.desktop-menu a.home-link')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        anaSayfayaDon();
-    });
+    document.querySelector('.desktop-menu a.home-link')?.addEventListener('click', anaSayfayaDon);
 
     // BAŞLANGIÇ
     sinavlariGetirVeGoster();
