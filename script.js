@@ -58,31 +58,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function sinavListesiniOlustur(sinavlar) {
-        if (!sinavListesiKonteyneri || !Array.isArray(sinavlar)) {
-            if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
-            return;
-        }
-        sinavListesiKonteyneri.innerHTML = '';
-        sinavlar.forEach(sinav => {
-            const sinavOgesi = document.createElement('div');
-            sinavOgesi.className = 'quiz-list-item';
-            sinavOgesi.textContent = sinav.title;
-            sinavOgesi.dataset.quizId = sinav.id;
-            sinavOgesi.addEventListener('click', () => {
-    const slug = slugify(sinav.title);
-    
-    // --- LÜTFEN BU SATIRI GÜNCELLEYİN ---
-    const yeniUrl = `/${slug}`; // "/sinav/" kısmını buradan kaldırıyoruz.
-    // ------------------------------------
-
-    history.pushState({ quizId: sinav.id }, sinav.title, yeniUrl);
-    sinaviBaslat(sinav.id);
-});
-           sinavListesiKonteyneri.appendChild(sinavOgesi);
-sinavOgesi.style.animationDelay = `${index * 0.03}s`; // Her elemana çok küçük bir gecikme ekler
-        });
+function sinavListesiniOlustur(sinavlar) {
+    if (!sinavListesiKonteyneri || !Array.isArray(sinavlar)) {
+        if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
+        return;
     }
+    sinavListesiKonteyneri.innerHTML = '';
+    
+    // DEĞİŞİKLİK 1: Döngüye, elemanların sırasını anlamak için "index" eklendi.
+    sinavlar.forEach((sinav, index) => {
+        const sinavOgesi = document.createElement('div');
+        sinavOgesi.className = 'quiz-list-item';
+        sinavOgesi.textContent = sinav.title;
+        sinavOgesi.dataset.quizId = sinav.id;
+        
+        sinavOgesi.addEventListener('click', () => {
+            const slug = slugify(sinav.title);
+            const yeniUrl = `/${slug}`;
+            history.pushState({ quizId: sinav.id }, sinav.title, yeniUrl);
+            sinaviBaslat(sinav.id);
+        });
+        
+        sinavListesiKonteyneri.appendChild(sinavOgesi);
+
+        // DEĞİŞİKLİK 2: Her bir sınavın sırayla gelmesi için küçük bir animasyon gecikmesi eklendi.
+        sinavOgesi.style.animationDelay = `${index * 0.03}s`;
+    });
+}
 
     function sinavlariFiltrele() {
         if (!aramaGirdisi) return;
