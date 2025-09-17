@@ -27,12 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let mevcutSoruIndexi = 0;
     let tekliPuan = 0;
 
-    function slugify(text) {
-        const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
-        const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
-        const p = new RegExp(a.split('').join('|'), 'g')
-        return text.toString().toLowerCase().replace(/\s+/g, '-').replace(p, c => b.charAt(a.indexOf(c))).replace(/&/g, '-and-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '')
-    }
+  function slugify(text) {
+    // DİKKAT: 'ı' harfi aşağıdaki "a" listesine ve karşılığı olan "i" harfi de "b" listesine eklendi.
+    const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìıłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+    const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+    const p = new RegExp(a.split('').join('|'), 'g')
+  
+    return text.toString().toLowerCase()
+      .replace(/\s+/g, '-') 
+      .replace(p, c => b.charAt(a.indexOf(c))) 
+      .replace(/&/g, '-and-') 
+      .replace(/[^\w\-]+/g, '') 
+      .replace(/\-\-+/g, '-') 
+      .replace(/^-+/, '') 
+      .replace(/-+$/, '') 
+}
 
     async function sinavlariGetirVeGoster() {
         try {
