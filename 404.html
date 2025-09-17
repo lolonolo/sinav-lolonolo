@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SINAV SORULARI | LOLONOLO</title>
+    <link rel="icon" type="image/png" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
+    <link rel="apple-touch-icon" href="https://lolonolo.com/wp-content/uploads/2025/04/lolonolo-favicon.png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://the.gatekeeperconsent.com/cmp.min.js" async></script>
+    <script src="https://the.gatekeeperconsent.com/ccpa/v2/standalone.js" async></script>
+    <script src="//www.ezojs.com/ezoic/sa.min.js" async></script>
+    <script async src="https://fundingchoicesmessages.google.com/i/pub-6517205438926212?ers=1"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3VBQV8L46"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E3VBQV8L46');
+    </script>
+    <script>
+        window.ezstandalone = window.ezstandalone || {};
+        ezstandalone.cmd = ezstandalone.cmd || [];
+    </script>
+    
+
+</head>
+<body>
+    <button class="hamburger-menu" id="hamburger-menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
+
+    <nav class="mobile-nav" id="mobile-nav">
+        <h3>Menü</h3>
+        <a href="https://lolonolo.com" target="_blank">Lolonolo Ana Sayfa</a>
+        <a href="https://openvideo.lolonolo.com/" target="_blank">Sınav Videoları</a>
+        <a href="https://www.shopier.com/lolonolo" target="_blank">Premium Üyelik</a>
+        <a href="/" class="close-menu-link">Tüm Sınavlar</a>
+    </nav>
+
+    <div class="main-layout">
+        <div class="side-column left-column">
+            <div class="desktop-menu">
+                <h3>Hızlı Erişim</h3>
+                <a href="https://lolonolo.com" target="_blank">Lolonolo Ana Sayfa</a>
+                <a href="https://openvideo.lolonolo.com/" target="_blank">Sınav Videoları</a>
+                <a href="https://www.shopier.com/lolonolo" target="_blank">Premium Üyelik</a>
+                <a href="https://hesapla.lolonolo.com">AGNO-Puanını Hesapla</a>
+            </div>
+            <div id="ezoic-pub-ad-placeholder-848"></div>
+        </div>
+        <div class="app-container">
+            <div id="lobby-screen" class="screen">
+                <div class="lobby-container">
+                    <h2>SINAVINI SEÇ VE BAŞLA!</h2>
+                    <p>Aşağıdaki listeden bir sınav seçin veya aramayı kullanın.</p>
+                    <div class="quiz-selection-area">
+                        <input type="text" id="quiz-search-input" placeholder="Sınav ara...">
+                        <div id="quiz-list-container">
+                            <p>Sınavlar Yükleniyor...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="competition-container" id="competition-screen" style="display: none;">
+                <div class="quiz-panel">
+                    <div class="quiz-header">
+                        <h2 class="quiz-title" id="quiz-title">Sınav Adı Yükleniyor...</h2>
+                        <div class="solo-score-display" id="solo-score-container">
+                            Puan: <span id="solo-score">0</span>
+                        </div>
+                    </div>
+                    <div class="question-area">
+                        <h3 id="question-text">Soru metni buraya gelecek...</h3>
+                        <div class="options-grid" id="options-container"></div>
+                        <div class="explanation-area" id="explanation-area"></div>
+                        <button class="next-question-btn" id="next-q-btn">Sonraki Soru</button>
+                    </div>
+                    <div class="quiz-footer" id="question-counter">Soru ... / ...</div>
+                </div>
+            </div>
+            <div id="mobile-ad-container"></div>
+              <div class="video-info-section">
+                <p style="text-align:center; font-size:1.1rem; margin:32px 0 16px 0;">
+                    Çıkmış Sınav Sorularını Aşağıda İzleyebilirsiniz!
+                </p>
+                <div style="text-align:center; margin-top:16px;">
+                    <a href="https://openvideo.lolonolo.com/" target="_blank" style="color: var(--accent-color); font-weight: 600;">
+                        Çıkmış Sınav Soruların Videolarını İzle
+                    </a>
+                </div>
+            </div>
+			</div>
+        <div class="side-column right-column">
+             <div id="ezoic-pub-ad-placeholder-850"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+  <script type.js">
+document.addEventListener('DOMContentLoaded', () => {
+    // YENİ: GitHub Pages yönlendirmesini handle eden bölüm
+    // Sayfa yüklendiğinde, 404.html'den bir yönlendirme olup olmadığını kontrol et
+    const redirectPath = sessionStorage.getItem('redirectPath');
+    if (redirectPath) {
+        // Eğer yönlendirme bilgisi varsa, onu al ve hemen sil
+        sessionStorage.removeItem('redirectPath');
+        
+        // Tarayıcının adres çubuğundaki URL'i, kullanıcının en başta girmek istediği
+        // doğru URL ile (sayfayı yenilemeden) değiştir.
+        window.history.replaceState(null, null, redirectPath);
+    }
+    // --- YÖNLENDİRME KONTROLÜ SONU ---
+
+
+    // --- MEVCUT KODUNUZ OLDUĞU GİBİ BURADAN DEVAM EDİYOR ---
+    let lobiEkrani = document.getElementById('lobby-screen');
+    let yarismaEkrani = document.getElementById('competition-screen');
+    // ... script.js dosyanızın geri kalanı olduğu gibi devam edecek ...
+});
+    </body>
+</html>
