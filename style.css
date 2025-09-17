@@ -101,9 +101,10 @@ body {
     width: 305px;
     min-height: 100vh;
     display: flex;
-    flex-direction: column; /* Değiştirildi */
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Değiştirildi */
+    /* DEĞİŞİKLİK: İçeriklerin arasını açarak daha iyi hizalama sağlandı */
+    justify-content: space-between; 
     padding-top: 20px;
     font-size: 1.3rem;
     font-weight: 600;
