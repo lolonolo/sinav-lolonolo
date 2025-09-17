@@ -1,19 +1,17 @@
 // sitemap_generator.js
 
-// Gerekli modülleri import et
 const fs = require('fs');
-const fetch = require('node-fetch'); // Bu paketi sunucunuza kurmanız gerekir: npm install node-fetch@2
+const fetch = require('node-fetch');
 
 // --- AYARLAR ---
-const siteUrl = 'https://sinav.lolonolo.com'; // Sitenizin tam adresi
-const apiUrl = `${siteUrl}/api/getQuizzes`; // Sınavları çeken API adresi
-const outputPath = './sitemap.xml'; // Sitemap dosyasının kaydedileceği yer (sitenizin ana dizini olmalı)
+const siteUrl = 'https://sinav.lolonolo.com';
+const apiUrl = `${siteUrl}/api/getQuizzes`;
+const outputPath = './sitemap.xml';
 // --- AYARLAR SONU ---
 
-// URL slug oluşturma fonksiyonu (sitedeki ile birebir aynı)
 function slugify(text) {
-    const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
-    const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+    const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìıłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+    const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
     const p = new RegExp(a.split('').join('|'), 'g')
     return text.toString().toLowerCase().replace(/\s+/g, '-').replace(p, c => b.charAt(a.indexOf(c))).replace(/&/g, '-and-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '')
 }
@@ -34,7 +32,10 @@ async function generateSitemap() {
 
         quizzes.forEach(quiz => {
             const slug = slugify(quiz.title);
-            urls.push({ loc: `${siteUrl}/sinav/${slug}`, lastmod: new Date().toISOString().split('T')[0], changefreq: 'weekly', priority: '0.8' });
+            
+            // --- DEĞİŞİKLİK BURADA YAPILDI ---
+            // URL'den "/sinav/" kısmı kaldırıldı.
+            urls.push({ loc: `${siteUrl}/${slug}`, lastmod: new Date().toISOString().split('T')[0], changefreq: 'weekly', priority: '0.8' });
         });
 
         let xmlString = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
