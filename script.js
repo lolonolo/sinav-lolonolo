@@ -154,9 +154,7 @@ function sinavListesiniOlustur(sinavlar) {
         tumButonlar.forEach(btn => btn.disabled = true);
         const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
         
-        // ----- KONTROL İÇİN LÜTFEN BU SATIRI EKLEYİN -----
-    console.log("Mevcut sorunun verisi:", soru);
-    // ----------------------------------------------------
+
         
         const dogruMu = secilenIndex == soru.dogruCevapIndex;
         
