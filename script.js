@@ -70,11 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
             sinavOgesi.textContent = sinav.title;
             sinavOgesi.dataset.quizId = sinav.id;
             sinavOgesi.addEventListener('click', () => {
-                const slug = slugify(sinav.title);
-                const yeniUrl = `/sinav/${slug}`;
-                history.pushState({ quizId: sinav.id }, sinav.title, yeniUrl);
-                sinaviBaslat(sinav.id);
-            });
+    const slug = slugify(sinav.title);
+    
+    // --- LÜTFEN BU SATIRI GÜNCELLEYİN ---
+    const yeniUrl = `/${slug}`; // "/sinav/" kısmını buradan kaldırıyoruz.
+    // ------------------------------------
+
+    history.pushState({ quizId: sinav.id }, sinav.title, yeniUrl);
+    sinaviBaslat(sinav.id);
+});
             sinavListesiKonteyneri.appendChild(sinavOgesi);
         });
     }
