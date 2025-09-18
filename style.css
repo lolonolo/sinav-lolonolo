@@ -208,3 +208,31 @@ body {
 @keyframes typing { from { width: 0 } to { width: 100% } }
 @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: orange; } }
 #typewriter-text.typing-effect.finished { border-right: none; }
+
+
+/* --- REKLAM MOLASI ANİMASYON GÜNCELLEMELERİ --- */
+
+/* Yeni metin uzunluğuna göre animasyon süresi güncellendi */
+#typewriter-text.typing-effect {
+    border-right: .15em solid orange;
+    width: 0;
+    /* Metin kısaldığı için süre 4.5 saniyeye çekildi */
+    animation: 
+        typing 4.5s steps(100, end) forwards,
+        blink-caret .75s step-end infinite;
+}
+
+/* Animasyon sonrası belirecek Premium linki için stil */
+#premium-link-ad-break {
+    margin: 20px auto; /* Otomatik olarak ortalar */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    text-decoration: none;
+    max-width: 250px; /* Butonun çok geniş olmasını engeller */
+}
+
+/* JavaScript ile eklenecek olan görünürlük class'ı */
+#premium-link-ad-break.visible {
+    display: inline-flex !important;
+    opacity: 1;
+}
