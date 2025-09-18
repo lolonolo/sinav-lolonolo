@@ -227,9 +227,18 @@ function sinavListesiniOlustur(sinavlar) {
         sonrakiSoruButonu.style.display = 'none';
     }
 
-    function sonrakiSoruyaGec() {
-        soruYukle(mevcutSoruIndexi + 1);
+   function sonrakiSoruyaGec() {
+    soruYukle(mevcutSoruIndexi + 1);
+    
+    // YENİ EKLENEN KOD:
+    // Ekranı yumuşak bir şekilde sınav panelinin en üstüne kaydırır.
+    const quizPanel = document.querySelector('.competition-container');
+    if (quizPanel) {
+        // block: 'start' yerine 'center' kullanarak sorunun tam ortaya gelmesini de sağlayabiliriz.
+        // Ama 'start' genellikle daha iyi bir deneyim sunar.
+        quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+}
     
     function ekranGoster(gosterilecekEkran, yukleniyor = false) {
         if (lobiEkrani) lobiEkrani.style.display = 'none';
