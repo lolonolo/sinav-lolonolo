@@ -197,13 +197,13 @@ function cevabiIsle(secilenIndex) {
         sonrakiSoruButonu.style.display = 'none';
     }
 
-  function sonrakiSoruyaGec() {
+function sonrakiSoruyaGec() {
     const sonrakiIndex = mevcutSoruIndexi + 1;
 
     if (sonrakiIndex > 0 && sonrakiIndex % 5 === 0 && sonrakiIndex < mevcutSinavVerisi.sorular.length) {
         ekranGoster(reklamEkrani);
 
-        // --- YAZI ANİMASYONU VE BUTON GİZLEME (DEĞİŞİKLİK YOK) ---
+        // --- YAZI ANİMASYONU VE BUTON GİZLEME ---
         const textElement = document.getElementById('typewriter-text');
         const continueButton = document.getElementById('continue-quiz-btn');
         const premiumLink = document.getElementById('premium-link-ad-break');
@@ -222,29 +222,26 @@ function cevabiIsle(secilenIndex) {
             }, 5000);
         }
 
-        // --- AKILLI REKLAM KONTROLÜ (YENİ MANTIK) ---
+        // --- DAHA AKILLI REKLAM KONTROLÜ ---
         const adPlaceholderDiv = document.getElementById('ezoic-pub-ad-placeholder-851');
-        const adPlaceholderContainer = adPlaceholderDiv.parentElement;
+        const adPlaceholderContainer = adPlaceholderDiv ? adPlaceholderDiv.parentElement : null;
 
         if (adPlaceholderContainer) {
-            // Her seferinde alanı sıfırla
             adPlaceholderContainer.classList.remove('ad-filled');
             
-            // Reklam çağırma komutunu gönder
             if (typeof ezstandalone !== 'undefined') {
                 ezstandalone.cmd.push(function () {
                     ezstandalone.showAds(851);
                 });
             }
 
-            // 2 saniye sonra reklamın gelip gelmediğini kontrol et
+            // 2 saniye sonra reklamın gelip gelmediğini YÜKSEKLİĞİNİ ölçerek kontrol et
             setTimeout(() => {
-                // Eğer placeholder div'inin içine bir şey yüklenmişse (innerHTML boş değilse)
-                if (adPlaceholderDiv && adPlaceholderDiv.innerHTML.trim() !== '') {
-                    // Alanı büyüten class'ı ekle
+                // Eğer placeholder div'inin ekranda kapladığı yükseklik 10 pikselden fazlaysa, reklam gelmiş demektir.
+                if (adPlaceholderDiv && adPlaceholderDiv.offsetHeight > 10) {
                     adPlaceholderContainer.classList.add('ad-filled');
                 }
-            }, 2000); // Ezoic'e reklamı yüklemesi için 2 saniye süre tanıyalım
+            }, 2000);
         }
         
     } else {
