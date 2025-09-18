@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // YENİ: GitHub Pages yönlendirmesini handle eden bölüm
+    // GitHub Pages yönlendirmesini handle eden bölüm
     const redirectPath = sessionStorage.getItem('redirectPath');
     if (redirectPath) {
         sessionStorage.removeItem('redirectPath');
@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tekliPuanElementi = document.getElementById('solo-score');
     const hamburgerButonu = document.getElementById('hamburger-menu');
     const mobilNavPanel = document.getElementById('mobile-nav');
+    const reklamEkrani = document.getElementById('ad-break-screen');
+    const sinavaDevamButonu = document.getElementById('continue-quiz-btn');
 
     // GENEL DEĞİŞKENLER
     let tumSinavlar = [];
@@ -27,53 +29,36 @@ document.addEventListener('DOMContentLoaded', () => {
     let mevcutSoruIndexi = 0;
     let tekliPuan = 0;
 
-  function slugify(text) {
-    // DİKKAT: 'ı' harfi aşağıdaki "a" listesine ve karşılığı olan "i" harfi de "b" listesine eklendi.
-    const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìıłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
-    const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
-    const p = new RegExp(a.split('').join('|'), 'g')
-  
-    return text.toString().toLowerCase()
-      .replace(/\s+/g, '-') 
-      .replace(p, c => b.charAt(a.indexOf(c))) 
-      .replace(/&/g, '-and-') 
-      .replace(/[^\w\-]+/g, '') 
-      .replace(/\-\-+/g, '-') 
-      .replace(/^-+/, '') 
-      .replace(/-+$/, '') 
-}
-    // YENİ FONKSİYON: Popüler sınavları sağ sütunda gösterir
-function populerSinavlariGoster() {
-    const listContainer = document.getElementById('popular-quizzes-list');
-    if (!listContainer || tumSinavlar.length === 0) {
-        return;
+    function slugify(text) {
+        const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìıłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+        const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+        const p = new RegExp(a.split('').join('|'), 'g')
+        return text.toString().toLowerCase().replace(/\s+/g, '-').replace(p, c => b.charAt(a.indexOf(c))).replace(/&/g, '-and-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '')
     }
 
-    // Mevcut sınavlar listesini karıştırıp ilk 5 tanesini alalım
-    const rastgeleSinavlar = [...tumSinavlar].sort(() => 0.5 - Math.random()).slice(0, 5);
-
-    listContainer.innerHTML = ''; // Listeyi temizle
-
-    rastgeleSinavlar.forEach(sinav => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        
-        link.textContent = sinav.title;
-        link.href = `/${slugify(sinav.title)}`; // URL'i ayarla
-        link.title = sinav.title; // Tam başlığı hover'da göster
-
-        // ÖNEMLİ: Linkin sayfayı yenilemeden çalışması için
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const slug = slugify(sinav.title);
-            history.pushState({ quizId: sinav.id }, sinav.title, `/${slug}`);
-            sinaviBaslat(sinav.id);
+    function populerSinavlariGoster() {
+        const listContainer = document.getElementById('popular-quizzes-list');
+        if (!listContainer || tumSinavlar.length === 0) {
+            return;
+        }
+        const rastgeleSinavlar = [...tumSinavlar].sort(() => 0.5 - Math.random()).slice(0, 5);
+        listContainer.innerHTML = '';
+        rastgeleSinavlar.forEach(sinav => {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.textContent = sinav.title;
+            link.href = `/${slugify(sinav.title)}`;
+            link.title = sinav.title;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const slug = slugify(sinav.title);
+                history.pushState({ quizId: sinav.id }, sinav.title, `/${slug}`);
+                sinaviBaslat(sinav.id);
+            });
+            listItem.appendChild(link);
+            listContainer.appendChild(listItem);
         });
-
-        listItem.appendChild(link);
-        listContainer.appendChild(listItem);
-    });
-}
+    }
 
     async function sinavlariGetirVeGoster() {
         try {
@@ -84,40 +69,34 @@ function populerSinavlariGoster() {
             }
             tumSinavlar = await yanit.json();
             sinavListesiniOlustur(tumSinavlar);
-            populerSinavlariGoster(); // YENİ EKLENEN SATIR
-            yoluIsle(); // DEĞİŞİKLİK: Sınavlar yüklenince URL'i işle
+            populerSinavlariGoster();
+            yoluIsle();
         } catch (hata) {
             if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = `<p style="color: red;">Hata: ${hata.message}</p>`;
         }
     }
 
-function sinavListesiniOlustur(sinavlar) {
-    if (!sinavListesiKonteyneri || !Array.isArray(sinavlar)) {
-        if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
-        return;
-    }
-    sinavListesiKonteyneri.innerHTML = '';
-    
-    // DEĞİŞİKLİK 1: Döngüye, elemanların sırasını anlamak için "index" eklendi.
-    sinavlar.forEach((sinav, index) => {
-        const sinavOgesi = document.createElement('div');
-        sinavOgesi.className = 'quiz-list-item';
-        sinavOgesi.textContent = sinav.title;
-        sinavOgesi.dataset.quizId = sinav.id;
-        
-        sinavOgesi.addEventListener('click', () => {
-            const slug = slugify(sinav.title);
-            const yeniUrl = `/${slug}`;
-            history.pushState({ quizId: sinav.id }, sinav.title, yeniUrl);
-            sinaviBaslat(sinav.id);
+    function sinavListesiniOlustur(sinavlar) {
+        if (!sinavListesiKonteyneri || !Array.isArray(sinavlar)) {
+            if (sinavListesiKonteyneri) sinavListesiKonteyneri.innerHTML = '<p>Hiç sınav bulunamadı veya veri formatı yanlış.</p>';
+            return;
+        }
+        sinavListesiKonteyneri.innerHTML = '';
+        sinavlar.forEach(sinav => { // Animasyonlar için olan 'index' kaldırıldı
+            const sinavOgesi = document.createElement('div');
+            sinavOgesi.className = 'quiz-list-item';
+            sinavOgesi.textContent = sinav.title;
+            sinavOgesi.dataset.quizId = sinav.id;
+            sinavOgesi.addEventListener('click', () => {
+                const slug = slugify(sinav.title);
+                const yeniUrl = `/${slug}`;
+                history.pushState({ quizId: sinav.id }, sinav.title, yeniUrl);
+                sinaviBaslat(sinav.id);
+            });
+            sinavListesiKonteyneri.appendChild(sinavOgesi);
+            // Animasyon gecikmesi satırı buradan kaldırıldı
         });
-        
-        sinavListesiKonteyneri.appendChild(sinavOgesi);
-
-        // DEĞİŞİKLİK 2: Her bir sınavın sırayla gelmesi için küçük bir animasyon gecikmesi eklendi.
-        sinavOgesi.style.animationDelay = `${index * 0.03}s`;
-    });
-}
+    }
 
     function sinavlariFiltrele() {
         if (!aramaGirdisi) return;
@@ -148,13 +127,11 @@ function sinavListesiniOlustur(sinavlar) {
         }
     }
 
-    // *** DÜZELTME: Bu fonksiyonun içi dolduruldu ***
     function soruYukle(soruIndexi) {
         const mevcutReklamKonteyneri = document.querySelector('.ad-container-in-question');
         if (mevcutReklamKonteyneri) {
             mevcutReklamKonteyneri.remove();
         }
-
         const soru = mevcutSinavVerisi.sorular[soruIndexi];
         mevcutSoruIndexi = soruIndexi;
         sinavBasligiElementi.textContent = mevcutSinavVerisi.sinavAdi;
@@ -162,7 +139,6 @@ function sinavListesiniOlustur(sinavlar) {
         seceneklerKonteyneri.innerHTML = '';
         aciklamaAlani.style.display = 'none';
         sonrakiSoruButonu.style.display = 'none';
-
         soru.secenekler.forEach((secenek, index) => {
             const buton = document.createElement('button');
             buton.className = 'option-btn';
@@ -170,43 +146,26 @@ function sinavListesiniOlustur(sinavlar) {
             buton.addEventListener('click', () => cevabiIsle(index));
             seceneklerKonteyneri.appendChild(buton);
         });
-
         soruSayaciElementi.textContent = `Soru ${soruIndexi + 1} / ${mevcutSinavVerisi.sorular.length}`;
-
-        if ((soruIndexi + 1) % 5 === 0 && soruIndexi > 0) {
-            const promoKonteyneri = document.createElement('div');
-            promoKonteyneri.className = 'ad-container-in-question';
-            // ... (Bu kısım orijinal kodunuzdaki gibi, stil tanımlamalarını içerir)
-            aciklamaAlani.parentNode.insertBefore(promoKonteyneri, aciklamaAlani);
-        }
     }
 
-    // *** DÜZELTME: Bu fonksiyonun içi dolduruldu ***
     function cevabiIsle(secilenIndex) {
         const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
         tumButonlar.forEach(btn => btn.disabled = true);
         const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
-        
-
-        
         const dogruMu = secilenIndex == soru.dogruCevapIndex;
-        
         if (dogruMu) {
             tekliPuan += 10;
             if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
         }
-        
         tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
-        
         if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
             tumButonlar[soru.dogruCevapIndex].classList.add('correct');
         }
-        
         if (soru.aciklama) {
             aciklamaAlani.innerHTML = soru.aciklama;
             aciklamaAlani.style.display = 'block';
         }
-        
         if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
             sonrakiSoruButonu.style.display = 'block';
         } else {
@@ -227,23 +186,23 @@ function sinavListesiniOlustur(sinavlar) {
         sonrakiSoruButonu.style.display = 'none';
     }
 
-   function sonrakiSoruyaGec() {
-    soruYukle(mevcutSoruIndexi + 1);
-    
-    // YENİ EKLENEN KOD:
-    // Ekranı yumuşak bir şekilde sınav panelinin en üstüne kaydırır.
-    const quizPanel = document.querySelector('.competition-container');
-    if (quizPanel) {
-        // block: 'start' yerine 'center' kullanarak sorunun tam ortaya gelmesini de sağlayabiliriz.
-        // Ama 'start' genellikle daha iyi bir deneyim sunar.
-        quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    function sonrakiSoruyaGec() {
+        const sonrakiIndex = mevcutSoruIndexi + 1;
+        if (sonrakiIndex > 0 && sonrakiIndex % 5 === 0 && sonrakiIndex < mevcutSinavVerisi.sorular.length) {
+            ekranGoster(reklamEkrani);
+        } else {
+            soruYukle(sonrakiIndex);
+            const quizPanel = document.querySelector('.competition-container');
+            if (quizPanel) {
+                quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
     }
-}
     
     function ekranGoster(gosterilecekEkran, yukleniyor = false) {
         if (lobiEkrani) lobiEkrani.style.display = 'none';
         if (yarismaEkrani) yarismaEkrani.style.display = 'none';
-
+        if (reklamEkrani) reklamEkrani.style.display = 'none'; // Reklam ekranını da gizle
         if (yukleniyor) {
             lobiEkrani.style.display = 'flex';
             lobiEkrani.innerHTML = `<div class="lobby-container"><h1>Sınav Yükleniyor...</h1></div>`;
@@ -254,11 +213,9 @@ function sinavListesiniOlustur(sinavlar) {
 
     function anaSayfayaDon(event) {
         if(event) event.preventDefault();
-        
         if(window.location.pathname !== "/") {
             history.pushState(null, 'Ana Sayfa', '/');
         }
-        
         lobiEkrani.innerHTML = `
             <div class="lobby-container">
                 <h2>SINAVINI SEÇ VE BAŞLA!</h2>
@@ -270,41 +227,32 @@ function sinavListesiniOlustur(sinavlar) {
                     </div>
                 </div>
             </div>`;
-        
         sinavListesiKonteyneri = document.getElementById('quiz-list-container');
         aramaGirdisi = document.getElementById('quiz-search-input');
         if (aramaGirdisi) aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
-
         ekranGoster(lobiEkrani);
         sinavListesiniOlustur(tumSinavlar);
+        populerSinavlariGoster(); // Ana sayfaya dönünce popüler sınavları tekrar göster
     }
 
-function yoluIsle() {
-    const path = window.location.pathname;
-
-    // Eğer path sadece "/" değilse, bunu bir sınav linki olarak kabul et.
-    if (path.length > 1) { 
-        if (tumSinavlar.length === 0) {
-            return; // Sınavlar henüz yüklenmedi, bekle.
-        }
-        
-        const slug = path.substring(1); 
-        const bulunanSinav = tumSinavlar.find(s => slugify(s.title) === slug);
-        
-        if (bulunanSinav) {
-            sinaviBaslat(bulunanSinav.id);
+    function yoluIsle() {
+        const path = window.location.pathname;
+        if (path.length > 1) { 
+            if (tumSinavlar.length === 0) { return; }
+            const slug = path.substring(1); 
+            const bulunanSinav = tumSinavlar.find(s => slugify(s.title) === slug);
+            if (bulunanSinav) {
+                sinaviBaslat(bulunanSinav.id);
+            } else {
+                console.warn('Bu URL ile eşleşen sınav bulunamadı:', slug);
+                anaSayfayaDon();
+            }
         } else {
-            console.warn('Bu URL ile eşleşen sınav bulunamadı:', slug);
             anaSayfayaDon();
         }
-    } else {
-        // Path sadece "/" ise ana sayfayı (lobiyi) yeniden oluştur ve göster.
-        // DEĞİŞİKLİK BURADA: ekranGoster(lobiEkrani) yerine anaSayfayaDon() çağırıyoruz.
-        anaSayfayaDon();
     }
-}
 
-    // EVENT LISTENERS
+    // --- EVENT LISTENERS (Temizlenmiş ve Tekrar Etmeyen Hali) ---
     if (aramaGirdisi) aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
     if (sonrakiSoruButonu) sonrakiSoruButonu.addEventListener('click', sonrakiSoruyaGec);
     
@@ -315,16 +263,29 @@ function yoluIsle() {
             hamburgerButonu.classList.toggle('active');
             mobilNavPanel.classList.toggle('open');
         });
-        mobilNavPanel.querySelectorAll('a.close-menu-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                anaSayfayaDon(e);
+        mobilNavPanel.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
                 hamburgerButonu.classList.remove('active');
                 mobilNavPanel.classList.remove('open');
             });
         });
     }
 
-    document.querySelector('.desktop-menu a.home-link')?.addEventListener('click', anaSayfayaDon);
+    document.querySelector('.desktop-menu a[href*="sinav.lolonolo.com"]')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        anaSayfayaDon(e);
+    });
+
+    if (sinavaDevamButonu) {
+        sinavaDevamButonu.addEventListener('click', () => {
+            ekranGoster(yarismaEkrani);
+            soruYukle(mevcutSoruIndexi + 1);
+            const quizPanel = document.querySelector('.competition-container');
+            if (quizPanel) {
+                quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
 
     // BAŞLANGIÇ
     sinavlariGetirVeGoster();
