@@ -182,18 +182,26 @@ document.addEventListener('DOMContentLoaded', () => {
         sonrakiSoruButonu.style.display = 'none';
     }
 
-    function sonrakiSoruyaGec() {
-        const sonrakiIndex = mevcutSoruIndexi + 1;
-        if (sonrakiIndex > 0 && sonrakiIndex % 5 === 0 && sonrakiIndex < mevcutSinavVerisi.sorular.length) {
-            ekranGoster(reklamEkrani);
-        } else {
-            soruYukle(sonrakiIndex);
-            const quizPanel = document.querySelector('.competition-container');
-            if (quizPanel) {
-                quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+ function sonrakiSoruyaGec() {
+    const sonrakiIndex = mevcutSoruIndexi + 1;
+
+    if (sonrakiIndex > 0 && sonrakiIndex % 5 === 0 && sonrakiIndex < mevcutSinavVerisi.sorular.length) {
+        ekranGoster(reklamEkrani);
+
+        if (typeof ezstandalone !== 'undefined') {
+            ezstandalone.cmd.push(function () {
+                // Sadece tek bir reklam ID'sini çağırıyoruz.
+                ezstandalone.showAds(851); 
+            });
+        }
+    } else {
+        soruYukle(sonrakiIndex);
+        const quizPanel = document.querySelector('.competition-container');
+        if (quizPanel) {
+            quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }
+}
     
     function ekranGoster(gosterilecekEkran, yukleniyor = false) {
         if (lobiEkrani) lobiEkrani.style.display = 'none';
