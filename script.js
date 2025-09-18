@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ELEMENT TANIMLAMALARI
     let lobiEkrani = document.getElementById('lobby-screen');
     let yarismaEkrani = document.getElementById('competition-screen');
-    const anaSayfaIcerigi = document.getElementById('home-content'); // YENİ EKLENDİ
+    const anaSayfaIcerigi = document.getElementById('home-content');
     let sinavListesiKonteyneri = document.getElementById('quiz-list-container');
     let aramaGirdisi = document.getElementById('quiz-search-input');
     const sinavBasligiElementi = document.getElementById('quiz-title');
@@ -182,26 +182,37 @@ document.addEventListener('DOMContentLoaded', () => {
         sonrakiSoruButonu.style.display = 'none';
     }
 
- function sonrakiSoruyaGec() {
-    const sonrakiIndex = mevcutSoruIndexi + 1;
-
-    if (sonrakiIndex > 0 && sonrakiIndex % 5 === 0 && sonrakiIndex < mevcutSinavVerisi.sorular.length) {
-        ekranGoster(reklamEkrani);
-
-        if (typeof ezstandalone !== 'undefined') {
-            ezstandalone.cmd.push(function () {
-                // Sadece tek bir reklam ID'sini çağırıyoruz.
-                ezstandalone.showAds(851); 
-            });
-        }
-    } else {
-        soruYukle(sonrakiIndex);
-        const quizPanel = document.querySelector('.competition-container');
-        if (quizPanel) {
-            quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    function sonrakiSoruyaGec() {
+        const sonrakiIndex = mevcutSoruIndexi + 1;
+        if (sonrakiIndex > 0 && sonrakiIndex % 5 === 0 && sonrakiIndex < mevcutSinavVerisi.sorular.length) {
+            ekranGoster(reklamEkrani);
+            const textElement = document.getElementById('typewriter-text');
+            const continueButton = document.getElementById('continue-quiz-btn');
+            const textToType = "Lolonolo'nun gelişmesine katkı yapmak istiyorsan\npremium üyelik avantajlarından yararlan!\nshopier.com/lolonolo";
+            if (textElement && continueButton) {
+                textElement.classList.remove('typing-effect', 'finished');
+                textElement.textContent = textToType;
+                void textElement.offsetWidth;
+                textElement.classList.add('typing-effect');
+                continueButton.style.display = 'none';
+                setTimeout(() => {
+                    continueButton.style.display = 'block';
+                    textElement.classList.add('finished');
+                }, 5500);
+            }
+            if (typeof ezstandalone !== 'undefined') {
+                ezstandalone.cmd.push(function () {
+                    ezstandalone.showAds(851);
+                });
+            }
+        } else {
+            soruYukle(sonrakiIndex);
+            const quizPanel = document.querySelector('.competition-container');
+            if (quizPanel) {
+                quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
     }
-}
     
     function ekranGoster(gosterilecekEkran, yukleniyor = false) {
         if (lobiEkrani) lobiEkrani.style.display = 'none';
