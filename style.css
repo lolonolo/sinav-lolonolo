@@ -269,18 +269,23 @@ body {
 }
 /* --- SAĞ SÜTUN YAPIŞKAN REKLAM --- */
 
-.sticky-ad-container {
-    /* Bu iki satır, elemanı yapışkan hale getirir */
-    position: sticky;
-    bottom: 20px; /* Ekranın altından 20px yukarıda yapışık kalır */
+/* --- SAĞ SÜTUN YAPIŞKAN REKLAM --- */
 
-    /* Diğer stil ayarları */
+.sticky-ad-container {
+    position: sticky;
+    bottom: 20px;
     width: 100%;
-    margin-top: 25px; /* Üstündeki "Popüler Sınavlar" kutusuyla arasına boşluk koyar */
-    min-height: 250px; /* Ezoic reklamının sığabilmesi için minimum bir yükseklik */
+    margin-top: 25px;
+    min-height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    /* --- YERİNİ BELLİ ETMEK İÇİN EKLENEN KODLAR --- */
+    background-color: rgba(0, 0, 0, 0.03); /* Arka plandan çok az daha koyu, yarı saydam bir renk */
+    border: 2px dashed #d0d8e0;            /* Arka planla uyumlu kesik çizgi */
+    border-radius: 12px;                   /* Kenarları yumuşatma */
+    box-sizing: border-box;                /* Kenarlığın, min-height'i etkilememesi için */
 }
 
 /* --- MOBİL UYUMLULUK --- */
