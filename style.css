@@ -1,5 +1,5 @@
 :root {
-    --background-color: #EFF6FF; /* Açık mavi arka plan rengi korundu */
+    --background-color: #EFF6FF;
     --container-bg: #ffffff;
     --text-color: #333;
     --border-color: #ddd;
@@ -7,15 +7,12 @@
     --correct-color: #28a745;
     --incorrect-color: #dc3545;
 }
-
 body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--background-color);
     margin: 0;
     color: var(--text-color);
 }
-
-/* --- REKLAM GÖRÜNÜRLÜK DÜZELTMESİ --- */
 .main-layout {
     position: relative;
     z-index: 1;
@@ -28,13 +25,9 @@ body {
     position: relative;
     z-index: 1;
 }
-
-/* --- MOBİL MENÜ TEMEL STİLLERİ (Masaüstünde Gizleme) --- */
 .hamburger-menu, .mobile-nav {
     display: none;
 }
-
-/* --- ANA YERLEŞİM (LAYOUT) --- */
 .main-layout {
     display: flex;
     justify-content: center;
@@ -45,7 +38,6 @@ body {
     box-sizing: border-box;
     gap: 25px;
 }
-
 .side-column {
     background-color: transparent;
     width: 320px;
@@ -59,7 +51,6 @@ body {
     gap: 25px;
     padding-bottom: 150px;
 }
-
 .app-container {
     flex-grow: 1;
     width: 100%;
@@ -67,8 +58,6 @@ body {
     min-height: 100vh;
     box-sizing: border-box;
 }
-
-/* --- PROFESYONEL MENÜ STİLLERİ --- */
 .desktop-menu {
     width: 100%;
     background-color: var(--container-bg);
@@ -77,27 +66,14 @@ body {
     padding: 20px;
     box-sizing: border-box;
 }
-
-.desktop-menu h3, .mobile-nav h3 {
-    font-size: 1.3rem;
-    color: var(--text-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
-    margin-top: 0;
-    margin-bottom: 15px;
-    text-align: left;
-}
-
 .desktop-menu ul, .mobile-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .desktop-menu li, .mobile-nav li {
     margin-bottom: 2px;
 }
-
 .desktop-menu a, .mobile-nav a {
     display: flex;
     align-items: center;
@@ -110,24 +86,20 @@ body {
     color: #4A5568;
     text-decoration: none;
 }
-
 .desktop-menu a:hover, .mobile-nav a:hover {
     background-color: #E2E8F0;
     color: #2D3748;
     padding-left: 25px;
 }
-
 .desktop-menu a i, .mobile-nav a i {
     width: 20px;
     text-align: center;
     color: #718096;
     transition: color 0.2s;
 }
-
 .desktop-menu a:hover i, .mobile-nav a:hover i {
     color: var(--accent-color);
 }
-
 .nav-cta-wrapper {
     padding-top: 15px;
     border-top: 1px solid #E2E8F0;
@@ -136,8 +108,6 @@ body {
 .desktop-menu .nav-cta-wrapper {
     padding: 15px;
 }
-
-
 .premium-link-cta {
     display: flex !important;
     justify-content: center;
@@ -153,19 +123,15 @@ body {
     box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
     transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .premium-link-cta:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
     padding-left: 15px !important;
     background: linear-gradient(45deg, #6D28D9, #4F46E5);
 }
-
 .premium-link-cta i {
     color: #FBBF24 !important;
 }
-
-/* --- UYGULAMA İÇERİĞİ --- */
 .screen {
     width: 100%;
     min-height: 80vh;
@@ -207,129 +173,26 @@ body {
 .next-question-btn { display: none; margin: 20px auto 0; padding: 12px 30px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--accent-color); border: none; border-radius: 8px; cursor: pointer; }
 .quiz-footer { text-align: center; font-size: 0.9rem; color: #888; padding: 20px; flex-shrink: 0; }
 #mobile-ad-container { display: none; }
-
-/* --- SAĞ SÜTUN POPÜLER SINAVLAR WIDGET'I --- */
-.sidebar-widget {
-    width: 100%;
-    background-color: var(--container-bg);
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    padding: 25px;
-    box-sizing: border-box;
-}
-
-.sidebar-widget h4 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 15px;
-    font-size: 1.1rem;
-    color: var(--text-color);
-}
-
-.sidebar-widget ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-widget ul li a {
-    display: block;
-    padding: 12px 5px; /* Yatay padding azaltıldı */
-    color: #555;
-    text-decoration: none;
-    font-weight: 500;
-    border-bottom: 1px solid #f5f5f5;
-    transition: color 0.2s;
-    
-    /* UZUN BAŞLIKLAR İÇİN DÜZELTME */
-    white-space: nowrap;      /* Metnin alt satıra inmesini engeller */
-    overflow: hidden;         /* Taşan kısmı gizler */
-    text-overflow: ellipsis;  /* Gizlenen kısmın sonuna "..." ekler */
-}
-
-.sidebar-widget ul li a:hover {
-    color: var(--accent-color);
-}
-
-.sidebar-widget ul li:last-child a {
-    border-bottom: none;
-}
-
-/* --- REKLAM MOLASI EKRANI STİLLERİ --- */
-.ad-break-placeholder {
-    margin: 25px 0;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    min-height: 100px; /* Reklamın sığması için minimum yükseklik */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-/* --- SAĞ SÜTUN YAPIŞKAN REKLAM --- */
-
-/* --- SAĞ SÜTUN YAPIŞKAN REKLAM --- */
-
-.sticky-ad-container {
-    /*position: sticky;*/
-    /*bottom: 20px;*/
-    width: 100%;
-    margin-top: 25px;
-    min-height: 250px;
-   display: flex;
-    align-items: center;
-    justify-content: center;
-
-    /* --- YERİNİ BELLİ ETMEK İÇİN EKLENEN KODLAR --- */
-    background-color: rgba(0, 0, 0, 0.03); /* Arka plandan çok az daha koyu, yarı saydam bir renk */
-    border: 2px dashed #d0d8e0;            /* Arka planla uyumlu kesik çizgi */
-    border-radius: 12px;                   /* Kenarları yumuşatma */
-    box-sizing: border-box;                /* Kenarlığın, min-height'i etkilememesi için */
-}
-
-/* --- MOBİL UYUMLULUK --- */
+.ad-break-placeholder { margin: 25px 0; padding: 20px; background-color: #f8f9fa; border-radius: 12px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+.sidebar-widget { width: 100%; background-color: var(--container-bg); border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); padding: 25px; box-sizing: border-box; }
+.sidebar-widget h4 { margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 1.1rem; color: var(--text-color); }
+.sidebar-widget ul { list-style: none; padding: 0; margin: 0; }
+.sidebar-widget ul li a { display: block; padding: 12px 5px; color: #555; text-decoration: none; font-weight: 500; border-bottom: 1px solid #f5f5f5; transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-widget ul li a:hover { color: var(--accent-color); }
+.sidebar-widget ul li:last-child a { border-bottom: none; }
+.sticky-ad-container { position: sticky; bottom: 20px; width: 100%; margin-top: 25px; min-height: 250px; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.03); border: 2px dashed #d0d8e0; border-radius: 12px; box-sizing: border-box; }
 @media (max-width: 1200px) {
     .right-column { display: none; }
 }
-
 @media (max-width: 992px) {
-    /* Mobil Menüyü ve Butonunu Göster */
-    .hamburger-menu {
-        display: block;
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 1001;
-        background: var(--accent-color);
-        border: none;
-        padding: 10px;
-        border-radius: 8px;
-        cursor: pointer;
-    }
+    .hamburger-menu { display: block; position: fixed; top: 15px; left: 15px; z-index: 1001; background: var(--accent-color); border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
     .hamburger-line { display: block; width: 25px; height: 3px; background-color: white; margin: 5px 0; transition: transform 0.3s, opacity 0.3s; }
     .hamburger-menu.active .hamburger-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
     .hamburger-menu.active .hamburger-line:nth-child(2) { opacity: 0; }
     .hamburger-menu.active .hamburger-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-    
-    .mobile-nav {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: -300px;
-        width: 280px;
-        height: 100%;
-        background-color: var(--container-bg);
-        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-        z-index: 1000;
-        transition: left 0.3s ease-in-out;
-        padding: 20px;
-        box-sizing: border-box;
-    }
+    .mobile-nav { display: block; position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background-color: var(--container-bg); box-shadow: 4px 0 15px rgba(0,0,0,0.1); z-index: 1000; transition: left 0.3s ease-in-out; padding: 20px; box-sizing: border-box; }
     .mobile-nav.open { left: 0; }
     .mobile-nav .nav-cta-wrapper { padding: 15px 10px; }
-    
-    /* Diğer Mobil Ayarları */
     .side-column { display: none; }
     .main-layout { padding: 0; gap: 0; }
     .app-container { max-width: 100%; padding-top: 70px; padding-bottom: 60px; }
@@ -339,3 +202,9 @@ body {
     .screen { min-height: auto; }
     .question-area { padding: 20px 15px 80px 15px; }
 }
+.typewriter-container { padding: 15px; margin: 15px 0; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid var(--accent-color); min-height: 90px; }
+#typewriter-text { font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; font-weight: 600; color: #333; overflow: hidden; white-space: pre-wrap; margin: 0 auto; letter-spacing: .05em; }
+#typewriter-text.typing-effect { border-right: .15em solid orange; width: 0; animation: typing 5.5s steps(120, end) forwards, blink-caret .75s step-end infinite; }
+@keyframes typing { from { width: 0 } to { width: 100% } }
+@keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: orange; } }
+#typewriter-text.typing-effect.finished { border-right: none; }
