@@ -146,29 +146,43 @@ document.addEventListener('DOMContentLoaded', () => {
         soruSayaciElementi.textContent = `Soru ${soruIndexi + 1} / ${mevcutSinavVerisi.sorular.length}`;
     }
 
-    function cevabiIsle(secilenIndex) {
-        const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
-        tumButonlar.forEach(btn => btn.disabled = true);
-        const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
-        const dogruMu = secilenIndex == soru.dogruCevapIndex;
-        if (dogruMu) {
-            tekliPuan += 10;
-            if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
-        }
-        tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
-        if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
-            tumButonlar[soru.dogruCevapIndex].classList.add('correct');
-        }
-        if (soru.aciklama) {
-            aciklamaAlani.innerHTML = soru.aciklama;
-            aciklamaAlani.style.display = 'block';
-        }
-        if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
-            sonrakiSoruButonu.style.display = 'block';
-        } else {
-            setTimeout(finalPuaniniGoster, 2000);
-        }
+function cevabiIsle(secilenIndex) {
+    const tumButonlar = seceneklerKonteyneri.querySelectorAll('.option-btn');
+    tumButonlar.forEach(btn => btn.disabled = true);
+    const soru = mevcutSinavVerisi.sorular[mevcutSoruIndexi];
+    
+    const dogruMu = secilenIndex == soru.dogruCevapIndex;
+    if (dogruMu) {
+        tekliPuan += 10;
+        if (tekliPuanElementi) tekliPuanElementi.textContent = tekliPuan;
     }
+    
+    tumButonlar[secilenIndex].classList.add(dogruMu ? 'correct' : 'incorrect');
+    
+    if (!dogruMu && soru.dogruCevapIndex >= 0 && soru.dogruCevapIndex < tumButonlar.length) {
+        tumButonlar[soru.dogruCevapIndex].classList.add('correct');
+    }
+    
+    if (soru.aciklama) {
+        aciklamaAlani.innerHTML = soru.aciklama;
+        aciklamaAlani.style.display = 'block';
+
+        // --- YENİ EKLENEN KOD ---
+        // Açıklama alanı göründükten sonra, ekranı yumuşakça o alana kaydır.
+        // 250ms'lik gecikme, tarayıcının alanı çizmesine ve animasyonun
+        // daha düzgün çalışmasına olanak tanır.
+        setTimeout(() => {
+            aciklamaAlani.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 250);
+        // --- YENİ KOD SONU ---
+    }
+    
+    if (mevcutSoruIndexi < mevcutSinavVerisi.sorular.length - 1) {
+        sonrakiSoruButonu.style.display = 'block';
+    } else {
+        setTimeout(finalPuaniniGoster, 2000);
+    }
+}
 
     function finalPuaniniGoster() {
         soruMetniElementi.textContent = 'Sınav bitti!';
