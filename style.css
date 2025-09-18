@@ -255,6 +255,19 @@ body {
 .sidebar-widget ul li:last-child a {
     border-bottom: none;
 }
+
+/* --- REKLAM MOLASI EKRANI STİLLERİ --- */
+.ad-break-placeholder {
+    margin: 25px 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    min-height: 100px; /* Reklamın sığması için minimum yükseklik */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* --- MOBİL UYUMLULUK --- */
 @media (max-width: 1200px) {
     .right-column { display: none; }
