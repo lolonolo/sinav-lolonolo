@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobilNavPanel = document.getElementById('mobile-nav');
     const reklamEkrani = document.getElementById('ad-break-screen');
     const sinavaDevamButonu = document.getElementById('continue-quiz-btn');
+    const premiumLinkAdBreak = document.getElementById('premium-link-ad-break');
 
     // GENEL DEĞİŞKENLER
     let tumSinavlar = [];
@@ -188,17 +189,21 @@ document.addEventListener('DOMContentLoaded', () => {
             ekranGoster(reklamEkrani);
             const textElement = document.getElementById('typewriter-text');
             const continueButton = document.getElementById('continue-quiz-btn');
-            const textToType = "Lolonolo'nun gelişmesine katkı yapmak istiyorsan\npremium üyelik avantajlarından yararlan!\nshopier.com/lolonolo";
-            if (textElement && continueButton) {
+            const premiumLink = document.getElementById('premium-link-ad-break');
+            const textToType = "Lolonolo'nun gelişmesine katkı yapmak istiyorsan\npremium üyelik avantajlarından yararlan!";
+
+            if (textElement && continueButton && premiumLink) {
                 textElement.classList.remove('typing-effect', 'finished');
                 textElement.textContent = textToType;
                 void textElement.offsetWidth;
                 textElement.classList.add('typing-effect');
                 continueButton.style.display = 'none';
+                premiumLink.classList.remove('visible');
                 setTimeout(() => {
                     continueButton.style.display = 'block';
+                    premiumLink.classList.add('visible');
                     textElement.classList.add('finished');
-                }, 5500);
+                }, 5000);
             }
             if (typeof ezstandalone !== 'undefined') {
                 ezstandalone.cmd.push(function () {
