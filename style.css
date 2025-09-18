@@ -272,12 +272,12 @@ body {
 /* --- SAĞ SÜTUN YAPIŞKAN REKLAM --- */
 
 .sticky-ad-container {
-    position: sticky;
-    bottom: 20px;
+    /* position: sticky;*/
+    /*bottom: 20px;*/
     width: 100%;
     margin-top: 25px;
     min-height: 250px;
-    display: flex;
+   display: flex;
     align-items: center;
     justify-content: center;
 
