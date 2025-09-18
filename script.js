@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ELEMENT TANIMLAMALARI
     let lobiEkrani = document.getElementById('lobby-screen');
     let yarismaEkrani = document.getElementById('competition-screen');
+    const anaSayfaIcerigi = document.getElementById('home-content'); // YENİ EKLENDİ
     let sinavListesiKonteyneri = document.getElementById('quiz-list-container');
     let aramaGirdisi = document.getElementById('quiz-search-input');
     const sinavBasligiElementi = document.getElementById('quiz-title');
@@ -82,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         sinavListesiKonteyneri.innerHTML = '';
-        sinavlar.forEach(sinav => { // Animasyonlar için olan 'index' kaldırıldı
+        sinavlar.forEach(sinav => {
             const sinavOgesi = document.createElement('div');
             sinavOgesi.className = 'quiz-list-item';
             sinavOgesi.textContent = sinav.title;
@@ -94,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 sinaviBaslat(sinav.id);
             });
             sinavListesiKonteyneri.appendChild(sinavOgesi);
-            // Animasyon gecikmesi satırı buradan kaldırıldı
         });
     }
 
@@ -128,10 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function soruYukle(soruIndexi) {
-        const mevcutReklamKonteyneri = document.querySelector('.ad-container-in-question');
-        if (mevcutReklamKonteyneri) {
-            mevcutReklamKonteyneri.remove();
-        }
         const soru = mevcutSinavVerisi.sorular[soruIndexi];
         mevcutSoruIndexi = soruIndexi;
         sinavBasligiElementi.textContent = mevcutSinavVerisi.sinavAdi;
@@ -202,12 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function ekranGoster(gosterilecekEkran, yukleniyor = false) {
         if (lobiEkrani) lobiEkrani.style.display = 'none';
         if (yarismaEkrani) yarismaEkrani.style.display = 'none';
-        if (reklamEkrani) reklamEkrani.style.display = 'none'; // Reklam ekranını da gizle
+        if (reklamEkrani) reklamEkrani.style.display = 'none';
+        if (anaSayfaIcerigi) anaSayfaIcerigi.style.display = 'none';
         if (yukleniyor) {
             lobiEkrani.style.display = 'flex';
             lobiEkrani.innerHTML = `<div class="lobby-container"><h1>Sınav Yükleniyor...</h1></div>`;
         } else if (gosterilecekEkran) {
             gosterilecekEkran.style.display = 'flex';
+            if (gosterilecekEkran === lobiEkrani) {
+                if (anaSayfaIcerigi) anaSayfaIcerigi.style.display = 'block';
+            }
         }
     }
 
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (aramaGirdisi) aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
         ekranGoster(lobiEkrani);
         sinavListesiniOlustur(tumSinavlar);
-        populerSinavlariGoster(); // Ana sayfaya dönünce popüler sınavları tekrar göster
+        populerSinavlariGoster();
     }
 
     function yoluIsle() {
@@ -252,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- EVENT LISTENERS (Temizlenmiş ve Tekrar Etmeyen Hali) ---
     if (aramaGirdisi) aramaGirdisi.addEventListener('keyup', sinavlariFiltrele);
     if (sonrakiSoruButonu) sonrakiSoruButonu.addEventListener('click', sonrakiSoruyaGec);
     
@@ -287,6 +286,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // BAŞLANGIÇ
     sinavlariGetirVeGoster();
 });
