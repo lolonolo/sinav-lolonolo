@@ -170,7 +170,13 @@ body {
 .option-btn.incorrect { background-color: var(--incorrect-color); color: white; border-color: var(--incorrect-color); }
 .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
 .explanation-area { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid var(--border-color); display: none; }
-.next-question-btn { display: none; margin: 20px auto 0; padding: 12px 30px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--accent-color); border: none; border-radius: 8px; cursor: pointer; }
+/* --- PASİF DEVAM ET BUTONU STİLİ --- */
+.next-question-btn:disabled {
+    background-color: #e9ecef; /* Pasif, gri renk */
+    color: #adb5bd; /* Pasif metin rengi */
+    cursor: not-allowed; /* "Tıklanamaz" imleci */
+    box-shadow: none;
+}
 .quiz-footer { text-align: center; font-size: 0.9rem; color: #888; padding: 20px; flex-shrink: 0; }
 #mobile-ad-container { display: none; }
 
