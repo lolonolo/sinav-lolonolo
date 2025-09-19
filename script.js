@@ -171,9 +171,9 @@ function cevabiIsle(secilenIndex) {
         // Açıklama alanı göründükten sonra, ekranı yumuşakça o alana kaydır.
         // 250ms'lik gecikme, tarayıcının alanı çizmesine ve animasyonun
         // daha düzgün çalışmasına olanak tanır.
-        setTimeout(() => {
-            aciklamaAlani.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 250);
+       setTimeout(() => {
+    aciklamaAlani.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}, 250);
         // --- YENİ KOD SONU ---
     }
     
