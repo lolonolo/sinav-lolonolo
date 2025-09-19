@@ -170,13 +170,7 @@ body {
 .option-btn.incorrect { background-color: var(--incorrect-color); color: white; border-color: var(--incorrect-color); }
 .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
 .explanation-area { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid var(--border-color); display: none; }
-/* --- PASİF DEVAM ET BUTONU STİLİ --- */
-.next-question-btn:disabled {
-    background-color: #e9ecef; /* Pasif, gri renk */
-    color: #adb5bd; /* Pasif metin rengi */
-    cursor: not-allowed; /* "Tıklanamaz" imleci */
-    box-shadow: none;
-}
+.next-question-btn { display: none; margin: 20px auto 0; padding: 12px 30px; font-size: 1.1rem; font-weight: bold; color: white; background-color: var(--accent-color); border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease-in-out; }
 .quiz-footer { text-align: center; font-size: 0.9rem; color: #888; padding: 20px; flex-shrink: 0; }
 #mobile-ad-container { display: none; }
 
@@ -208,6 +202,8 @@ body {
 .sidebar-widget ul li a:hover { color: var(--accent-color); }
 .sidebar-widget ul li:last-child a { border-bottom: none; }
 .sticky-ad-container { position: sticky; bottom: 20px; width: 100%; margin-top: 25px; min-height: 250px; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.03); border: 2px dashed #d0d8e0; border-radius: 12px; box-sizing: border-box; }
+
+
 @media (max-width: 1200px) {
     .right-column { display: none; }
 }
@@ -262,4 +258,11 @@ body {
 #premium-link-ad-break.visible {
     display: inline-flex !important;
     opacity: 1;
+}
+/* --- PASİF DEVAM ET BUTONU STİLİ --- */
+.next-question-btn:disabled {
+    background-color: #e9ecef; /* Pasif, gri renk */
+    color: #adb5bd; /* Pasif metin rengi */
+    cursor: not-allowed; /* "Tıklanamaz" imleci */
+    box-shadow: none;
 }
