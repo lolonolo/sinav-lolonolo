@@ -203,50 +203,42 @@ function sonrakiSoruyaGec() {
     if (sonrakiIndex > 0 && sonrakiIndex % 5 === 0 && sonrakiIndex < mevcutSinavVerisi.sorular.length) {
         ekranGoster(reklamEkrani);
 
-        // --- YAZI ANİMASYONU VE BUTON GİZLEME ---
         const textElement = document.getElementById('typewriter-text');
         const continueButton = document.getElementById('continue-quiz-btn');
         const premiumLink = document.getElementById('premium-link-ad-break');
         const textToType = "Lolonolo'nun gelişmesine katkı yapmak istiyorsan\npremium üyelik avantajlarından yararlan!";
+
         if (textElement && continueButton && premiumLink) {
+            // Animasyonu her seferinde sıfırla
             textElement.classList.remove('typing-effect', 'finished');
             textElement.textContent = textToType;
-            void textElement.offsetWidth;
+            void textElement.offsetWidth; 
             textElement.classList.add('typing-effect');
-            continueButton.style.display = 'none';
+            
+            // --- DEĞİŞİKLİKLER BURADA ---
             premiumLink.classList.remove('visible');
+            continueButton.style.display = 'block'; // Butonun her zaman görünür olmasını sağla
+            continueButton.disabled = true; // Butonu TIKLANAMAZ (pasif) yap
+
+            // Animasyon bittikten sonra butonları göster/aktif et
             setTimeout(() => {
-                continueButton.style.display = 'block';
                 premiumLink.classList.add('visible');
                 textElement.classList.add('finished');
-            }, 5000);
+                continueButton.disabled = false; // Butonu TIKLANABİLİR (aktif) yap
+            }, 5500); 
+            // --- DEĞİŞİKLİKLER SONU ---
         }
 
-        // --- DAHA AKILLI REKLAM KONTROLÜ ---
-        const adPlaceholderDiv = document.getElementById('ezoic-pub-ad-placeholder-851');
-        const adPlaceholderContainer = adPlaceholderDiv ? adPlaceholderDiv.parentElement : null;
-
-        if (adPlaceholderContainer) {
-            adPlaceholderContainer.classList.remove('ad-filled');
-            
-            if (typeof ezstandalone !== 'undefined') {
-                ezstandalone.cmd.push(function () {
-                    ezstandalone.showAds(851);
-                });
-            }
-
-            // 2 saniye sonra reklamın gelip gelmediğini YÜKSEKLİĞİNİ ölçerek kontrol et
-            setTimeout(() => {
-                // Eğer placeholder div'inin ekranda kapladığı yükseklik 10 pikselden fazlaysa, reklam gelmiş demektir.
-                if (adPlaceholderDiv && adPlaceholderDiv.offsetHeight > 10) {
-                    adPlaceholderContainer.classList.add('ad-filled');
-                }
-            }, 2000);
+        // Ezoic reklamını çağır
+        if (typeof ezstandalone !== 'undefined') {
+            ezstandalone.cmd.push(function () {
+                ezstandalone.showAds(851); 
+            });
         }
-        
     } else {
         // Normal şekilde sonraki soruya geç
         soruYukle(sonrakiIndex);
+        
         const quizPanel = document.querySelector('.competition-container');
         if (quizPanel) {
             quizPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
